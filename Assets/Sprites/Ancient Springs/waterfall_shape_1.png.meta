@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 70f27edfeb285dd44aabfda9c3856b67
+guid: 5f4c759486414b743b298ba6a59c2e96
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8231717341750187119
-    second: noiseTexture (2)_0
+      213: 3082754115928567865
+    second: waterfall_shape_1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -40,9 +40,9 @@ TextureImporter:
     filterMode: 1
     aniso: 1
     mipBias: 0
-    wrapU: 0
-    wrapV: 0
-    wrapW: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -96,30 +96,17 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: noiseTexture (2)_0
+      name: waterfall_shape_1_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 256
-        height: 144
+        x: 89
+        y: 23
+        width: 375
+        height: 462
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 19bae81f0b013cd80800000000000000
-      internalID: -8231717341750187119
+      spriteID: 930bbc9098428ca20800000000000000
+      internalID: 3082754115928567865
       vertices: []
       indices: 
       edges: []
@@ -148,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      noiseTexture (2)_0: -8231717341750187119
+      waterfall_shape_1_0: 3082754115928567865
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

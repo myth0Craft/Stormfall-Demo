@@ -25,7 +25,9 @@ MonoBehaviour:
   - m_enabled: 1
     m_path: Assets/Scenes/PersistentData.unity
   - m_enabled: 1
-    m_path: Assets/Scenes/1_Ancient_Springs.unity
+    m_path: Assets/Scenes/AncientSprings/1_Ancient_Springs.unity
+  - m_enabled: 1
+    m_path: Assets/Scenes/AncientSprings/2_AncientSprings.unity
   m_HasScriptingDefines: 0
   m_ScriptingDefines: []
   m_PlayerSettingsYaml:

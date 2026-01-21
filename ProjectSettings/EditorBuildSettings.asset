@@ -21,8 +21,14 @@ EditorBuildSettings:
     path: Assets/Scenes/Room2.unity
     guid: 969cdf9502a3efd42b870dca03ff71f4
   - enabled: 1
-    path: Assets/Scenes/1_Ancient_Springs.unity
+    path: Assets/Scenes/AncientSprings/1_Ancient_Springs.unity
     guid: 43fe87efe3eda8b4c95ed72432efb5f5
+  - enabled: 1
+    path: Assets/Scenes/AncientSprings/2_Ancient_Springs.unity
+    guid: cf6de44449619d04a827659e18fd5915
+  - enabled: 1
+    path: Assets/Scenes/AncientSprings/3_Ancient_Springs.unity
+    guid: edeb97ca61802e04da4e422043bc4652
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0
