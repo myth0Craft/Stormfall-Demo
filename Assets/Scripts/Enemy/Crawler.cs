@@ -85,10 +85,12 @@ public class Crawler : MonoBehaviour
     private Rigidbody2D body;
     private BoxCollider2D boxCollider;
     private LayerMask groundLayer;
+    private LayerMask enemyLayer;
 
     private void Awake()
     {
         groundLayer = LayerMask.GetMask("Ground");
+        enemyLayer = LayerMask.GetMask("Enemy");
         body = GetComponent<Rigidbody2D>();
         boxCollider = GetComponent<BoxCollider2D>();
     }
@@ -110,9 +112,21 @@ public class Crawler : MonoBehaviour
             boxCollider.bounds.center.y
         );
 
+        Vector2 ledgeDetectOrigin = new Vector2(
+            facingRight ? boxCollider.bounds.max.x + 0.5f : boxCollider.bounds.min.x - 0.5f,
+            boxCollider.bounds.min.y
+        );
+
         Vector2 direction = facingRight ? Vector2.right : Vector2.left;
 
         if (Physics2D.Raycast(origin, direction, 0.1f, groundLayer))
+            //|| Physics2D.Raycast(origin, direction, 0.1f, enemyLayer))
+        {
+            TriggerTurn();
+        }
+
+        //ledge detection
+        if (!Physics2D.Raycast(ledgeDetectOrigin, Vector2.down, 0.1f, groundLayer))
         {
             TriggerTurn();
         }

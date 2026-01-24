@@ -12,8 +12,8 @@ public static class PlayerData
     private static bool _allowGameInput = false;
     public static string currentScene = "1_Ancient_Springs";
     //public static Vector2 currentPosition = new Vector2(-3.0f, -1.0f);
-    public static float posX = -3.0f;
-    public static float posY = -1.0f;
+    public static float posX = -5.0f;
+    public static float posY = -1.7f;
 
 
     public static PlayerControls getControls()
@@ -52,8 +52,8 @@ public static class PlayerData
 
     public static void SetDefaults()
     {
-        posX = -3.0f;
-        posY = -1.0f;
+        posX = -5.0f;
+        posY = -1.7f;
         currentScene = "1_Ancient_Springs";
         maxHealth = 5;
         currentHealth = 5;
