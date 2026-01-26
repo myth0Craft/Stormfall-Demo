@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: WaterReflectionMAT
+  m_Name: 2_AncientSprings_ReflectionMAT
   m_Shader: {fileID: -6465566751694194690, guid: a7be24066d0766442b8c67ef9e72775d, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -24,11 +24,11 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _CameraTex:
-        m_Texture: {fileID: 8400000, guid: 7515ed3d7fdeda74db1ea67b8f505402, type: 2}
+        m_Texture: {fileID: 8400000, guid: b4d6560c41e65204f870415443b191b9, type: 2}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 8400000, guid: 7515ed3d7fdeda74db1ea67b8f505402, type: 2}
+        m_Texture: {fileID: 8400000, guid: b4d6560c41e65204f870415443b191b9, type: 2}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_65f924d467214d2fae737c9993bebb46_Texture_1_Texture2D:
@@ -49,12 +49,12 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _RefractionStrength: 1
-    - _WaterSpeed: 0.4
+    - _RefractionStrength: 1.07
+    - _WaterSpeed: 0.3
     - _WaterTextureTiling: 0
     m_Colors:
     - White: {r: 1, g: 1, b: 1, a: 1}
-    - _WaterColor: {r: 0, g: 0.7245512, b: 1, a: 1}
+    - _WaterColor: {r: 0.19624422, g: 0.670392, b: 0.8490566, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &2429988985331398517
