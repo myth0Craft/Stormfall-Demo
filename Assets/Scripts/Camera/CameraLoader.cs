@@ -11,6 +11,8 @@ public class CameraLoader : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
+            cam.enabled = false;
+            cam.enabled = true;
             cam.Priority = 10;
     }
 }
