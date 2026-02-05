@@ -1235,7 +1235,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineCamera
   Priority:
     Enabled: 1
-    m_Value: 10
+    m_Value: 0
   OutputChannel: 1
   StandbyUpdate: 2
   m_StreamingVersion: 20241001
@@ -7684,7 +7684,7 @@ Transform:
   m_GameObject: {fileID: 487720967}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 0.000002318393, w: 1}
-  m_LocalPosition: {x: 22.460918, y: -3.1334932, z: 0}
+  m_LocalPosition: {x: 12.66, y: -3.1334932, z: 0}
   m_LocalScale: {x: 0.24603577, y: 0.24603577, z: 0.24603577}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -32646,8 +32646,8 @@ Transform:
   m_GameObject: {fileID: 1908348456}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.4818, y: 3.3696, z: 0}
-  m_LocalScale: {x: 37.869316, y: 16.482737, z: 1}
+  m_LocalPosition: {x: 3.4820251, y: 3.3696, z: 0}
+  m_LocalScale: {x: 37.86977, y: 16.482737, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 359149054}

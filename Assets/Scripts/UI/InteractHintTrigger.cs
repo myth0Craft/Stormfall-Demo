@@ -22,7 +22,7 @@ public class InteractHintTrigger : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player") && shouldCheckForCollision)
+        if (collision.CompareTag("Player") && shouldCheckForCollision && PlayerData.currentHealth < PlayerData.maxHealth)
         {
             SetInteractPopupActive(true);
 

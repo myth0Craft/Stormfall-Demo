@@ -9,7 +9,7 @@ public class PlayerHealthManager : HealthManager
     public Material defaultMat;
     public Material hurtMat;
     public ParticleSystem hitParticle;
-    public PlayerAttackDamageObject attackDmgObj;
+    private CamShakeSource camShakeSource;
 
     private void Awake()
     {
@@ -17,6 +17,7 @@ public class PlayerHealthManager : HealthManager
         this.maxHealth = PlayerData.maxHealth;
         this.currentHealth = PlayerData.currentHealth;
         spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
+        camShakeSource = GameObject.FindGameObjectWithTag("CinemachineImpulseSource").GetComponent<CamShakeSource>();
     }
 
     public override void ApplyDamageIgnoreIFrames(int amount)
@@ -32,7 +33,7 @@ public class PlayerHealthManager : HealthManager
 
     protected override void AddHitEffects()
     {
-        attackDmgObj.AddScreenShake(0.04f);
+        camShakeSource.AddScreenShake(0.04f);
         StartCoroutine(HitColorCoroutine());
         StartCoroutine(hitParticles());
         StartCoroutine(hitStopCoroutine());

@@ -10,6 +10,7 @@ TagManager:
   - InteractHintUI
   - InteractUIText
   - SaveIcon
+  - CinemachineImpulseSource
   layers:
   - Default
   - TransparentFX

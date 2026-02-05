@@ -9,9 +9,11 @@ public class PlayerAttackDamageObject : MonoBehaviour
 
     private CinemachineImpulseSource impulseSource;
 
+    private CamShakeSource camShakeSource;
+
     void Awake()
     {
-        impulseSource = GetComponent<CinemachineImpulseSource>();
+        camShakeSource = GameObject.FindGameObjectWithTag("CinemachineImpulseSource").GetComponent<CamShakeSource>();
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -23,29 +25,18 @@ public class PlayerAttackDamageObject : MonoBehaviour
         if (health != null)
         {
             health.ApplyDamage();
-            AddScreenShake(0.02f);
+            camShakeSource.AddScreenShake(0.02f);
         }
         if (enemyHealth != null)
         {
             enemyHealth.ApplyDamage();
-            AddScreenShake(0.04f);
+            camShakeSource.AddScreenShake(0.04f);
             StartCoroutine(hitStopCoroutine());
         }
         //}
     }
 
-    public void AddScreenShake(float amount)
-    {
-        float xForce = playerMovement.getFacingDirection() ? -amount : amount;
-        if (playerMovement.getLinearVelocity().x > 0.01f || playerMovement.getLinearVelocity().x < -0.01f)
-        {
-            xForce *= 3;
-        }
-        Vector3 force = new Vector3(xForce, amount, 0);
-
-
-        impulseSource.GenerateImpulse(force);
-    }
+    
 
     public IEnumerator hitStopCoroutine()
     {
