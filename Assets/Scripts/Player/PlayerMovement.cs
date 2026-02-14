@@ -172,17 +172,18 @@ public class PlayerMovement : MonoBehaviour
             dashFrames--;
         }
 
+        
         if (dashCooldown > 0)
         {
             dashCooldown--;
         }
 
-        //base left/right movement
+        //base left/right movement triggered per frame
         MoveHorizontal();
 
         previousHorizontalMovement = horizontalMovement;
 
-
+        //exits dash/sprint input when hitting a wall
         if (StuckToWallBuffered())
         {
             dashHeld = false;
@@ -190,6 +191,13 @@ public class PlayerMovement : MonoBehaviour
             dashFrames = 0;
             dashCooldown = 15;
         }
+
+        //prevents dash inputs pressed while in midair from being activated when the player hits the ground
+        if (!IsGroundedBuffered() && dashHeld == false)
+        {
+            dashPressed = false;
+        }
+
         //jumping
 
         if (jumpPressed)
@@ -222,6 +230,7 @@ public class PlayerMovement : MonoBehaviour
 
         ApplyJumpHold();
 
+        //activates when player releases jump input
         if (wasJumpHeld && !jumpHeld)
         {
             OnJumpReleased();
@@ -232,7 +241,7 @@ public class PlayerMovement : MonoBehaviour
 
         //dashing
         if (dashPressed && !dashUsed)
-        {
+        {   
             if (dashCooldown <= 0)
 
             {
@@ -245,10 +254,11 @@ public class PlayerMovement : MonoBehaviour
                 dashFrames = maxDashFrames;
                 dashPressed = false;
             }
-            if (IsGroundedBuffered())
-            {
-                dashPressed = false;
-            }
+            //if (IsGroundedBuffered())
+            //{
+            //    dashPressed = false;
+            //}
+            dashPressed = false;
         }
 
         
@@ -274,6 +284,7 @@ public class PlayerMovement : MonoBehaviour
 
         //capeAnim.SetBool("falling", fallTime > reqFallTime && !IsGroundedBuffered() && !StuckToWallBuffered());
 
+        //if player is midair increase the midair time counter
         if (!IsGroundedBuffered() && !StuckToWallBuffered())
         {
             jumpTime++;
@@ -309,6 +320,7 @@ public class PlayerMovement : MonoBehaviour
         swordAnim.SetBool("sprint", dashHeld);
         shieldAnim.SetBool("sprint", dashHeld);
 
+        //at the start of a jump, set jump animation triggers
         if (body.linearVelocity.y > 0.1f && body.linearVelocity.y < 5f && !IsGroundedBuffered() && !StuckToWallBuffered())
         {
             capeAnim.SetTrigger("jump");
@@ -316,6 +328,7 @@ public class PlayerMovement : MonoBehaviour
             bodyAnim.SetTrigger("jump");
         }
 
+        //emit sprint particles while sprinting
         if (IsGroundedBuffered() && dashHeld)
         {
             sprintParticles.enableEmission = true;
@@ -365,6 +378,7 @@ public class PlayerMovement : MonoBehaviour
         /*float targetSpeed = input * speed;
         body.linearVelocity = new Vector2(targetSpeed, body.linearVelocity.y);*/
 
+        //if dashing, increase horizontal velocity to 10
         if (dashFrames > 0 && !StuckToWallBuffered())
         {
            
@@ -374,16 +388,22 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-
+            //if sprinting, multiply velocity by 1.7
             float xMultiplier = dashHeld ? 1.70f : 1;
             /* if (!dashUsed && dashFrames > 0)
              {
                  multiplier = 20;
              print("dashed");
              }*/
+
+            
             float accel = IsGroundedBuffered() ? accelGrounded : accelInAir;
+
+            //accelerate from current speed to target speed
             float newVelX = Mathf.MoveTowards(body.linearVelocity.x, horizontalMovement * speed * xMultiplier, accel * Time.fixedDeltaTime);
             body.linearVelocity = new Vector2(newVelX, body.linearVelocity.y);
+
+            //check for sprite turning every frame of movement
             if (Mathf.Abs(horizontalMovement) > 0.01f)
                 TurnSprite();
         }
@@ -427,9 +447,14 @@ public class PlayerMovement : MonoBehaviour
             facingRight = false;
         }*/
 
+        
         bool shouldFaceRight = horizontalMovement > 0;
+
+        //turn logic
         if (shouldFaceRight != facingRight)
         {
+
+            //rotates player
             Vector3 rot = visual.transform.rotation.eulerAngles;
             rot.y = shouldFaceRight ? 0f : 180f;
             visual.transform.rotation = Quaternion.Euler(rot);
@@ -445,23 +470,29 @@ public class PlayerMovement : MonoBehaviour
     private float getGravity()
     {
         float finalGravity;
+        //starting a jump cycle
         if (body.linearVelocity.y > 0 && !jumpHeld)
             finalGravity = lowJumpGravity;
+        //falling
         else if (body.linearVelocity.y < 0)
             finalGravity = fallGravity;
         else
+            //default gravity value
             finalGravity = baseGravity;
 
+        //if stuck to wall, slow gravity for wall slide
         if (StuckToWallBuffered() && body.linearVelocityY <= 0f)
         {
             finalGravity *= 0.1f;
         }
 
+        //if dashing in midair, slow gravity
         if (dashHeld && body.linearVelocity.y < 0)
         {
             finalGravity *= 0.6f;
         }
 
+        //if dashing into a wall, do not apply gravity
         if (dashFrames > 0f && !StuckToWallBuffered())
         {
             finalGravity = 0f;
@@ -530,6 +561,8 @@ public class PlayerMovement : MonoBehaviour
     //applies upwards jump motion for jumps and double jumps
     private void Jump()
     {
+
+        //jumping starting from the ground
         if (IsGroundedBuffered())
         {
             //jump logic
@@ -538,6 +571,7 @@ public class PlayerMovement : MonoBehaviour
             jumpHoldCounter = maxJumpHoldFrames;
             
             
+            //starting from midair (double jump)
         } else if (!doubleJumpUsed)
         {
             body.linearVelocity = new Vector2(body.linearVelocity.x, jumpStrength);
@@ -547,6 +581,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    //continue to apply force if jump is held
     private void ApplyJumpHold()
     {
         if (jumpHeld && jumpHoldCounter > 0)
@@ -557,6 +592,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    //immediatly slow down y velocity when jump is released or exceeds maximum height
     private void OnJumpReleased()
     {
         if (body.linearVelocity.y > 0)

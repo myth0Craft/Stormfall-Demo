@@ -403,7 +403,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -8.464389, y: -16.929333}
+  m_Offset: {x: -7.802289, y: -16.929333}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -413,7 +413,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 16.205465, y: 30.101936}
+  m_Size: {x: 17.529665, y: 30.101936}
   m_EdgeRadius: 0
 --- !u!4 &407172819
 Transform:
@@ -633,6 +633,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LoadSceneAsync
   scenesToLoad:
   - 4_Ancient_Springs
+  - 6_Ancient_Springs
   scenesToUnload: []
 --- !u!61 &700064415
 BoxCollider2D:
