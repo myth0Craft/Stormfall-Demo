@@ -33080,7 +33080,7 @@ MonoBehaviour:
   m_LightType: 1
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.7
-  m_Color: {r: 1, g: 0.94428086, b: 0.21226418, a: 1}
+  m_Color: {r: 0.8962264, g: 0.83704156, b: 0.097232126, a: 1}
   m_Intensity: 1.5
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
@@ -61225,7 +61225,7 @@ MonoBehaviour:
   m_LightType: 1
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.856
-  m_Color: {r: 1, g: 0.94428086, b: 0.21226418, a: 1}
+  m_Color: {r: 0.8962264, g: 0.83704156, b: 0.097232126, a: 1}
   m_Intensity: 1
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
@@ -66436,7 +66436,7 @@ MonoBehaviour:
   m_LightType: 1
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.856
-  m_Color: {r: 1, g: 0.94428086, b: 0.21226418, a: 1}
+  m_Color: {r: 0.8962264, g: 0.83704156, b: 0.097232126, a: 1}
   m_Intensity: 1.5
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
@@ -96976,7 +96976,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1515035248
 Transform:
   m_ObjectHideFlags: 0
@@ -107886,7 +107886,7 @@ MonoBehaviour:
   m_LightType: 1
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.856
-  m_Color: {r: 1, g: 0.94428086, b: 0.21226418, a: 1}
+  m_Color: {r: 0.8962264, g: 0.83704156, b: 0.097232126, a: 1}
   m_Intensity: 3
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
@@ -110104,7 +110104,7 @@ MonoBehaviour:
   m_LightType: 1
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.856
-  m_Color: {r: 1, g: 0.94428086, b: 0.21226418, a: 1}
+  m_Color: {r: 0.8962264, g: 0.83704156, b: 0.097232126, a: 1}
   m_Intensity: 3
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
@@ -110771,7 +110771,7 @@ MonoBehaviour:
   m_LightType: 1
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.856
-  m_Color: {r: 1, g: 0.94428086, b: 0.21226418, a: 1}
+  m_Color: {r: 0.8962264, g: 0.83704156, b: 0.097232126, a: 1}
   m_Intensity: 1.5
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
@@ -113281,7 +113281,7 @@ MonoBehaviour:
   m_LightType: 1
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.856
-  m_Color: {r: 1, g: 0.94428086, b: 0.21226418, a: 1}
+  m_Color: {r: 0.8962264, g: 0.83704156, b: 0.097232126, a: 1}
   m_Intensity: 1
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0

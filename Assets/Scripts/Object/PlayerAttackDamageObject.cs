@@ -7,6 +7,9 @@ public class PlayerAttackDamageObject : MonoBehaviour
 
     [SerializeField] PlayerMovement playerMovement;
 
+    public GameObject sparkParticles;
+    private GameObject currentSparkInstance;
+
     private CinemachineImpulseSource impulseSource;
 
     private CamShakeSource camShakeSource;
@@ -32,8 +35,26 @@ public class PlayerAttackDamageObject : MonoBehaviour
             enemyHealth.ApplyDamage();
             camShakeSource.AddScreenShake(0.04f);
             StartCoroutine(hitStopCoroutine());
+            if (currentSparkInstance != null)
+            {
+                Destroy(currentSparkInstance.gameObject);
+            }
+
+            currentSparkInstance = Instantiate(
+                sparkParticles,
+                transform.position,
+                Quaternion.identity
+            );
+            StartCoroutine(DestroySparkParticleCoroutine());
+            
         }
         //}
+    }
+
+    public IEnumerator DestroySparkParticleCoroutine()
+    {
+        yield return new WaitForSeconds(1.0f);
+        Destroy(currentSparkInstance.gameObject);
     }
 
     
