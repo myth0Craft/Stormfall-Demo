@@ -28,12 +28,12 @@ public class PlayerAttackDamageObject : MonoBehaviour
         if (health != null)
         {
             health.ApplyDamage();
-            camShakeSource.AddScreenShake(0.02f);
+            camShakeSource.AddScreenShake(0.04f);
         }
         if (enemyHealth != null)
         {
             enemyHealth.ApplyDamage();
-            camShakeSource.AddScreenShake(0.04f);
+            camShakeSource.AddScreenShake(0.08f);
             StartCoroutine(hitStopCoroutine());
             if (currentSparkInstance != null)
             {
