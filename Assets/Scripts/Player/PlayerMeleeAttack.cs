@@ -17,6 +17,7 @@ public class PlayerMeleeAttack : MonoBehaviour
     private bool oldFacingRight;
     public bool isMidAttack = false;
 
+
     private void Awake()
     {
         playerMovement = GetComponentInParent<PlayerMovement>();
@@ -117,7 +118,6 @@ public class PlayerMeleeAttack : MonoBehaviour
                     isMidAttack = true;
                 }
             }
- 
         }
     }
 
