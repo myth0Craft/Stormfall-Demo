@@ -8,7 +8,7 @@ public class PlayerMeleeAttack : MonoBehaviour
     private bool attackPressed;
     private float attackDurationSeconds = 0.12f;
     private float attackTimer = 0;
-    private float attackCooldownDurationSeconds = 0.0f;
+    private float attackCooldownDurationSeconds = 0.4f;
     private float attackCooldownTimer = 0;
     //BoxCollider2D playerBox;
     [SerializeField] private GameObject attackHitbox;
@@ -17,6 +17,7 @@ public class PlayerMeleeAttack : MonoBehaviour
     private bool oldFacingRight;
     public bool isMidAttack = false;
 
+    public int comboNum = 0;
 
     private void Awake()
     {
@@ -38,6 +39,8 @@ public class PlayerMeleeAttack : MonoBehaviour
         Vector3 offsetVector = playerMovement.getFacingDirection() ? new Vector3(0.5f, 0, 0) : new Vector3(-0.5f, 0, 0);
         attackHitbox.transform.position = playerPos += offsetVector;
 
+
+        //if the player dashes, disable the attack
         if (playerMovement.getDashFrames() > 0)
         {
             
@@ -76,11 +79,14 @@ public class PlayerMeleeAttack : MonoBehaviour
 
         if (attackPressed)
         {
-                if ((attackCooldownTimer == 0 || attackCooldownTimer < 0.03) && attackTimer == 0)
-                {
-                    StartAttack();
+            if (attackCooldownTimer < 0.03 && attackTimer == 0)
+            {
+                StartAttack();
 
-                }
+            } else
+            {
+                attackAnimator.SetBool("attackQueued", true);
+            }
             if (playerMovement.getDashFrames() <= 0)
             {
                 attackPressed = false;
@@ -93,7 +99,17 @@ public class PlayerMeleeAttack : MonoBehaviour
         }
     }
 
-
+    private void UpdateComboNum()
+    {
+        if (attackCooldownTimer == 0 && attackTimer == 0)
+        {
+            comboNum = 0;
+        } else { 
+            comboNum++;
+        if (comboNum >= 2)
+            comboNum = 0;
+        }
+    }
 
     void OnEnable()
     {
@@ -116,6 +132,7 @@ public class PlayerMeleeAttack : MonoBehaviour
                     playerMovement.disableSword();
                     playerMovement.bodyDrawSword();
                     isMidAttack = true;
+                    
                 }
             }
         }
@@ -123,8 +140,14 @@ public class PlayerMeleeAttack : MonoBehaviour
 
     public void ApplyDamage()
     {
+        attackAnimator.SetBool("attackQueued", false);
         attackTimer = attackDurationSeconds;
         attackHitbox.SetActive(true);
         isMidAttack = false;
+        comboNum++;
+        if (comboNum >= 1)
+        {
+            comboNum = 0;
+        }
     }
 }
