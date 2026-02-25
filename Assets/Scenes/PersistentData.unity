@@ -218,6 +218,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CamShakeSource
   playerMovement: {fileID: 1289948509}
+--- !u!95 &667735910 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 4093251293894907697, guid: 15b0f025f66c4c54a89769fc06f5a0a3, type: 3}
+  m_PrefabInstance: {fileID: 1014110976}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &882108715
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -375,6 +380,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6303746229784707846, guid: 15b0f025f66c4c54a89769fc06f5a0a3, type: 3}
+      propertyPath: attackAnimator
+      value: 
+      objectReference: {fileID: 667735910}
     m_RemovedComponents:
     - {fileID: 4653989688271885521, guid: 15b0f025f66c4c54a89769fc06f5a0a3, type: 3}
     m_RemovedGameObjects:

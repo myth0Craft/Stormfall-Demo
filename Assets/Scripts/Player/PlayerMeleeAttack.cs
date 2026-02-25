@@ -79,11 +79,11 @@ public class PlayerMeleeAttack : MonoBehaviour
 
         if (attackPressed)
         {
-            if (attackCooldownTimer < 0.03 && attackTimer == 0)
+            if (attackCooldownTimer == 0 && attackTimer == 0)
             {
                 StartAttack();
 
-            } else
+            } else if (!isMidAttack)
             {
                 attackAnimator.SetBool("attackQueued", true);
             }

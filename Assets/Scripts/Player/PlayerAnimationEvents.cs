@@ -9,6 +9,8 @@ public class PlayerAnimationEvent : MonoBehaviour
 
     [SerializeField] private PlayerMeleeAttack playerAttack;
 
+    [SerializeField] private Animator attackAnimator;
+
     private CinemachineImpulseSource impulseSource;
 
     void Awake()
@@ -19,6 +21,11 @@ public class PlayerAnimationEvent : MonoBehaviour
     public void EnableSword()
     {
         swordAnim.SetBool("hasSword", true);
+    }
+
+    public void disableAttackQueued()
+    {
+        attackAnimator.SetBool("attackQueued", false);
     }
 
     public void triggerAttackScreenShake()
