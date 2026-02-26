@@ -8,6 +8,12 @@ public class PlayerMeleeAttack : MonoBehaviour
     private bool attackPressed;
     private float attackDurationSeconds = 0.12f;
     private float attackTimer = 0;
+
+    public float getAttackTimerTime()
+    {
+        return attackTimer;
+    }
+
     private float attackCooldownDurationSeconds = 0.4f;
     private float attackCooldownTimer = 0;
     //BoxCollider2D playerBox;
@@ -34,10 +40,7 @@ public class PlayerMeleeAttack : MonoBehaviour
 
     private void Update()
     {
-        //set the attack hitbox direction
-        Vector3 playerPos = playerMovement.transform.position;
-        Vector3 offsetVector = playerMovement.getFacingDirection() ? new Vector3(0.5f, 0, 0) : new Vector3(-0.5f, 0, 0);
-        attackHitbox.transform.position = playerPos += offsetVector;
+        
 
 
         //if the player dashes, disable the attack
@@ -63,6 +66,7 @@ public class PlayerMeleeAttack : MonoBehaviour
                 attackCooldownTimer = 0;
         }
 
+        //counts down damage hitbox active time. When it gets disabled, start the in-between attack cooldown timer.
         if (attackTimer > 0)
         {
             attackTimer -= Time.deltaTime;
@@ -77,28 +81,38 @@ public class PlayerMeleeAttack : MonoBehaviour
             }
         }
 
+
         if (attackPressed)
         {
+
+            //if there is no cooldown active start attack animation
             if (attackCooldownTimer == 0 && attackTimer == 0)
             {
                 StartAttack();
 
+
             } else if (!isMidAttack)
             {
+
+                //if pressed mid attack queue a combo attack
                 attackAnimator.SetBool("attackQueued", true);
             }
+
+            //disable input if player is dashing
             if (playerMovement.getDashFrames() <= 0)
             {
                 attackPressed = false;
             }
         }
 
+        //disable input if game paused
         if (attackPressed && PlayerData.gamePaused)
         {
             attackPressed = false;
         }
     }
 
+    //currently unused
     private void UpdateComboNum()
     {
         if (attackCooldownTimer == 0 && attackTimer == 0)
@@ -111,6 +125,14 @@ public class PlayerMeleeAttack : MonoBehaviour
         }
     }
 
+    //updates attack damage hitbox position to be in front of the player
+    private void UpdateFacingDirection()
+    {
+        Vector3 playerPos = playerMovement.transform.position;
+        Vector3 offsetVector = playerMovement.getFacingDirection() ? new Vector3(0.5f, 0, 0) : new Vector3(-0.5f, 0, 0);
+        attackHitbox.transform.position = playerPos += offsetVector;
+    }
+
     void OnEnable()
     {
         controls.Player.Enable();
@@ -121,6 +143,7 @@ public class PlayerMeleeAttack : MonoBehaviour
         controls.Player.Disable();
     }
     
+    //called when the attack animation starts, begins execution of attack anim
     public void StartAttack()
     {
         if (!PlayerData.gamePaused) {
@@ -128,6 +151,7 @@ public class PlayerMeleeAttack : MonoBehaviour
             {
                 if (playerMovement.getDashFrames() <= 0)
                 {
+                    
                     attackAnimator.SetTrigger("SwingSword");
                     playerMovement.disableSword();
                     playerMovement.bodyDrawSword();
@@ -138,8 +162,10 @@ public class PlayerMeleeAttack : MonoBehaviour
         }
     }
 
+    //called from the animation itself on prespecified "contact frames". Enables damage hitbox.
     public void ApplyDamage()
     {
+        UpdateFacingDirection();
         attackAnimator.SetBool("attackQueued", false);
         attackTimer = attackDurationSeconds;
         attackHitbox.SetActive(true);

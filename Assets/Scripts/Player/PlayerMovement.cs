@@ -20,6 +20,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Animator shieldAnim;
     [SerializeField] private GameObject visual;
 
+    private PlayerMeleeAttack playerMeleeAttack;
+
     private Vector3 sizeScale;
     
 
@@ -97,6 +99,7 @@ public class PlayerMovement : MonoBehaviour
         sizeScale = transform.localScale;
         groundLayer = LayerMask.GetMask("Ground");
         sprintParticles = GetComponentInChildren<ParticleSystem>();
+        playerMeleeAttack = GetComponent<PlayerMeleeAttack>();
         
 
 
@@ -450,8 +453,8 @@ public class PlayerMovement : MonoBehaviour
         
         bool shouldFaceRight = horizontalMovement > 0;
 
-        //turn logic
-        if (shouldFaceRight != facingRight)
+        //turn logic - only executes if player is not currently attacking. If the player is in midair, turn logic still applies regardless of attack state
+        if (shouldFaceRight != facingRight && (!playerMeleeAttack.isMidAttack || !IsGroundedBuffered()) && playerMeleeAttack.getAttackTimerTime() <= 0)
         {
 
             //rotates player
