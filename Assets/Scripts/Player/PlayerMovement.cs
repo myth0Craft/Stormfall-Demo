@@ -471,8 +471,6 @@ public class PlayerMovement : MonoBehaviour
 
 
         }
-        
-
     }
 
     //returns the current gravity
