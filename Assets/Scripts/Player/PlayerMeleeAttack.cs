@@ -46,15 +46,16 @@ public class PlayerMeleeAttack : MonoBehaviour
         //if the player dashes, disable the attack
         if (playerMovement.getDashFrames() > 0)
         {
-            
+            attackAnimator.SetBool("attackQueued", false);
             attackTimer = 0f;
             attackHitbox.SetActive(false);
             playerMovement.enableSword();
 
-            if (isMidAttack)
-            {
-                attackPressed = true;
-            }
+            //if (isMidAttack)
+            //{
+            //    attackPressed = true;
+            //}
+            attackPressed = false;
             isMidAttack = false;
         }
 
@@ -84,6 +85,11 @@ public class PlayerMeleeAttack : MonoBehaviour
 
         if (attackPressed)
         {
+            //disable input if game is paused
+            if (PlayerData.gamePaused)
+            {
+                attackPressed = false;
+            }
 
             //if there is no cooldown active start attack animation
             if (attackCooldownTimer == 0 && attackTimer == 0)
@@ -103,12 +109,6 @@ public class PlayerMeleeAttack : MonoBehaviour
             {
                 attackPressed = false;
             }
-        }
-
-        //disable input if game paused
-        if (attackPressed && PlayerData.gamePaused)
-        {
-            attackPressed = false;
         }
     }
 
@@ -151,10 +151,9 @@ public class PlayerMeleeAttack : MonoBehaviour
             {
                 if (playerMovement.getDashFrames() <= 0)
                 {
-                    
-                    attackAnimator.SetTrigger("SwingSword");
                     playerMovement.disableSword();
-                    playerMovement.bodyDrawSword();
+                    attackAnimator.SetTrigger("SwingSword");
+                    playerMovement.DrawSwordAnimationTrigger();
                     isMidAttack = true;
                     
                 }
@@ -162,11 +161,11 @@ public class PlayerMeleeAttack : MonoBehaviour
         }
     }
 
-    //called from the animation itself on prespecified "contact frames". Enables damage hitbox.
+    //called from within the animation itself on prespecified "contact frames". Enables damage hitbox.
     public void ApplyDamage()
     {
         UpdateFacingDirection();
-        attackAnimator.SetBool("attackQueued", false);
+        //attackAnimator.SetBool("attackQueued", false);
         attackTimer = attackDurationSeconds;
         attackHitbox.SetActive(true);
         isMidAttack = false;

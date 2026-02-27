@@ -243,8 +243,9 @@ public class PlayerMovement : MonoBehaviour
         wasJumpHeld = jumpHeld;
 
         //dashing
-        if (dashPressed && !dashUsed)
-        {   
+        if (dashPressed && !dashUsed && !playerMeleeAttack.isMidAttack)
+        {
+
             if (dashCooldown <= 0)
 
             {
@@ -312,16 +313,16 @@ public class PlayerMovement : MonoBehaviour
         bodyAnim.SetBool("grounded", IsGroundedBuffered());
         bodyAnim.SetBool("stuckToWall", StuckToWallBuffered());
 
-        bodyAnim.SetBool("sprint", dashHeld);
-        legsAnim.SetBool("sprint", dashHeld);
+        bodyAnim.SetBool("sprint", dashHeld && Math.Abs(body.linearVelocity.x) > 0.01f);
+        legsAnim.SetBool("sprint", dashHeld && Math.Abs(body.linearVelocity.x) > 0.01f);
 
-        armsAnim.SetBool("sprint", dashHeld);
+        armsAnim.SetBool("sprint", dashHeld && Math.Abs(body.linearVelocity.x) > 0.01f);
         armsAnim.SetBool("moving", (horizontalMovement > 0.01f || horizontalMovement < -0.01f));
 
-        capeAnim.SetBool("sprint", dashHeld);
+        capeAnim.SetBool("sprint", dashHeld && Math.Abs(body.linearVelocity.x) > 0.01f);
 
-        swordAnim.SetBool("sprint", dashHeld);
-        shieldAnim.SetBool("sprint", dashHeld);
+        swordAnim.SetBool("sprint", dashHeld && Math.Abs(body.linearVelocity.x) > 0.01f);
+        shieldAnim.SetBool("sprint", dashHeld && Math.Abs(body.linearVelocity.x) > 0.01f);
 
         //at the start of a jump, set jump animation triggers
         if (body.linearVelocity.y > 0.1f && body.linearVelocity.y < 5f && !IsGroundedBuffered() && !StuckToWallBuffered())
@@ -363,7 +364,7 @@ public class PlayerMovement : MonoBehaviour
         shieldAnim.SetBool("hasShield", false);
     }
 
-    public void bodyDrawSword()
+    public void DrawSwordAnimationTrigger()
     {
         bodyAnim.SetTrigger("drawSword");
     }

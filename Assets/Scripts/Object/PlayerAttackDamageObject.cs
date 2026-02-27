@@ -5,8 +5,6 @@ using System.Collections;
 public class PlayerAttackDamageObject : MonoBehaviour
 {
 
-    [SerializeField] PlayerMovement playerMovement;
-
     public GameObject sparkParticles;
     private GameObject currentSparkInstance;
 
@@ -34,7 +32,9 @@ public class PlayerAttackDamageObject : MonoBehaviour
         {
             enemyHealth.ApplyDamage();
             camShakeSource.AddScreenShake(0.08f);
-            StartCoroutine(hitStopCoroutine());
+
+            GlobalHitstopManager.DoHitstop(0.05f);
+            //StartCoroutine(hitStopCoroutine());
             if (currentSparkInstance != null)
             {
                 Destroy(currentSparkInstance.gameObject);
@@ -59,10 +59,10 @@ public class PlayerAttackDamageObject : MonoBehaviour
 
     
 
-    public IEnumerator hitStopCoroutine()
-    {
-        Time.timeScale = 0.0f;
-        yield return new WaitForSecondsRealtime(0.05f);
-        Time.timeScale = 1.0f;
-    }
+    //public IEnumerator hitStopCoroutine()
+    //{
+    //    Time.timeScale = 0.0f;
+    //    yield return new WaitForSecondsRealtime(0.05f);
+    //    Time.timeScale = 1.0f;
+    //}
 }

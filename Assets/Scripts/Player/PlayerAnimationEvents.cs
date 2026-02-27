@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class PlayerAnimationEvent : MonoBehaviour
 {
-    [SerializeField] private Animator swordAnim;
 
     [SerializeField] private PlayerMovement playerMovement;
 
@@ -18,14 +17,30 @@ public class PlayerAnimationEvent : MonoBehaviour
         impulseSource = GetComponent<CinemachineImpulseSource>();
     }
 
-    public void EnableSword()
-    {
-        swordAnim.SetBool("hasSword", true);
-    }
-
     public void disableAttackQueued()
     {
         attackAnimator.SetBool("attackQueued", false);
+    }
+
+    public void EnableSword()
+    {
+        playerMovement.enableSword();
+    }
+
+    public void DisableSword()
+    {
+        playerMovement.disableSword();
+    }
+
+    public void setMidAttackFalse()
+    {
+        playerAttack.isMidAttack = false;
+    }
+
+    //called from 2nd sword swing animation to set player to mid attack state, preventing dashing during the sword swing
+    public void setMidAttackTrue()
+    {
+        playerAttack.isMidAttack = true;
     }
 
     public void triggerAttackScreenShake()

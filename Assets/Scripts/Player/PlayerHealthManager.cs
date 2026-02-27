@@ -36,15 +36,17 @@ public class PlayerHealthManager : HealthManager
         camShakeSource.AddScreenShake(0.04f);
         StartCoroutine(HitColorCoroutine());
         StartCoroutine(hitParticles());
-        StartCoroutine(hitStopCoroutine());
+        GlobalHitstopManager.DoHitstop(0.05f);
+
+        //StartCoroutine(hitStopCoroutine());
     }
 
-    public IEnumerator hitStopCoroutine()
-    {
-        Time.timeScale = 0.0f;
-        yield return new WaitForSecondsRealtime(0.05f);
-        Time.timeScale = 1.0f;
-    }
+    //public IEnumerator hitStopCoroutine()
+    //{
+    //    Time.timeScale = 0.0f;
+    //    yield return new WaitForSecondsRealtime(0.05f);
+    //    Time.timeScale = 1.0f;
+    //}
 
     public IEnumerator hitParticles()
     {
