@@ -465,6 +465,11 @@ public class PlayerMovement : MonoBehaviour
             //body.transform.localScale = new Vector3(shouldFaceRight ? 1 : -1, 1, 1);
 
             facingRight = shouldFaceRight;
+
+            bodyAnim.SetTrigger("turn");
+            //armsAnim.SetTrigger("turn");
+
+
         }
         
 
