@@ -15,7 +15,7 @@ public class PlayerMeleeAttack : MonoBehaviour
     }
 
     private float attackCooldownDurationSeconds = 0.4f;
-    private float attackCooldownTimer = 0;
+    public float attackCooldownTimer = 0;
     //BoxCollider2D playerBox;
     [SerializeField] private GameObject attackHitbox;
     [SerializeField] private Animator attackAnimator;
@@ -155,7 +155,6 @@ public class PlayerMeleeAttack : MonoBehaviour
                     attackAnimator.SetTrigger("SwingSword");
                     playerMovement.DrawSwordAnimationTrigger();
                     isMidAttack = true;
-                    
                 }
             }
         }

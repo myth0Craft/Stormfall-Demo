@@ -23,4 +23,10 @@ public class CamShakeSource : MonoBehaviour
 
         impulseSource.GenerateImpulse(force);
     }
+
+    public void AddVerticalScreenShake(float amount)
+    {
+        Vector3 force = new Vector3(0, amount, 0);
+        impulseSource.GenerateImpulse(force);
+    }
 }

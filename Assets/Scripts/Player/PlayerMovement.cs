@@ -243,7 +243,7 @@ public class PlayerMovement : MonoBehaviour
         wasJumpHeld = jumpHeld;
 
         //dashing
-        if (dashPressed && !dashUsed && !playerMeleeAttack.isMidAttack)
+        if (dashPressed && !dashUsed && !playerMeleeAttack.isMidAttack && playerMeleeAttack.getAttackTimerTime() <= 0)
         {
 
             if (dashCooldown <= 0)
@@ -257,6 +257,8 @@ public class PlayerMovement : MonoBehaviour
                 dashCooldown = dashCooldownTime;
                 dashFrames = maxDashFrames;
                 dashPressed = false;
+                playerMeleeAttack.attackCooldownTimer = 0f;
+                GlobalHitstopManager.DoHitstop(0.02f);
             }
             //if (IsGroundedBuffered())
             //{
@@ -382,6 +384,10 @@ public class PlayerMovement : MonoBehaviour
         /*float targetSpeed = input * speed;
         body.linearVelocity = new Vector2(targetSpeed, body.linearVelocity.y);*/
 
+
+        //check for sprite turning every frame of movement
+        
+
         //if dashing, increase horizontal velocity to 10
         if (dashFrames > 0 && !StuckToWallBuffered())
         {
@@ -392,6 +398,9 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
+            if (Mathf.Abs(horizontalMovement) > 0.01f)
+                TurnSprite();
+
             //if sprinting, multiply velocity by 1.7
             float xMultiplier = dashHeld ? 1.70f : 1;
             /* if (!dashUsed && dashFrames > 0)
@@ -407,12 +416,9 @@ public class PlayerMovement : MonoBehaviour
             float newVelX = Mathf.MoveTowards(body.linearVelocity.x, horizontalMovement * speed * xMultiplier, accel * Time.fixedDeltaTime);
             body.linearVelocity = new Vector2(newVelX, body.linearVelocity.y);
 
-            //check for sprite turning every frame of movement
-            if (Mathf.Abs(horizontalMovement) > 0.01f)
-                TurnSprite();
+            
+
         }
-        
-        
     }
 
     //applies sideways motion for dashing
@@ -455,7 +461,7 @@ public class PlayerMovement : MonoBehaviour
         bool shouldFaceRight = horizontalMovement > 0;
 
         //turn logic - only executes if player is not currently attacking. If the player is in midair, turn logic still applies regardless of attack state
-        if (shouldFaceRight != facingRight && (!playerMeleeAttack.isMidAttack || !IsGroundedBuffered()) && playerMeleeAttack.getAttackTimerTime() <= 0)
+        if (shouldFaceRight != facingRight && !playerMeleeAttack.isMidAttack && playerMeleeAttack.getAttackTimerTime() <=0)
         {
 
             //rotates player
