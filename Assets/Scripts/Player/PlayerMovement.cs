@@ -115,7 +115,10 @@ public class PlayerMovement : MonoBehaviour
 
         controls.Player.Jump.canceled += ctx => jumpHeld = false;
         controls.Player.Jump.started += ctx => jumpHeld = true;
-        gameObject.transform.position = new Vector2(PlayerData.posX, PlayerData.posY);
+
+        #if !UNITY_EDITOR
+            gameObject.transform.position = new Vector2(PlayerData.posX, PlayerData.posY);
+        #endif
     }
 
     private void Start()
@@ -342,8 +345,11 @@ public class PlayerMovement : MonoBehaviour
         {
             sprintParticles.enableEmission = false;
         }
-        
 
+        if (IsOnSlope() && Mathf.Abs(horizontalMovement) <= 0.1f && IsGrounded() && !jumpPressed && !(jumpHeld && jumpHoldCounter > 0))
+        {
+            body.linearVelocityY = 0f;
+        }
     }
 
     public void enableSword()
@@ -414,8 +420,29 @@ public class PlayerMovement : MonoBehaviour
 
             //accelerate from current speed to target speed
             float newVelX = Mathf.MoveTowards(body.linearVelocity.x, horizontalMovement * speed * xMultiplier, accel * Time.fixedDeltaTime);
-            body.linearVelocity = new Vector2(newVelX, body.linearVelocity.y);
 
+            if (IsOnSlope() && IsGrounded())
+            {
+                /*if (Mathf.Abs(horizontalMovement) <= 0.01f)
+                {
+                    body.linearVelocity = new Vector2(0.0f, body.linearVelocity.y);
+                } else*/
+
+                if (IsFacingSlope())
+                {
+                    body.linearVelocity = new Vector2(newVelX * SlopeNormalPerp.x * -1.1f, body.linearVelocity.y);
+                }
+                else
+                {
+
+                    body.linearVelocity = new Vector2(newVelX * SlopeNormalPerp.x * -1, body.linearVelocity.y);
+                }
+                
+                
+            } else
+            {
+                body.linearVelocity = new Vector2(newVelX, body.linearVelocity.y);
+            }
             
 
         }
@@ -482,22 +509,36 @@ public class PlayerMovement : MonoBehaviour
     //returns the current gravity
     private float getGravity()
     {
-        float finalGravity;
+
+
+
+        float finalGravity = baseGravity;
+
+        //prevent player from sliding on slopes
+        if (IsOnSlope() && Mathf.Abs(horizontalMovement) <= 0.1f && IsGrounded() && !jumpPressed && !(jumpHeld && jumpHoldCounter > 0))
+        {
+            finalGravity = 0f;
+        }
+
         //starting a jump cycle
         if (body.linearVelocity.y > 0 && !jumpHeld)
             finalGravity = lowJumpGravity;
         //falling
-        else if (body.linearVelocity.y < 0)
+        else if (body.linearVelocity.y < 0 && jumpTime > 0f)
             finalGravity = fallGravity;
-        else
-            //default gravity value
-            finalGravity = baseGravity;
+
 
         //if stuck to wall, slow gravity for wall slide
         if (StuckToWallBuffered() && body.linearVelocityY <= 0f)
         {
             finalGravity *= 0.1f;
         }
+
+
+
+
+
+        
 
         //if dashing in midair, slow gravity
         if (dashHeld && body.linearVelocity.y < 0)
@@ -511,10 +552,13 @@ public class PlayerMovement : MonoBehaviour
             finalGravity = 0f;
         }
 
+        
+
         return finalGravity;
 
 
     }
+
 
     //checks if player is on ground
     public bool IsGrounded()
@@ -527,9 +571,66 @@ public class PlayerMovement : MonoBehaviour
         0.1f,
         groundLayer
         );
+        if (hit.collider != null)
+        {
+            Debug.DrawRay(hit.point, hit.normal, Color.green);
+        }
+        
 
         return hit.collider != null;
     }
+
+    private Vector2 SlopeNormalPerp;
+    public bool IsOnSlope()
+    {
+        RaycastHit2D hit = Physics2D.BoxCast(
+        boxCollider.bounds.center,
+        boxCollider.bounds.size,
+        0f,
+        Vector2.down,
+        0.1f,
+        groundLayer
+        );
+
+        
+
+        if (hit.collider != null)
+        {
+            SlopeNormalPerp = Vector2.Perpendicular(hit.normal).normalized;
+            return hit.collider.CompareTag("Slope");
+        } else
+        {
+            return false;
+        }
+    }
+
+    public bool IsFacingSlope()
+    {
+        
+        Vector2 direction = getFacingDirection() ? Vector2.right : Vector2.left;
+
+        RaycastHit2D hit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, direction, 0.1f, groundLayer);
+        if (hit.collider != null)
+        {
+            return hit.collider.CompareTag("Slope");
+        } else
+        {
+            return false;
+        }
+
+
+            /*RaycastHit2D hit = Physics2D.BoxCast(
+                boxCollider.bounds.center,
+                boxCollider.bounds.size,
+                0f,
+                direction,
+                0.1f,
+                groundLayer
+            );*/
+
+            //return hit.collider != null
+    }
+
 
     //checks if player was on ground in last 0.1s
     public bool IsGroundedBuffered()

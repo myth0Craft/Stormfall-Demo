@@ -61,6 +61,7 @@ public class SwordCollectEvent : QuicktimeEvent
                 interactHintTrigger.SetInteractPopupActive(true);
                 if (interactPressed)
                 {
+                    interactHintTrigger.SetInteractPopupActive(false);
                     camShakeSource.AddVerticalScreenShake(0.7f);
                     interactPressed = false;
                     StartQuicktimeEvent();

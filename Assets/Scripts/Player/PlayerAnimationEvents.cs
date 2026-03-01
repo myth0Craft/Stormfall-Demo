@@ -10,6 +10,8 @@ public class PlayerAnimationEvent : MonoBehaviour
 
     [SerializeField] private Animator attackAnimator;
 
+    [SerializeField] private AudioClip swordSwingSoundClip;
+
     private CinemachineImpulseSource impulseSource;
 
     void Awake()
@@ -38,9 +40,10 @@ public class PlayerAnimationEvent : MonoBehaviour
     }
 
     //called from 2nd sword swing animation to set player to mid attack state, preventing dashing during the sword swing
-    public void setMidAttackTrue()
+    public void startAttack()
     {
         playerAttack.isMidAttack = true;
+        AudioSource.PlayClipAtPoint(swordSwingSoundClip, playerMovement.transform.position);
     }
 
     public void triggerAttackScreenShake()
