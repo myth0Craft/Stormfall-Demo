@@ -9,12 +9,15 @@ public class SwordCollectEvent : QuicktimeEvent
     private bool used = false;
     private CamShakeSource camShakeSource;
 
+    private DisplaySaveIcon saveIconConrtoller;
+
     private void Awake()
     {
         controls = PlayerData.getControls();
         interactHintTrigger = GetComponent<InteractHintTrigger>();
         controls.Player.Interact.performed += ctx => interactPressed = true;
         camShakeSource = GameObject.FindGameObjectWithTag("CinemachineImpulseSource").GetComponent<CamShakeSource>();
+        saveIconConrtoller = GameObject.FindGameObjectWithTag("SaveIconController").GetComponent<DisplaySaveIcon>();
     }
 
     protected override IEnumerator QuicktimeEventCoroutine()
@@ -27,17 +30,25 @@ public class SwordCollectEvent : QuicktimeEvent
             yield return new WaitForSecondsRealtime(0.9f);
             interactHintTrigger.SetInteractPopupActive(true);
 
-            
+            yield return new WaitForSecondsRealtime(0.3f);
             while(interactPressed == false)
             {
                 yield return null;
             }
             interactHintTrigger.SetInteractPopupActive(false);
-            camShakeSource.AddVerticalScreenShake(1.0f);
+            camShakeSource.AddVerticalScreenShake(0.8f);
             interactPressed = false;
         }
         interactHintTrigger.shouldCheckForCollision = false;
         interactHintTrigger.SetInteractPopupActive(false);
+
+        yield return new WaitForSecondsRealtime(0.3f);
+        PlayerData.currentScene = gameObject.scene.name;
+        PlayerData.posX = gameObject.transform.position.x;
+        PlayerData.posY = gameObject.transform.position.y;
+        PlayerData.swordUnlocked = true;
+        SaveSystem.Save(PlayerData.saveIndex);
+        StartCoroutine(saveIconConrtoller.DisplaySaveIconCoroutine());
 
         EndQuickTimeEvent();
     }

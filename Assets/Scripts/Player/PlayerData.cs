@@ -15,6 +15,15 @@ public static class PlayerData
     public static float posX = -5.0f;
     public static float posY = -1.7f;
 
+    //ABILITIES
+
+    public static bool dashUnlocked = false;
+    public static bool sprintUnlocked = false;
+    public static bool swordUnlocked = false;
+    public static bool doubleJumpUnlocked = false;
+    public static bool wallJumpUnlocked = false;
+    public static bool shieldUnlocked = false;
+
 
     public static PlayerControls getControls()
     {
@@ -39,6 +48,16 @@ public static class PlayerData
         data.posY = posY;
         data.maxHealth = maxHealth;
         data.currentScene = currentScene;
+
+
+        //ABILITIES
+        data.dashUnlocked = dashUnlocked;
+        data.sprintUnlocked = sprintUnlocked;
+        data.swordUnlocked = swordUnlocked;
+        data.doubleJumpUnlocked = doubleJumpUnlocked;
+        data.wallJumpUnlocked = wallJumpUnlocked;
+        data.shieldUnlocked = shieldUnlocked;
+        
     }
 
     public static void Load(PlayerSaveData data)
@@ -48,6 +67,14 @@ public static class PlayerData
         maxHealth = data.maxHealth;
         currentScene = data.currentScene;
         currentHealth = data.maxHealth;
+
+        //ABILITIES
+        dashUnlocked = data.dashUnlocked;
+        sprintUnlocked = data.sprintUnlocked;
+        swordUnlocked = data.swordUnlocked;
+        doubleJumpUnlocked = data.doubleJumpUnlocked;
+        wallJumpUnlocked = data.wallJumpUnlocked;
+        shieldUnlocked = data.shieldUnlocked;
     }
 
     public static void SetDefaults()
@@ -57,7 +84,17 @@ public static class PlayerData
         currentScene = "1_Ancient_Springs";
         maxHealth = 5;
         currentHealth = 5;
+
+        //ABILITIES
+
+        dashUnlocked = false;
+        sprintUnlocked = false;
+        swordUnlocked = false;
+        doubleJumpUnlocked = false;
+        wallJumpUnlocked = false;
+        shieldUnlocked = false;
     }
+
 }
 
 [System.Serializable]
@@ -67,4 +104,12 @@ public struct PlayerSaveData
     public float posY;
     public int maxHealth;
     public string currentScene;
+
+    //ABILITIES
+    public bool dashUnlocked;
+    public bool sprintUnlocked;
+    public bool swordUnlocked;
+    public bool doubleJumpUnlocked;
+    public bool wallJumpUnlocked;
+    public bool shieldUnlocked;
 }

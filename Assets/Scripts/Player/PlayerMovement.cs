@@ -20,6 +20,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Animator shieldAnim;
     [SerializeField] private GameObject visual;
 
+    [SerializeField] private bool abilityDebug = false;
+
     private PlayerMeleeAttack playerMeleeAttack;
 
     private Vector3 sizeScale;
@@ -136,7 +138,7 @@ public class PlayerMovement : MonoBehaviour
         controls.Player.Disable();
     }
 
-    
+
     private void Update()
     {
         //resets double jump if player is on ground
@@ -146,7 +148,7 @@ public class PlayerMovement : MonoBehaviour
             dashUsed = false;
         }
 
-        
+
 
         /*if (body.linearVelocity.y < fallSpeedYDampingChangeThreshold && CameraManager.instance.isLerpingYDamping && CameraManager.instance.LerpedFromPlayerFalling)
         {
@@ -163,8 +165,25 @@ public class PlayerMovement : MonoBehaviour
         bodyAnim.SetBool("moving", (horizontalMovement > 0.01f || horizontalMovement < -0.01f));
         //armsAnim.SetBool("moving", (horizontalMovement > 0.01f || horizontalMovement < -0.01f) && IsGroundedBuffered());
         legsAnim.SetBool("moving", (horizontalMovement > 0.01f || horizontalMovement < -0.01f));
-        shieldAnim.SetBool("moving", (horizontalMovement > 0.01f || horizontalMovement < -0.01f) && IsGroundedBuffered());
-        swordAnim.SetBool("moving", (horizontalMovement > 0.01f || horizontalMovement < -0.01f) && IsGroundedBuffered());
+        
+        
+
+        if (PlayerData.swordUnlocked)
+        {
+            swordAnim.SetBool("moving", (horizontalMovement > 0.01f || horizontalMovement < -0.01f) && IsGroundedBuffered());
+        } else
+        {
+            disableSword();
+        }
+
+        if (PlayerData.shieldUnlocked)
+        {
+            shieldAnim.SetBool("moving", (horizontalMovement > 0.01f || horizontalMovement < -0.01f) && IsGroundedBuffered());
+        }
+        else
+        {
+            disableShield();
+        }
 
 
     }
@@ -220,7 +239,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (jumpBufferTimer > 0f)
         {
-            if (StuckToWallBuffered() && !IsGroundedBuffered()) { 
+            if (StuckToWallBuffered() && !IsGroundedBuffered() && (PlayerData.wallJumpUnlocked || abilityDebug)) { 
                 ExecuteWallJump();
                 jumpBufferTimer = 0f;
                 isWallJumping = true;
@@ -246,7 +265,7 @@ public class PlayerMovement : MonoBehaviour
         wasJumpHeld = jumpHeld;
 
         //dashing
-        if (dashPressed && !dashUsed && !playerMeleeAttack.isMidAttack && playerMeleeAttack.getAttackTimerTime() <= 0)
+        if (dashPressed && !dashUsed && !playerMeleeAttack.isMidAttack && playerMeleeAttack.getAttackTimerTime() <= 0 && (PlayerData.dashUnlocked || abilityDebug))
         {
 
             if (dashCooldown <= 0)
@@ -274,7 +293,7 @@ public class PlayerMovement : MonoBehaviour
 
         //apply current gravity
         body.gravityScale = getGravity() * gravityMultiplier;
-        if (StuckToWallBuffered())
+        if (StuckToWallBuffered() && (PlayerData.wallJumpUnlocked || abilityDebug))
         {
             body.linearVelocity = new Vector2(body.linearVelocity.x, Mathf.Max(body.linearVelocity.y, -5f));
 
@@ -306,28 +325,37 @@ public class PlayerMovement : MonoBehaviour
         capeAnim.SetBool("falling", body.linearVelocity.y < -0.1f && !IsGroundedBuffered() && !StuckToWallBuffered());
         capeAnim.SetBool("grounded", IsGroundedBuffered());
 
-        
-        capeAnim.SetBool("stuckToWall", StuckToWallBuffered());
+        if (PlayerData.wallJumpUnlocked || abilityDebug)
+        {
+            capeAnim.SetBool("stuckToWall", StuckToWallBuffered());
+            legsAnim.SetBool("stuckToWall", StuckToWallBuffered());
+            bodyAnim.SetBool("stuckToWall", StuckToWallBuffered());
+        }
 
         legsAnim.SetFloat("jumpTime", jumpTime);
         legsAnim.SetBool("falling", body.linearVelocity.y < -0.1f && !IsGroundedBuffered() && !StuckToWallBuffered());
         legsAnim.SetBool("grounded", IsGroundedBuffered());
-        legsAnim.SetBool("stuckToWall", StuckToWallBuffered());
+        
 
         bodyAnim.SetBool("falling", body.linearVelocity.y < -0.1f && !IsGroundedBuffered() && !StuckToWallBuffered());
         bodyAnim.SetBool("grounded", IsGroundedBuffered());
-        bodyAnim.SetBool("stuckToWall", StuckToWallBuffered());
 
-        bodyAnim.SetBool("sprint", dashHeld && Math.Abs(body.linearVelocity.x) > 0.01f);
-        legsAnim.SetBool("sprint", dashHeld && Math.Abs(body.linearVelocity.x) > 0.01f);
+        if (PlayerData.sprintUnlocked || abilityDebug)
+        {
+            bodyAnim.SetBool("sprint", dashHeld && Math.Abs(body.linearVelocity.x) > 0.01f);
+            legsAnim.SetBool("sprint", dashHeld && Math.Abs(body.linearVelocity.x) > 0.01f);
+            armsAnim.SetBool("sprint", dashHeld && Math.Abs(body.linearVelocity.x) > 0.01f);
+            capeAnim.SetBool("sprint", dashHeld && Math.Abs(body.linearVelocity.x) > 0.01f);
+            swordAnim.SetBool("sprint", dashHeld && Math.Abs(body.linearVelocity.x) > 0.01f);
+            shieldAnim.SetBool("sprint", dashHeld && Math.Abs(body.linearVelocity.x) > 0.01f);
+        }
 
-        armsAnim.SetBool("sprint", dashHeld && Math.Abs(body.linearVelocity.x) > 0.01f);
+
         armsAnim.SetBool("moving", (horizontalMovement > 0.01f || horizontalMovement < -0.01f));
 
-        capeAnim.SetBool("sprint", dashHeld && Math.Abs(body.linearVelocity.x) > 0.01f);
+        
 
-        swordAnim.SetBool("sprint", dashHeld && Math.Abs(body.linearVelocity.x) > 0.01f);
-        shieldAnim.SetBool("sprint", dashHeld && Math.Abs(body.linearVelocity.x) > 0.01f);
+        
 
         //at the start of a jump, set jump animation triggers
         if (body.linearVelocity.y > 0.1f && body.linearVelocity.y < 5f && !IsGroundedBuffered() && !StuckToWallBuffered())
@@ -338,7 +366,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //emit sprint particles while sprinting
-        if (IsGroundedBuffered() && dashHeld)
+        if (IsGroundedBuffered() && dashHeld && (PlayerData.sprintUnlocked || abilityDebug))
         {
             sprintParticles.enableEmission = true;
         } else
@@ -346,7 +374,7 @@ public class PlayerMovement : MonoBehaviour
             sprintParticles.enableEmission = false;
         }
 
-        if (IsOnSlope() && Mathf.Abs(horizontalMovement) <= 0.1f && IsGrounded() && !jumpPressed && !(jumpHeld && jumpHoldCounter > 0))
+        if (IsOnSlope() && (Mathf.Abs(horizontalMovement) <= 0.1f || IsFacingSlope() && body.linearVelocity.x > 0.1f) && IsGrounded() && !jumpPressed && !(jumpHeld && jumpHoldCounter > 0))
         {
             body.linearVelocityY = 0f;
         }
@@ -395,7 +423,7 @@ public class PlayerMovement : MonoBehaviour
         
 
         //if dashing, increase horizontal velocity to 10
-        if (dashFrames > 0 && !StuckToWallBuffered())
+        if (dashFrames > 0 && !StuckToWallBuffered() && (PlayerData.dashUnlocked || abilityDebug))
         {
            
             dashUsed = true;
@@ -407,8 +435,12 @@ public class PlayerMovement : MonoBehaviour
             if (Mathf.Abs(horizontalMovement) > 0.01f)
                 TurnSprite();
 
+            float xMultiplier = 1f;
             //if sprinting, multiply velocity by 1.7
-            float xMultiplier = dashHeld ? 1.70f : 1;
+            if (PlayerData.sprintUnlocked || abilityDebug)
+            {
+                xMultiplier = dashHeld ? 1.70f : 1;
+            }
             /* if (!dashUsed && dashFrames > 0)
              {
                  multiplier = 20;
@@ -529,7 +561,7 @@ public class PlayerMovement : MonoBehaviour
 
 
         //if stuck to wall, slow gravity for wall slide
-        if (StuckToWallBuffered() && body.linearVelocityY <= 0f)
+        if (StuckToWallBuffered() && body.linearVelocityY <= 0f && (PlayerData.wallJumpUnlocked || abilityDebug))
         {
             finalGravity *= 0.1f;
         }
@@ -541,7 +573,7 @@ public class PlayerMovement : MonoBehaviour
         
 
         //if dashing in midair, slow gravity
-        if (dashHeld && body.linearVelocity.y < 0)
+        if (dashHeld && body.linearVelocity.y < 0 && (PlayerData.dashUnlocked || abilityDebug))
         {
             finalGravity *= 0.6f;
         }
@@ -660,7 +692,7 @@ public class PlayerMovement : MonoBehaviour
         );*/
 
         //return hit.collider != null
-        return isTouchingWall && body.linearVelocityY <= 0.1;
+        return isTouchingWall && body.linearVelocityY <= 0.1 && (PlayerData.wallJumpUnlocked || abilityDebug);
     }
 
     private bool StuckToWallBuffered()
@@ -686,7 +718,7 @@ public class PlayerMovement : MonoBehaviour
             
             
             //starting from midair (double jump)
-        } else if (!doubleJumpUsed)
+        } else if (!doubleJumpUsed && (PlayerData.doubleJumpUnlocked || abilityDebug))
         {
             body.linearVelocity = new Vector2(body.linearVelocity.x, jumpStrength);
             //body.AddForce(Vector2.up * jumpStrength, ForceMode2D.Impulse);
@@ -724,10 +756,12 @@ public class PlayerMovement : MonoBehaviour
     {
         /*float accel = IsGroundedBuffered() ? accelGrounded : accelInAir;
         float newVelX = Mathf.MoveTowards(body.linearVelocity.x, -horizontalMovement * speed, accel * Time.fixedDeltaTime);*/
+        if (PlayerData.wallJumpUnlocked || abilityDebug)
+        {
 
-
-        float wallJumpHorizontalForce = facingRight ? -5.5f : 5.5f;
-        body.linearVelocity = new Vector2(wallJumpHorizontalForce, jumpStrength * 1.3f);
+            float wallJumpHorizontalForce = facingRight ? -5.5f : 5.5f;
+            body.linearVelocity = new Vector2(wallJumpHorizontalForce, jumpStrength * 1.3f);
+        }
         //body.linearVelocity = new Vector2(body.linearVelocityX, jumpStrength * 1.2f);
 
     }

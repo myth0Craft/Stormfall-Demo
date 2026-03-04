@@ -19,6 +19,7 @@ public class PlayerMeleeAttack : MonoBehaviour
     //BoxCollider2D playerBox;
     [SerializeField] private GameObject attackHitbox;
     [SerializeField] private Animator attackAnimator;
+    [SerializeField] private bool attackDebug = false;
     private BoxCollider2D attackCollider;
     private bool oldFacingRight;
     public bool isMidAttack = false;
@@ -34,81 +35,91 @@ public class PlayerMeleeAttack : MonoBehaviour
         controls.Player.Attack.performed += ctx => attackPressed = true;
         oldFacingRight = playerMovement.getFacingDirection();
         attackHitbox.SetActive(false);
-        playerMovement.enableSword();
-        playerMovement.enableShield();
+        if (PlayerData.swordUnlocked)
+        {
+            playerMovement.enableSword();
+            //playerMovement.enableShield();
+        }
+        
     }
 
     private void Update()
     {
-        
-
-
-        //if the player dashes, disable the attack
-        if (playerMovement.getDashFrames() > 0)
+        if (PlayerData.swordUnlocked || attackDebug)
         {
-            attackAnimator.SetBool("attackQueued", false);
-            attackTimer = 0f;
-            attackHitbox.SetActive(false);
-            playerMovement.enableSword();
 
-            //if (isMidAttack)
-            //{
-            //    attackPressed = true;
-            //}
-            attackPressed = false;
-            isMidAttack = false;
-        }
 
-        //handle in-between attack cooldown
-        if (attackCooldownTimer > 0)
-        {
-            attackCooldownTimer -= Time.deltaTime;
-            if (attackCooldownTimer < 0)
-                attackCooldownTimer = 0;
-        }
-
-        //counts down damage hitbox active time. When it gets disabled, start the in-between attack cooldown timer.
-        if (attackTimer > 0)
-        {
-            attackTimer -= Time.deltaTime;
-            if (attackTimer < 0)
-                attackTimer = 0;
-
-            if (attackTimer == 0)
+            //if the player dashes, disable the attack
+            if (playerMovement.getDashFrames() > 0)
             {
+                attackAnimator.SetBool("attackQueued", false);
+                attackTimer = 0f;
                 attackHitbox.SetActive(false);
-                attackCooldownTimer = attackCooldownDurationSeconds;
-                //playerMovement.enableSword();
+                playerMovement.enableSword();
+
+                //if (isMidAttack)
+                //{
+                //    attackPressed = true;
+                //}
+                attackPressed = false;
+                isMidAttack = false;
             }
-        }
+
+            //handle in-between attack cooldown
+            if (attackCooldownTimer > 0)
+            {
+                attackCooldownTimer -= Time.deltaTime;
+                if (attackCooldownTimer < 0)
+                    attackCooldownTimer = 0;
+            }
+
+            //counts down damage hitbox active time. When it gets disabled, start the in-between attack cooldown timer.
+            if (attackTimer > 0)
+            {
+                attackTimer -= Time.deltaTime;
+                if (attackTimer < 0)
+                    attackTimer = 0;
+
+                if (attackTimer == 0)
+                {
+                    attackHitbox.SetActive(false);
+                    attackCooldownTimer = attackCooldownDurationSeconds;
+                    //playerMovement.enableSword();
+                }
+            }
 
 
-        if (attackPressed)
+            if (attackPressed)
+            {
+                //disable input if game is paused
+                if (PlayerData.gamePaused)
+                {
+                    attackPressed = false;
+                }
+
+                //if there is no cooldown active start attack animation
+                if (attackCooldownTimer == 0 && attackTimer == 0)
+                {
+                    StartAttack();
+
+
+                }
+                else if (!isMidAttack)
+                {
+
+                    //if pressed mid attack queue a combo attack
+                    attackAnimator.SetBool("attackQueued", true);
+                }
+
+                //disable input if player is dashing
+                if (playerMovement.getDashFrames() <= 0)
+                {
+                    attackPressed = false;
+                }
+            }
+        } else
         {
-            //disable input if game is paused
-            if (PlayerData.gamePaused)
-            {
-                attackPressed = false;
-            }
-
-            //if there is no cooldown active start attack animation
-            if (attackCooldownTimer == 0 && attackTimer == 0)
-            {
-                StartAttack();
-
-
-            } else if (!isMidAttack)
-            {
-
-                //if pressed mid attack queue a combo attack
-                attackAnimator.SetBool("attackQueued", true);
-            }
-
-            //disable input if player is dashing
-            if (playerMovement.getDashFrames() <= 0)
-            {
-                attackPressed = false;
-            }
+            attackPressed = false;
         }
     }
 

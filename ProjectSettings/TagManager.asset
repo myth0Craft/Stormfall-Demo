@@ -12,6 +12,7 @@ TagManager:
   - SaveIcon
   - CinemachineImpulseSource
   - Slope
+  - SaveIconController
   layers:
   - Default
   - TransparentFX
