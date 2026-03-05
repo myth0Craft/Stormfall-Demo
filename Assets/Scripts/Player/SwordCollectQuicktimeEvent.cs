@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class SwordCollectEvent : QuicktimeEvent
 {
@@ -11,6 +12,24 @@ public class SwordCollectEvent : QuicktimeEvent
 
     private DisplaySaveIcon saveIconConrtoller;
 
+    public ParticleSystem swirlParticles;
+
+    public GameObject explosionParticles;
+
+    private GameObject particleInstance;
+
+    private Light2D bgLight;
+
+    private SpriteRenderer spriteRenderer;
+
+    [SerializeField] private Sprite spriteToSwitch;
+
+    private float intensity;
+
+    [SerializeField] private string id;
+
+    private bool swordCollected = false;
+
     private void Awake()
     {
         controls = PlayerData.getControls();
@@ -18,16 +37,50 @@ public class SwordCollectEvent : QuicktimeEvent
         controls.Player.Interact.performed += ctx => interactPressed = true;
         camShakeSource = GameObject.FindGameObjectWithTag("CinemachineImpulseSource").GetComponent<CamShakeSource>();
         saveIconConrtoller = GameObject.FindGameObjectWithTag("SaveIconController").GetComponent<DisplaySaveIcon>();
+        //swirlParticles = GetComponentInChildren<ParticleSystem>();
+        swirlParticles.gameObject.SetActive(false);
+        bgLight = GetComponentInChildren<Light2D>();
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        intensity = bgLight.intensity;
+
+        if (id == null)
+        {
+            Debug.Log("Id of Sword Pickup is null!");
+        }
+        else
+        {
+            var room = SaveSystem.getRoom(gameObject.scene.name);
+
+            if (room.pickups.TryGetValue(id, out bool collected) && collected)
+            {
+                Debug.Log("sword collected previously");
+                interactHintTrigger.SetInteractPopupActive(false);
+                interactHintTrigger.shouldCheckForCollision = false;
+                swordCollected = true;
+                spriteRenderer.sprite = spriteToSwitch;
+            }
+        }
     }
 
     protected override IEnumerator QuicktimeEventCoroutine()
     {
 
+        yield return PlayerMovement.instance.MoveHorizontalToPosition(transform.position.x + 0.45f);
+        if (PlayerMovement.instance.getFacingDirection())
+        {
+            PlayerMovement.instance.TurnSprite();
+            yield return PlayerMovement.instance.MoveHorizontalToPosition(transform.position.x + 0.45f);
+        }
+
+        PlayerAnimationManager.instance.SetGainSwordAbility(true);
+        bgLight.intensity = 5;
         interactPressed = false;
-        for (int i = 0; i < 3; i++)
+        swirlParticles.gameObject.SetActive(true);
+        for (int i = 0; i < 5; i++)
         {
             interactHintTrigger.interactText = "";
             yield return new WaitForSecondsRealtime(0.9f);
+            Destroy(particleInstance);
             interactHintTrigger.SetInteractPopupActive(true);
 
             yield return new WaitForSecondsRealtime(0.3f);
@@ -35,20 +88,52 @@ public class SwordCollectEvent : QuicktimeEvent
             {
                 yield return null;
             }
+            bgLight.intensity *= 1.5f;
+            bgLight.pointLightOuterRadius *= 1.2f;
+            bgLight.pointLightInnerRadius *= 1.2f;
             interactHintTrigger.SetInteractPopupActive(false);
             camShakeSource.AddVerticalScreenShake(0.8f);
+            yield return new WaitForSecondsRealtime(0.1f);
+            camShakeSource.AddVerticalScreenShake(0.8f);
+            yield return new WaitForSecondsRealtime(0.1f);
+            camShakeSource.AddVerticalScreenShake(0.8f);
+            if (particleInstance != null)
+            {
+                Destroy(particleInstance);
+            }
+            particleInstance = Instantiate(
+                explosionParticles,
+                transform.position,
+                Quaternion.identity
+                );
+
             interactPressed = false;
         }
+        yield return new WaitForSecondsRealtime(0.8f);
+        spriteRenderer.sprite = spriteToSwitch;
+        bgLight.intensity = 0;
+        bgLight.gameObject.SetActive(false);
+        Destroy(particleInstance);
         interactHintTrigger.shouldCheckForCollision = false;
         interactHintTrigger.SetInteractPopupActive(false);
+        swirlParticles.gameObject.SetActive(false);
+        //yield return new WaitForSecondsRealtime(0.3f);
 
-        yield return new WaitForSecondsRealtime(0.3f);
-        PlayerData.currentScene = gameObject.scene.name;
-        PlayerData.posX = gameObject.transform.position.x;
-        PlayerData.posY = gameObject.transform.position.y;
+        PlayerAnimationManager.instance.SetGainSwordAbility(false);
+        StartCoroutine(saveIconConrtoller.DisplaySaveIconCoroutine());
+
+        if (id == null)
+        {
+            Debug.Log("Id of Waystone is null!");
+        }
+        else
+        {
+            var room = SaveSystem.getRoom(gameObject.scene.name);
+            room.pickups[id] = true;
+        }
+
         PlayerData.swordUnlocked = true;
         SaveSystem.Save(PlayerData.saveIndex);
-        StartCoroutine(saveIconConrtoller.DisplaySaveIconCoroutine());
 
         EndQuickTimeEvent();
     }
@@ -57,7 +142,7 @@ public class SwordCollectEvent : QuicktimeEvent
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+        if (collision.CompareTag("Player") && !swordCollected)
         {
             interactPressed = false;
         }
@@ -65,7 +150,7 @@ public class SwordCollectEvent : QuicktimeEvent
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+        if (collision.CompareTag("Player") && !swordCollected)
         {
             if (!used)
             {

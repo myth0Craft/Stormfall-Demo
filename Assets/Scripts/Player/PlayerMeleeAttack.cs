@@ -18,7 +18,6 @@ public class PlayerMeleeAttack : MonoBehaviour
     public float attackCooldownTimer = 0;
     //BoxCollider2D playerBox;
     [SerializeField] private GameObject attackHitbox;
-    [SerializeField] private Animator attackAnimator;
     [SerializeField] private bool attackDebug = false;
     private BoxCollider2D attackCollider;
     private bool oldFacingRight;
@@ -37,7 +36,7 @@ public class PlayerMeleeAttack : MonoBehaviour
         attackHitbox.SetActive(false);
         if (PlayerData.swordUnlocked)
         {
-            playerMovement.enableSword();
+            PlayerAnimationManager.instance.enableSword();
             //playerMovement.enableShield();
         }
         
@@ -52,11 +51,10 @@ public class PlayerMeleeAttack : MonoBehaviour
             //if the player dashes, disable the attack
             if (playerMovement.getDashFrames() > 0)
             {
-                attackAnimator.SetBool("attackQueued", false);
+                PlayerAnimationManager.instance.SetAttackQueued(false);
                 attackTimer = 0f;
                 attackHitbox.SetActive(false);
-                playerMovement.enableSword();
-
+                PlayerAnimationManager.instance.enableSword();
                 //if (isMidAttack)
                 //{
                 //    attackPressed = true;
@@ -108,7 +106,7 @@ public class PlayerMeleeAttack : MonoBehaviour
                 {
 
                     //if pressed mid attack queue a combo attack
-                    attackAnimator.SetBool("attackQueued", true);
+                    PlayerAnimationManager.instance.SetAttackQueued(true);
                 }
 
                 //disable input if player is dashing
@@ -162,9 +160,8 @@ public class PlayerMeleeAttack : MonoBehaviour
             {
                 if (playerMovement.getDashFrames() <= 0)
                 {
-                    playerMovement.disableSword();
-                    attackAnimator.SetTrigger("SwingSword");
-                    playerMovement.DrawSwordAnimationTrigger();
+                    PlayerAnimationManager.instance.disableSword();
+                    PlayerAnimationManager.instance.SetSwingSwordTrigger();
                     isMidAttack = true;
                 }
             }

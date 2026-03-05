@@ -8,8 +8,6 @@ public class PlayerAnimationEvent : MonoBehaviour
 
     [SerializeField] private PlayerMeleeAttack playerAttack;
 
-    [SerializeField] private Animator attackAnimator;
-
     [SerializeField] private AudioClip swordSwingSoundClip;
 
     private CinemachineImpulseSource impulseSource;
@@ -21,17 +19,17 @@ public class PlayerAnimationEvent : MonoBehaviour
 
     public void disableAttackQueued()
     {
-        attackAnimator.SetBool("attackQueued", false);
+        PlayerAnimationManager.instance.SetAttackQueued(false);
     }
 
     public void EnableSword()
     {
-        playerMovement.enableSword();
+        PlayerAnimationManager.instance.enableSword();
     }
 
     public void DisableSword()
     {
-        playerMovement.disableSword();
+        PlayerAnimationManager.instance.disableSword();
     }
 
     public void setMidAttackFalse()

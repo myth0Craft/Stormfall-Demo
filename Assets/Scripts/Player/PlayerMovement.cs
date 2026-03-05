@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Net;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -7,20 +9,15 @@ using static UnityEngine.UI.Image;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private Rigidbody2D body;
+
+    public static PlayerMovement instance {  get; private set; }
+    public Rigidbody2D body;
     private LayerMask groundLayer;
     private BoxCollider2D boxCollider;
 
-    [SerializeField] private Animator capeAnim;
-    [SerializeField] private Animator armsAnim;
-    [SerializeField] private Animator bodyAnim;
-    [SerializeField] private Animator weaponsAnim;
-    [SerializeField] private Animator legsAnim;
-    [SerializeField] private Animator swordAnim;
-    [SerializeField] private Animator shieldAnim;
     [SerializeField] private GameObject visual;
 
-    [SerializeField] private bool abilityDebug = false;
+    public bool abilityDebug = false;
 
     private PlayerMeleeAttack playerMeleeAttack;
 
@@ -66,7 +63,7 @@ public class PlayerMovement : MonoBehaviour
 
     private float fallTime = 0;
 
-    private float jumpTime = 0f;
+    public float jumpTime { get; private set; } = 0f;
 
 
     //TODO: FIX TIME
@@ -75,11 +72,11 @@ public class PlayerMovement : MonoBehaviour
 
     //inputs
     private PlayerControls controls;
-    private float horizontalMovement;
+    public float horizontalMovement { get; private set; }
     private float previousHorizontalMovement = 0;
     private bool jumpPressed;
     private bool dashPressed;
-    private bool dashHeld;
+    public bool dashHeld { get; private set; }
     private bool jumpHeld;
     private bool wasJumpHeld;
 
@@ -94,7 +91,15 @@ public class PlayerMovement : MonoBehaviour
 
     void Awake()
     {
-        //gets values from unity
+        if (instance != null && instance != this)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+
+        instance = this;
+
+            //gets values from unity
         body = GetComponent<Rigidbody2D>();
         boxCollider = GetComponent<BoxCollider2D>();
         controls = PlayerData.getControls();
@@ -161,7 +166,7 @@ public class PlayerMovement : MonoBehaviour
             CameraManager.instance.LerpYDamping(false);
         }*/
         //weaponsAnim.SetBool("moving", (horizontalMovement > 0.01f || horizontalMovement < -0.01f) && IsGroundedBuffered());
-        capeAnim.SetBool("moving", (body.linearVelocity.x < -3f || body.linearVelocity.x > 3f) && !StuckToWallBuffered());
+        /*capeAnim.SetBool("moving", (body.linearVelocity.x < -3f || body.linearVelocity.x > 3f) && !StuckToWallBuffered());
         bodyAnim.SetBool("moving", (horizontalMovement > 0.01f || horizontalMovement < -0.01f));
         //armsAnim.SetBool("moving", (horizontalMovement > 0.01f || horizontalMovement < -0.01f) && IsGroundedBuffered());
         legsAnim.SetBool("moving", (horizontalMovement > 0.01f || horizontalMovement < -0.01f));
@@ -183,7 +188,7 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             disableShield();
-        }
+        }*/
 
 
     }
@@ -272,10 +277,7 @@ public class PlayerMovement : MonoBehaviour
 
             {
 
-                capeAnim.SetTrigger("dash");
-                armsAnim.SetTrigger("dash");
-                bodyAnim.SetTrigger("dash");
-                legsAnim.SetTrigger("dash");
+                PlayerAnimationManager.instance.Dash();
                 dashCooldown = dashCooldownTime;
                 dashFrames = maxDashFrames;
                 dashPressed = false;
@@ -321,49 +323,17 @@ public class PlayerMovement : MonoBehaviour
             jumpTime = 0f;
         }
 
-        capeAnim.SetFloat("jumpTime", jumpTime);
-        capeAnim.SetBool("falling", body.linearVelocity.y < -0.1f && !IsGroundedBuffered() && !StuckToWallBuffered());
-        capeAnim.SetBool("grounded", IsGroundedBuffered());
-
-        if (PlayerData.wallJumpUnlocked || abilityDebug)
-        {
-            capeAnim.SetBool("stuckToWall", StuckToWallBuffered());
-            legsAnim.SetBool("stuckToWall", StuckToWallBuffered());
-            bodyAnim.SetBool("stuckToWall", StuckToWallBuffered());
-        }
-
-        legsAnim.SetFloat("jumpTime", jumpTime);
-        legsAnim.SetBool("falling", body.linearVelocity.y < -0.1f && !IsGroundedBuffered() && !StuckToWallBuffered());
-        legsAnim.SetBool("grounded", IsGroundedBuffered());
         
 
-        bodyAnim.SetBool("falling", body.linearVelocity.y < -0.1f && !IsGroundedBuffered() && !StuckToWallBuffered());
-        bodyAnim.SetBool("grounded", IsGroundedBuffered());
-
-        if (PlayerData.sprintUnlocked || abilityDebug)
-        {
-            bodyAnim.SetBool("sprint", dashHeld && Math.Abs(body.linearVelocity.x) > 0.01f);
-            legsAnim.SetBool("sprint", dashHeld && Math.Abs(body.linearVelocity.x) > 0.01f);
-            armsAnim.SetBool("sprint", dashHeld && Math.Abs(body.linearVelocity.x) > 0.01f);
-            capeAnim.SetBool("sprint", dashHeld && Math.Abs(body.linearVelocity.x) > 0.01f);
-            swordAnim.SetBool("sprint", dashHeld && Math.Abs(body.linearVelocity.x) > 0.01f);
-            shieldAnim.SetBool("sprint", dashHeld && Math.Abs(body.linearVelocity.x) > 0.01f);
-        }
-
-
-        armsAnim.SetBool("moving", (horizontalMovement > 0.01f || horizontalMovement < -0.01f));
+        
 
         
 
         
 
-        //at the start of a jump, set jump animation triggers
-        if (body.linearVelocity.y > 0.1f && body.linearVelocity.y < 5f && !IsGroundedBuffered() && !StuckToWallBuffered())
-        {
-            capeAnim.SetTrigger("jump");
-            legsAnim.SetTrigger("jump");
-            bodyAnim.SetTrigger("jump");
-        }
+        
+
+        
 
         //emit sprint particles while sprinting
         if (IsGroundedBuffered() && dashHeld && (PlayerData.sprintUnlocked || abilityDebug))
@@ -380,30 +350,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    public void enableSword()
-    {
-        swordAnim.SetBool("hasSword", true);
-    }
-
-    public void disableSword()
-    {
-        swordAnim.SetBool("hasSword", false);
-    }
-
-    public void enableShield()
-    {
-        shieldAnim.SetBool("hasShield", true);
-    }
-
-    public void disableShield()
-    {
-        shieldAnim.SetBool("hasShield", false);
-    }
-
-    public void DrawSwordAnimationTrigger()
-    {
-        bodyAnim.SetTrigger("drawSword");
-    }
+    
 
     public float getDashFrames()
     {
@@ -480,6 +427,53 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    public IEnumerator MoveHorizontalToPosition(float xPos)
+    {
+        //print("target pos: " + xPos);
+        //horizontalMovement = 0;
+        //if (xPos < transform.position.x)
+        //{
+        //    horizontalMovement = -1;
+
+        //    while (transform.position.x > xPos)
+        //    {
+
+        //        yield return null;
+
+        //    }
+        //} else if (xPos > transform.position.x)
+        //{
+        //    horizontalMovement = 1;
+        //    while (transform.position.x < xPos)
+        //    {
+
+        //        yield return null;
+
+        //    }
+        //}
+
+        //transform.SetPositionAndRotation(new Vector3(xPos, transform.position.y, transform.position.z), Quaternion.identity);
+
+
+
+
+        //horizontalMovement = 0;
+
+
+        while (Mathf.Abs(transform.position.x - xPos) > 0.01f)
+        {
+            Vector3 pos = transform.position;
+
+            pos.x = Mathf.MoveTowards(pos.x, xPos, speed * Time.deltaTime);
+
+            transform.position = pos;
+
+            yield return null;
+        }
+
+
+    }
+
     //applies sideways motion for dashing
     private void Dash()
     {
@@ -497,7 +491,7 @@ public class PlayerMovement : MonoBehaviour
         return facingRight;
     }
 
-    private void TurnSprite()
+    public void TurnSprite()
     {
         //Vector3 scale = transform.localScale;
         //scale.x = horizontalMovement > 0 ? Mathf.Abs(scale.x) : -Mathf.Abs(scale.x);
@@ -531,7 +525,9 @@ public class PlayerMovement : MonoBehaviour
 
             facingRight = shouldFaceRight;
 
-            bodyAnim.SetTrigger("turn");
+            PlayerAnimationManager.instance.SetTurnTrigger();
+
+            
             //armsAnim.SetTrigger("turn");
 
 
@@ -695,7 +691,7 @@ public class PlayerMovement : MonoBehaviour
         return isTouchingWall && body.linearVelocityY <= 0.1 && (PlayerData.wallJumpUnlocked || abilityDebug);
     }
 
-    private bool StuckToWallBuffered()
+    public bool StuckToWallBuffered()
     {
         if (StuckToWall())
             wallRememberTimer = wallRememberTime;
@@ -744,7 +740,7 @@ public class PlayerMovement : MonoBehaviour
         if (body.linearVelocity.y > 0)
         {
             body.linearVelocity = new Vector2(body.linearVelocity.x, body.linearVelocity.y * 0.4f);
-            capeAnim.SetTrigger("jump");
+            PlayerAnimationManager.instance.SetCapeJumpTrigger();
         }
     }
 
