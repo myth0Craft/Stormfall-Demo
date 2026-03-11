@@ -1,8 +1,3 @@
-using NUnit.Framework.Constraints;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Cinemachine;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class CameraFollowObject : MonoBehaviour

@@ -1,6 +1,6 @@
+using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
-using System.Collections;
 
 public class PlayerAttackDamageObject : MonoBehaviour
 {

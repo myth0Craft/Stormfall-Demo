@@ -47,8 +47,16 @@ Material:
     m_Floats:
     - _BlurAmount: 0.004
     - _CustomTexelSize: 1
+    - _Fullscreen_AlphaBlendOperation: 0
+    - _Fullscreen_BlendMode: 1
+    - _Fullscreen_ColorBlendOperation: 0
+    - _Fullscreen_DepthWrite: 0
+    - _Fullscreen_DstAlphaBlend: 10
+    - _Fullscreen_DstColorBlend: 10
+    - _Fullscreen_SrcAlphaBlend: 1
+    - _Fullscreen_SrcColorBlend: 5
     - _TexelSize: 1
     m_Colors:
-    - _Direction: {r: 1, g: 0, b: 0, a: 0}
+    - _Direction: {r: 0, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

@@ -18,25 +18,6 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 512
     material: {fileID: 2100000, guid: 59572ffb45abb50408e87536e64ec6eb, type: 2}
---- !u!114 &-229329796536791659
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 06941618248ec364fa3e8ac7c6133128, type: 3}
-  m_Name: BackgroundBlur
-  m_EditorClassIdentifier: Assembly-CSharp::CustomMaskRenderFeature
-  m_Active: 1
-  settings:
-    material: {fileID: 2100000, guid: ed4f4c2808b45d045858ec616e012d2c, type: 2}
-    mat2: {fileID: 2100000, guid: db2c1306610b0e74b93125965677eee3, type: 2}
-    tex: {fileID: 8600000, guid: 3fafa6867e407d648b9f1f614c809d5a, type: 2}
-    blurAmount: 0.0025
-  pass: 250
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62,11 +43,9 @@ MonoBehaviour:
     probeSamplingDebugTexture: {fileID: 2800000, guid: 24ec0e140fb444a44ab96ee80844e18e, type: 3}
     probeVolumeBlendStatesCS: {fileID: 0}
   m_RendererFeatures:
-  - {fileID: -229329796536791659}
-  - {fileID: 7309669608278836007}
-  - {fileID: 6799656299286175688}
   - {fileID: 4024492890531530637}
-  m_RendererFeatureMap: 950d03ddc341d1fc27c3edcac7297165c81fb3c9603b5d5e8d873715f6ded937
+  - {fileID: 5876038125951743331}
+  m_RendererFeatureMap: 8d873715f6ded937637501008be18b51
   m_UseNativeRenderPass: 0
   m_LayerMask:
     serializedVersion: 2
@@ -129,10 +108,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CustomMaskRenderFeature
   m_Active: 1
   settings:
-    material: {fileID: -876546973899608171, guid: bedc0cfbd7060984abe7c35100d113a0, type: 3}
+    material: {fileID: 0}
     mat2: {fileID: 0}
-    tex: {fileID: 8600000, guid: 3fafa6867e407d648b9f1f614c809d5a, type: 2}
     blurAmount: 0
+    foregroundLayers:
+      serializedVersion: 2
+      m_Bits: 0
+    downscaling: 1
+    renderBehindScene: 0
   pass: 0
 --- !u!114 &4024492890531530637
 MonoBehaviour:
@@ -148,12 +131,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CustomMaskRenderFeature
   m_Active: 1
   settings:
-    material: {fileID: 2100000, guid: 6729ced3af4078940817644fd1f34c54, type: 2}
-    mat2: {fileID: 2100000, guid: e89dc0d4340d3e044ad86c79b249589a, type: 2}
-    tex: {fileID: 8600000, guid: 094820b2dcfabf04e91e447630762365, type: 2}
-    blurAmount: 0.004
+    material: {fileID: 2100000, guid: ed4f4c2808b45d045858ec616e012d2c, type: 2}
+    mat2: {fileID: 2100000, guid: 84774fd17d895e4499b699bbc0563f7e, type: 2}
+    blurAmount: 0.0035
+    foregroundLayers:
+      serializedVersion: 2
+      m_Bits: 18432
+    downscaling: 2
+    renderBehindScene: 0
   pass: 500
---- !u!114 &6799656299286175688
+--- !u!114 &5876038125951743331
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -163,34 +150,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 06941618248ec364fa3e8ac7c6133128, type: 3}
-  m_Name: MidgroundBlur
+  m_Name: CustomMaskRenderFeature
   m_EditorClassIdentifier: Assembly-CSharp::CustomMaskRenderFeature
-  m_Active: 0
+  m_Active: 1
   settings:
-    material: {fileID: 2100000, guid: 84774fd17d895e4499b699bbc0563f7e, type: 2}
-    mat2: {fileID: 2100000, guid: dca0bf5d829cc2d418de9b75c097b9aa, type: 2}
-    tex: {fileID: 8600000, guid: 6d89f95abe212d44e9d616f9b61a15af, type: 2}
-    blurAmount: 0.001
-  pass: 500
---- !u!114 &7309669608278836007
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 06941618248ec364fa3e8ac7c6133128, type: 3}
-  m_Name: MidBackgroundBlur
-  m_EditorClassIdentifier: Assembly-CSharp::CustomMaskRenderFeature
-  m_Active: 0
-  settings:
-    material: {fileID: 2100000, guid: c5ae0aa956c576a4a8917a5638775565, type: 2}
-    mat2: {fileID: 2100000, guid: 7cabb3799ae80a644b07a498d573aeb1, type: 2}
-    tex: {fileID: 8600000, guid: 171256079a8857048b6858c910115c3f, type: 2}
-    blurAmount: 0.001
-  pass: 250
+    material: {fileID: 2100000, guid: ed4f4c2808b45d045858ec616e012d2c, type: 2}
+    mat2: {fileID: 2100000, guid: 84774fd17d895e4499b699bbc0563f7e, type: 2}
+    blurAmount: 0.0025
+    foregroundLayers:
+      serializedVersion: 2
+      m_Bits: 16896
+    downscaling: 2
+    renderBehindScene: 1
+  pass: 0
 --- !u!114 &8389911850138563732
 MonoBehaviour:
   m_ObjectHideFlags: 0

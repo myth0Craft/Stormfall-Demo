@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: GaussianBlurMat
-  m_Shader: {fileID: -6465566751694194690, guid: b2e163fcd95ffa9498b21da21c6c038b, type: 3}
+  m_Name: DeleteUnblurredLayerMAT
+  m_Shader: {fileID: -6465566751694194690, guid: e437d29159d39924e8051e4f0f6b2ed0, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -23,14 +23,6 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _BlitTexture:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -44,19 +36,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
-    m_Floats:
-    - _BlurAmount: 0.0035
-    - _CustomTexelSize: 1
-    - _Fullscreen_AlphaBlendOperation: 0
-    - _Fullscreen_BlendMode: 1
-    - _Fullscreen_ColorBlendOperation: 0
-    - _Fullscreen_DepthWrite: 0
-    - _Fullscreen_DstAlphaBlend: 10
-    - _Fullscreen_DstColorBlend: 10
-    - _Fullscreen_SrcAlphaBlend: 1
-    - _Fullscreen_SrcColorBlend: 5
-    - _TexelSize: 1
-    m_Colors:
-    - _Direction: {r: 1, g: 0, b: 0, a: 0}
+    m_Floats: []
+    m_Colors: []
   m_BuildTextureStacks: []
   m_AllowLocking: 1

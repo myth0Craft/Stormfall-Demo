@@ -93,7 +93,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 20201, guid: 0000000000000000f000000000000000, type: 0}
+  m_LightingDataAsset: {fileID: 112000012, guid: ff0cbd66bf40ac046a72bbaeb5a3fbd4, type: 2}
   m_LightingSettings: {fileID: 0}
 --- !u!196 &4
 NavMeshSettings:
@@ -249,9 +249,17 @@ PrefabInstance:
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 792464651418050456, guid: 0836dac0b91edc845a07d4dc9c553974, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1062552737578203605, guid: 0836dac0b91edc845a07d4dc9c553974, type: 3}
       propertyPath: m_Depth
       value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 1062552737578203605, guid: 0836dac0b91edc845a07d4dc9c553974, type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 62967
       objectReference: {fileID: 0}
     - target: {fileID: 3767011476203838950, guid: 0836dac0b91edc845a07d4dc9c553974, type: 3}
       propertyPath: m_LocalPosition.x
@@ -293,6 +301,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4123861628793119572, guid: 0836dac0b91edc845a07d4dc9c553974, type: 3}
+      propertyPath: m_TagString
+      value: MainCamera
+      objectReference: {fileID: 0}
+    - target: {fileID: 4345446063744829285, guid: 0836dac0b91edc845a07d4dc9c553974, type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 16384
+      objectReference: {fileID: 0}
     - target: {fileID: 6619175520425829864, guid: 0836dac0b91edc845a07d4dc9c553974, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -308,6 +324,14 @@ PrefabInstance:
     - target: {fileID: 6827771851370424541, guid: 0836dac0b91edc845a07d4dc9c553974, type: 3}
       propertyPath: m_LocalPosition.z
       value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7599288736048242903, guid: 0836dac0b91edc845a07d4dc9c553974, type: 3}
+      propertyPath: m_RendererIndex
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7731664663161941906, guid: 0836dac0b91edc845a07d4dc9c553974, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1256,6 +1280,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 749557784490927421, guid: 45e7a6b8e492f1443889d515028c2e19, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3865890245023729249, guid: 45e7a6b8e492f1443889d515028c2e19, type: 3}
+      propertyPath: m_BlendStyleIndex
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6795953460235450192, guid: 45e7a6b8e492f1443889d515028c2e19, type: 3}

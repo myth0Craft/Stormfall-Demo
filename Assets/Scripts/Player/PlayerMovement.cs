@@ -1,10 +1,6 @@
 using System;
 using System.Collections;
-using System.Net;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
-using static UnityEngine.UI.Image;
 
 
 public class PlayerMovement : MonoBehaviour

@@ -1,7 +1,3 @@
-using Unity.VisualScripting;
-using Unity.VisualScripting.FullSerializer;
-using UnityEngine;
-
 public static class PlayerData
 {
     public static int saveIndex = 0;
