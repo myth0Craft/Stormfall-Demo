@@ -129,7 +129,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06941618248ec364fa3e8ac7c6133128, type: 3}
   m_Name: ForegroundBlur
   m_EditorClassIdentifier: Assembly-CSharp::CustomMaskRenderFeature
-  m_Active: 1
+  m_Active: 0
   settings:
     material: {fileID: 2100000, guid: ed4f4c2808b45d045858ec616e012d2c, type: 2}
     mat2: {fileID: 2100000, guid: 84774fd17d895e4499b699bbc0563f7e, type: 2}
@@ -137,7 +137,7 @@ MonoBehaviour:
     foregroundLayers:
       serializedVersion: 2
       m_Bits: 18432
-    downscaling: 2
+    downscaling: 4
     renderBehindScene: 0
   pass: 500
 --- !u!114 &5876038125951743331
@@ -160,7 +160,7 @@ MonoBehaviour:
     foregroundLayers:
       serializedVersion: 2
       m_Bits: 16896
-    downscaling: 2
+    downscaling: 4
     renderBehindScene: 1
   pass: 0
 --- !u!114 &8389911850138563732

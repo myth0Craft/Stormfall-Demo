@@ -13,10 +13,11 @@ public class CustomMaskRenderFeature : ScriptableRendererFeature
 
     private RTHandle handle;
     private RenderTexture tex;
-    private static Camera hiddenCam;
+    private Camera hiddenCam;
     private GameObject hiddenCamGO;
     private bool _isRendering = false;
     private Action<ScriptableRenderContext, Camera> _renderHandler;
+    private int _lastRenderedFrame = -1;
 
     void SyncCamera(Camera hidden, Camera main)
     {
@@ -50,17 +51,22 @@ public class CustomMaskRenderFeature : ScriptableRendererFeature
         if (hiddenCam == null) return;
         if (handle == null) return;
         if (hiddenCam.targetTexture == null) return;
+        if (Time.frameCount == _lastRenderedFrame) return;
+            _lastRenderedFrame = Time.frameCount;
+
+
         Debug.Log($"Driver firing - frame:{Time.frameCount} hiddenCam:{hiddenCam.GetInstanceID()}");
-        SyncCamera(hiddenCam, cam);
+        
         hiddenCam.cullingMask = settings.foregroundLayers;
 
         _isRendering = true;
         try
         {
-            RenderTexture prev = RenderTexture.active;
+            SyncCamera(hiddenCam, cam);
+            /*RenderTexture prev = RenderTexture.active;
             RenderTexture.active = hiddenCam.targetTexture;
             GL.Clear(false, true, Color.clear);
-            RenderTexture.active = prev;
+            RenderTexture.active = prev;*/
 
             var request = new UniversalRenderPipeline.SingleCameraRequest();
             RenderPipeline.SubmitRenderRequest(hiddenCam, request);
@@ -107,7 +113,7 @@ public class CustomMaskRenderFeature : ScriptableRendererFeature
                 msaaSamples = 1,
                 sRGB = true
             };
-            tex = new RenderTexture(desc) { name = "__BlurRT" };
+            tex = new RenderTexture(desc) { name = "__BlurRT" + System.Guid.NewGuid() };
             tex.Create();
             handle = RTHandles.Alloc(tex);
 
