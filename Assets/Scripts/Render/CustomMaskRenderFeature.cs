@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
 using UnityEngine.Rendering;
@@ -11,15 +10,13 @@ public class CustomMaskRenderFeature : ScriptableRendererFeature
     [SerializeField] CustomMaskRenderFeatureSettings settings;
     [SerializeField] RenderPassEvent pass;
     CustomMaskRenderFeaturePass foregroundPass;
+
     private RTHandle handle;
     private RenderTexture tex;
-    private Camera hiddenCam;
+    private static Camera hiddenCam;
     private GameObject hiddenCamGO;
-    private RenderTexture hiddenCamTex;
-
-    private CameraDriver _driver;
-
-
+    private bool _isRendering = false;
+    private Action<ScriptableRenderContext, Camera> _renderHandler;
 
     void SyncCamera(Camera hidden, Camera main)
     {
@@ -32,10 +29,8 @@ public class CustomMaskRenderFeature : ScriptableRendererFeature
         hidden.farClipPlane = main.farClipPlane;
         hidden.projectionMatrix = main.projectionMatrix;
 
-        // Resize hidden cam RT if screen size changed
         if (hidden.targetTexture != null &&
-            (hidden.targetTexture.width != main.pixelWidth ||
-             hidden.targetTexture.height != main.pixelHeight))
+            (hidden.targetTexture.width != main.pixelWidth || hidden.targetTexture.height != main.pixelHeight))
         {
             hidden.targetTexture.Release();
             hidden.targetTexture.width = main.pixelWidth / settings.downscaling;
@@ -43,58 +38,89 @@ public class CustomMaskRenderFeature : ScriptableRendererFeature
             hidden.targetTexture.Create();
         }
     }
-    /// <inheritdoc/>
-    public override void Create()
+
+    void OnBeginCameraRendering(ScriptableRenderContext ctx, Camera cam)
     {
 
+
+        if (cam == hiddenCam) return;
+        if (cam.cameraType != CameraType.Game) return;
+        if (!cam.CompareTag("MainCamera")) return;
+        if (_isRendering) return;
+        if (hiddenCam == null) return;
+        if (handle == null) return;
+        if (hiddenCam.targetTexture == null) return;
+        Debug.Log($"Driver firing - frame:{Time.frameCount} hiddenCam:{hiddenCam.GetInstanceID()}");
+        SyncCamera(hiddenCam, cam);
+        hiddenCam.cullingMask = settings.foregroundLayers;
+
+        _isRendering = true;
+        try
+        {
+            RenderTexture prev = RenderTexture.active;
+            RenderTexture.active = hiddenCam.targetTexture;
+            GL.Clear(false, true, Color.clear);
+            RenderTexture.active = prev;
+
+            var request = new UniversalRenderPipeline.SingleCameraRequest();
+            RenderPipeline.SubmitRenderRequest(hiddenCam, request);
+        }
+        finally
+        {
+            _isRendering = false;
+        }
+    }
+
+    public override void Create()
+    {
         var w = Mathf.Max(1, Screen.width / settings.downscaling);
         var h = Mathf.Max(1, Screen.height / settings.downscaling);
-        // Only reallocate if truly necessary
-        if (tex != null && tex.IsCreated() &&
-            tex.width == w && tex.height == h)
-        {
-            // RT is fine, just recreate the pass
-            if (foregroundPass != null)
-            {
-                foregroundPass.renderPassEvent = settings.renderBehindScene
-                    ? RenderPassEvent.BeforeRenderingOpaques
-                    : RenderPassEvent.AfterRenderingTransparents;
-            }
 
-            return;
+        bool needsRealloc = tex == null || !tex.IsCreated() || tex.width != w || tex.height != h;
+
+        // Always unsubscribe first — guarantees exactly one subscription after Create()
+        if (_renderHandler != null)
+        {
+            RenderPipelineManager.beginCameraRendering -= _renderHandler;
+            _renderHandler = null;
         }
 
-        // Full realloc
-        handle?.Release();
-        handle = null;
-        if (tex != null) { tex.Release(); tex = null; }
-        if (hiddenCamGO != null) { SafeDestroy(hiddenCamGO); hiddenCamGO = null; hiddenCam = null; }
-        if (_driver != null) { SafeDestroy(_driver.gameObject); _driver = null; }
+        // Always destroy old hidden cam
+        if (hiddenCamGO != null || hiddenCam != null)
+        {
+            SafeDestroy(hiddenCamGO);
+            hiddenCamGO = null;
+            hiddenCam = null;
+        }
 
+        if (needsRealloc)
+        {
+            handle?.Release();
+            handle = null;
 
-        
+            if (tex != null) { tex.Release(); tex = null; }
 
-        var desc = new RenderTextureDescriptor(w, h, RenderTextureFormat.ARGB32, 0);
+            var desc = new RenderTextureDescriptor(w, h, RenderTextureFormat.ARGB32, 0)
+            {
+                depthBufferBits = 0,
+                depthStencilFormat = GraphicsFormat.None,
+                msaaSamples = 1,
+                sRGB = true
+            };
+            tex = new RenderTexture(desc) { name = "__BlurRT" };
+            tex.Create();
+            handle = RTHandles.Alloc(tex);
 
-        desc.depthBufferBits = 0;
-        desc.depthStencilFormat = GraphicsFormat.None;
-        desc.msaaSamples = 1;
-        desc.sRGB = true;
-        tex = new RenderTexture(desc);
-        tex.name = "__BlurRT";
-        tex.Create();
+            foregroundPass = new CustomMaskRenderFeaturePass(settings, handle);
+            foregroundPass.InvalidateRTInfo();
+        }
 
-        handle = RTHandles.Alloc(tex);
+        if (foregroundPass != null)
+            foregroundPass.renderPassEvent = settings.renderBehindScene
+                ? RenderPassEvent.BeforeRenderingOpaques
+                : RenderPassEvent.AfterRenderingTransparents;
 
-
-
-        foregroundPass = new CustomMaskRenderFeaturePass(settings, handle);
-        foregroundPass.renderPassEvent = settings.renderBehindScene
-            ? RenderPassEvent.BeforeRenderingOpaques
-            : RenderPassEvent.AfterRenderingTransparents;
-
-        foregroundPass.InvalidateRTInfo();
-
+        // Recreate hidden cam
         hiddenCamGO = new GameObject("HiddenCamGO") { hideFlags = HideFlags.HideAndDontSave };
         hiddenCam = hiddenCamGO.AddComponent<Camera>();
         hiddenCam.cullingMask = settings.foregroundLayers;
@@ -103,7 +129,7 @@ public class CustomMaskRenderFeature : ScriptableRendererFeature
         hiddenCam.forceIntoRenderTexture = true;
         hiddenCam.enabled = false;
         hiddenCam.clearFlags = CameraClearFlags.SolidColor;
-        hiddenCam.backgroundColor = Color.clear;
+        hiddenCam.backgroundColor = new Color(0, 0, 0, 0);
         hiddenCam.allowHDR = false;
         hiddenCam.allowMSAA = false;
         hiddenCam.useOcclusionCulling = false;
@@ -115,122 +141,47 @@ public class CustomMaskRenderFeature : ScriptableRendererFeature
         urpData.renderShadows = false;
         urpData.requiresDepthTexture = false;
         urpData.requiresColorTexture = false;
+        urpData.antialiasing = AntialiasingMode.None;
 
-        var driverGO = new GameObject("__CaptureDriver") { hideFlags = HideFlags.HideAndDontSave };
-        _driver = driverGO.AddComponent<CameraDriver>();
-        _driver.Setup(hiddenCam, this);
-
+        // Subscribe exactly once
+        _renderHandler = OnBeginCameraRendering;
+        RenderPipelineManager.beginCameraRendering += _renderHandler;
     }
-
 
     protected override void Dispose(bool disposing)
     {
+        if (_renderHandler != null)
+        {
+            RenderPipelineManager.beginCameraRendering -= _renderHandler;
+            _renderHandler = null;
+        }
+
         handle?.Release();
         handle = null;
 
-        if (tex != null)
-        {
-            tex.Release();
-            tex = null;
-        }
+        if (tex != null) { tex.Release(); tex = null; }
 
         if (hiddenCamGO != null)
         {
             SafeDestroy(hiddenCamGO);
-
+            hiddenCamGO = null;
             hiddenCam = null;
-        }
-        if (_driver != null)
-        {
-            SafeDestroy(_driver?.gameObject);
-            _driver = null;
-        }
-
-        if (hiddenCamTex != null)
-        {
-            hiddenCamTex.Release();
-            hiddenCamTex = null;
         }
     }
 
     void SafeDestroy(UnityEngine.Object obj)
     {
         if (!obj) return;
-
-        if (Application.isPlaying)
-            Destroy(obj);
-        else
-            DestroyImmediate(obj);
-    }
-
-    class CameraDriver : MonoBehaviour
-    {
-        Camera hidden;
-        CustomMaskRenderFeature feature;
-        private bool _isRendering = false;
-        private int _lastRenderedFrame = -1;
-        private CommandBuffer _clearCmd;
-
-        public void Setup(Camera cam, CustomMaskRenderFeature f)
-        {
-            hidden = cam;
-            feature = f;
-            _clearCmd = new CommandBuffer { name = "ClearHiddenRT" };
-            RenderPipelineManager.beginContextRendering -= OnBeginCameraRendering;
-            RenderPipelineManager.beginContextRendering += OnBeginCameraRendering;
-        }
-
-        void OnDestroy()
-        {
-            RenderPipelineManager.beginContextRendering -= OnBeginCameraRendering;
-            _clearCmd?.Release();
-            _clearCmd = null;
-        }
-
-        void OnBeginCameraRendering(ScriptableRenderContext ctx, List<Camera> cams)
-        {
-            if (_isRendering) return;
-            if (hidden == null) return;
-            if (cams.Contains(hidden)) return;
-            if (feature.handle == null) return;
-            if (hidden.targetTexture == null) return;
-            //if (Time.frameCount == _lastRenderedFrame) return;
-            _lastRenderedFrame = Time.frameCount;
-
-            Camera main = null;
-            foreach (var cam in cams)
-            {
-                if (cam.cameraType == CameraType.Game) { main = cam; break; }
-            }
-            if (main == null) return;
-
-            hidden.cullingMask = feature.settings.foregroundLayers;
-            feature.SyncCamera(hidden, main);
-
-            // Reuse cached command buffer
-            _clearCmd.Clear();
-            _clearCmd.SetRenderTarget(hidden.targetTexture);
-            _clearCmd.ClearRenderTarget(true, true, Color.clear);
-            Graphics.ExecuteCommandBuffer(_clearCmd);
-
-            _isRendering = true;
-            try
-            {
-                var request = new UniversalRenderPipeline.SingleCameraRequest();
-                RenderPipeline.SubmitRenderRequest(hidden, request);
-            }
-            finally
-            {
-                _isRendering = false;
-            }
-        }
+        if (Application.isPlaying) Destroy(obj);
+        else DestroyImmediate(obj);
     }
 
     public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
     {
+        if (foregroundPass == null) return;
+        if (renderingData.cameraData.camera.cameraType != CameraType.Game) return;
+        if (renderingData.cameraData.camera == hiddenCam) return;
         renderer.EnqueuePass(foregroundPass);
-
-
     }
 
     [Serializable]
@@ -240,11 +191,8 @@ public class CustomMaskRenderFeature : ScriptableRendererFeature
         public Material mat2;
         public float blurAmount;
         public LayerMask foregroundLayers;
-        [Range(1, 8)]
-        public int downscaling = 1;
+        [Range(1, 8)] public int downscaling = 1;
         public bool renderBehindScene = false;
-
-
     }
 
     class CustomMaskRenderFeaturePass : ScriptableRenderPass
@@ -257,17 +205,13 @@ public class CustomMaskRenderFeature : ScriptableRendererFeature
 
         private RenderTargetInfo _rtInfo;
         private ImportResourceParams _importParams;
-
         private bool _rtInfoDirty = true;
 
-        public CustomMaskRenderFeaturePass(
-            CustomMaskRenderFeatureSettings settings,
-            RTHandle handle)
+        public CustomMaskRenderFeaturePass(CustomMaskRenderFeatureSettings settings, RTHandle handle)
         {
             this.settings = settings;
             this.rt = handle;
         }
-
 
         class PassData
         {
@@ -277,13 +221,10 @@ public class CustomMaskRenderFeature : ScriptableRendererFeature
             public float blurAmount;
         }
 
-
-
         public void InvalidateRTInfo() => _rtInfoDirty = true;
 
         public override void RecordRenderGraph(RenderGraph renderGraph, ContextContainer frameData)
         {
-
             if (rt == null || rt.rt == null || !rt.rt.IsCreated()) return;
 
             if (_rtInfoDirty)
@@ -307,92 +248,62 @@ public class CustomMaskRenderFeature : ScriptableRendererFeature
             settings.downscaling = Mathf.Clamp(settings.downscaling, 1, 8);
 
             var camData = frameData.Get<UniversalCameraData>();
-            if (camData.camera.cameraType != CameraType.Game)
-                return;
+            if (camData.camera.cameraType != CameraType.Game) return;
+
             var resourceData = frameData.Get<UniversalResourceData>();
             var cameraColor = resourceData.activeColorTexture;
-            var depth = resourceData.activeDepthTexture;
-            //TextureHandle sourceHandle = renderGraph.ImportTexture(rt);
-            /*var importParams = new ImportResourceParams();
-            importParams.clearOnFirstUse = false;
-            importParams.discardOnLastUse = false;*/
-
-
-            /*var rtInfo = new RenderTargetInfo();
-
-            rtInfo.width = rt.rt.width;
-            rtInfo.height = rt.rt.height;
-            rtInfo.volumeDepth = 1;
-            rtInfo.msaaSamples = 1;
-            rtInfo.format = rt.rt.graphicsFormat;*/
 
             TextureHandle sourceHandle = renderGraph.ImportTexture(rt, _rtInfo, _importParams);
 
-            // Build tempA desc manually from camera pixel dimensions
-            var tempDesc = new TextureDesc(rt.rt.width, rt.rt.height);
-            tempDesc.name = "BlurTempA";
-            tempDesc.colorFormat = GraphicsFormat.R8G8B8A8_SRGB;
-            tempDesc.clearBuffer = false;
-            tempDesc.clearColor = Color.clear;
-            tempDesc.depthBufferBits = DepthBits.None;
-            tempDesc.dimension = TextureDimension.Tex2D;
-            tempDesc.useMipMap = false;
-            tempDesc.enableRandomWrite = false;
-            tempDesc.msaaSamples = MSAASamples.None;
+            var tempDesc = new TextureDesc(rt.rt.width, rt.rt.height)
+            {
+                name = "BlurTempA",
+                colorFormat = GraphicsFormat.R8G8B8A8_SRGB,
+                clearBuffer = false,
+                clearColor = Color.clear,
+                depthBufferBits = DepthBits.None,
+                dimension = TextureDimension.Tex2D,
+                useMipMap = false,
+                enableRandomWrite = false,
+                msaaSamples = MSAASamples.None
+            };
+
             TextureHandle tempA = renderGraph.CreateTexture(tempDesc);
 
-
-
+            var tempDescB = tempDesc;
+            tempDescB.name = "BlurTempB";
+            TextureHandle tempB = renderGraph.CreateTexture(tempDescB);
 
             using (var builder = renderGraph.AddRasterRenderPass<PassData>("BlurPass1", out var passData))
             {
                 builder.AllowPassCulling(false);
-
                 builder.SetRenderAttachment(tempA, 0, AccessFlags.Write);
-
                 passData.source = sourceHandle;
                 passData.blitMaterial = settings.material;
-                passData.mat2 = settings.mat2;
                 passData.blurAmount = settings.blurAmount;
-
                 builder.UseTexture(passData.source, AccessFlags.Read);
-
-
                 builder.SetRenderFunc((PassData data, RasterGraphContext context) =>
                 {
-                    //data.blitMaterial.SetTexture("_MainTex", data.source);
                     data.blitMaterial.SetFloat(BlurAmountID, data.blurAmount);
                     data.blitMaterial.SetVector(DirectionID, new Vector2(1, 0));
-                    //data.blitMaterial.SetVector("_CustomTexelSize", new Vector4(texelSizeX, texelSizeY, 0, 0));
-                    //Blitter.BlitTexture2D(context.cmd, data.source, viewportScale, 0, true);
                     Blitter.BlitTexture(context.cmd, data.source, new Vector4(1, 1, 0, 0), data.blitMaterial, 0);
                 });
             }
 
-
             using (var builder = renderGraph.AddRasterRenderPass<PassData>("BlurPass2", out var passData))
             {
-
                 builder.AllowPassCulling(false);
-                builder.SetRenderAttachment(cameraColor, 0, AccessFlags.Write);
-
+                builder.SetRenderAttachment(cameraColor, 0, AccessFlags.ReadWrite);
                 passData.source = tempA;
-                passData.blitMaterial = settings.material;
-                passData.mat2 = settings.mat2;
+                passData.blitMaterial = settings.mat2;
                 passData.blurAmount = settings.blurAmount;
-
                 builder.UseTexture(passData.source, AccessFlags.Read);
-
-
                 builder.SetRenderFunc((PassData data, RasterGraphContext context) =>
                 {
-                    //data.blitMaterial.SetTexture("_MainTex", data.source);
-                    data.mat2.SetFloat(BlurAmountID, data.blurAmount);
-                    data.mat2.SetVector(DirectionID, new Vector2(0, 1));
-                    //data.mat2.SetVector("_CustomTexelSize", new Vector4(texelSizeX, texelSizeY, 0, 0));
-                    Blitter.BlitTexture(context.cmd, data.source, new Vector4(1, 1, 0, 0), data.mat2, 0);
+                    data.blitMaterial.SetFloat(BlurAmountID, data.blurAmount);
+                    data.blitMaterial.SetVector(DirectionID, new Vector2(0, 1));
+                    Blitter.BlitTexture(context.cmd, data.source, new Vector4(1, 1, 0, 0), data.blitMaterial, 0);
                 });
-
             }
         }
     }
