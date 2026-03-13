@@ -24,9 +24,8 @@ MonoBehaviour:
     probeSamplingDebugMesh: {fileID: -3555484719484374845, guid: 57d7c4c16e2765b47a4d2069b311bffe, type: 3}
     probeSamplingDebugTexture: {fileID: 2800000, guid: 24ec0e140fb444a44ab96ee80844e18e, type: 3}
     probeVolumeBlendStatesCS: {fileID: 0}
-  m_RendererFeatures:
-  - {fileID: 5609324489311270756}
-  m_RendererFeatureMap: 64374c4fe752d84d
+  m_RendererFeatures: []
+  m_RendererFeatureMap: 
   m_UseNativeRenderPass: 0
   m_LayerMask:
     serializedVersion: 2
@@ -75,28 +74,6 @@ MonoBehaviour:
     layersToBlur:
       serializedVersion: 2
       m_Bits: 4294967295
---- !u!114 &5609324489311270756
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 06941618248ec364fa3e8ac7c6133128, type: 3}
-  m_Name: FGBlur
-  m_EditorClassIdentifier: Assembly-CSharp::CustomMaskRenderFeature
-  m_Active: 1
-  settings:
-    layerMask:
-      serializedVersion: 2
-      m_Bits: 2048
-    firstPassMaterial: {fileID: 2100000, guid: ed4f4c2808b45d045858ec616e012d2c, type: 2}
-    secondPassMaterial: {fileID: 2100000, guid: 84774fd17d895e4499b699bbc0563f7e, type: 2}
-    eraseMaterial: {fileID: 2100000, guid: 792fd59b4f1b42a4592ec7ea99c4a45a, type: 2}
-    blurAmount: 0.004
-  pass: 500
 --- !u!114 &8389911850138563732
 MonoBehaviour:
   m_ObjectHideFlags: 0

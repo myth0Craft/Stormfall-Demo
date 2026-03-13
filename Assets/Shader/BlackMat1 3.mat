@@ -41,7 +41,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _BlurAmount: 0.0035
+    - _BlurAmount: 0.0025
     - _CustomTexelSize: 0
     - _Direction: 0
     m_Colors: []
