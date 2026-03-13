@@ -43,9 +43,9 @@ MonoBehaviour:
     probeSamplingDebugTexture: {fileID: 2800000, guid: 24ec0e140fb444a44ab96ee80844e18e, type: 3}
     probeVolumeBlendStatesCS: {fileID: 0}
   m_RendererFeatures:
-  - {fileID: 4024492890531530637}
   - {fileID: 5876038125951743331}
-  m_RendererFeatureMap: 8d873715f6ded937637501008be18b51
+  - {fileID: 4024492890531530637}
+  m_RendererFeatureMap: 637501008be18b518d873715f6ded937
   m_UseNativeRenderPass: 0
   m_LayerMask:
     serializedVersion: 2
@@ -131,15 +131,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CustomMaskRenderFeature
   m_Active: 0
   settings:
-    material: {fileID: 2100000, guid: ed4f4c2808b45d045858ec616e012d2c, type: 2}
-    mat2: {fileID: 2100000, guid: 84774fd17d895e4499b699bbc0563f7e, type: 2}
+    material: {fileID: 2100000, guid: 6729ced3af4078940817644fd1f34c54, type: 2}
+    mat2: {fileID: 2100000, guid: db2c1306610b0e74b93125965677eee3, type: 2}
     blurAmount: 0.0035
     foregroundLayers:
       serializedVersion: 2
       m_Bits: 18432
     downscaling: 4
     renderBehindScene: 0
-  pass: 500
+  pass: 0
 --- !u!114 &5876038125951743331
 MonoBehaviour:
   m_ObjectHideFlags: 0
