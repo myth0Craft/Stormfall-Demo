@@ -29,6 +29,7 @@ public class CustomMaskRenderFeature : ScriptableRendererFeature
         hidden.nearClipPlane = main.nearClipPlane;
         hidden.farClipPlane = main.farClipPlane;
         hidden.projectionMatrix = main.projectionMatrix;
+        hidden.aspect = main.aspect;
 
         if (hidden.targetTexture != null &&
             (hidden.targetTexture.width != main.pixelWidth || hidden.targetTexture.height != main.pixelHeight))

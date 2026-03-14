@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: InvertedPlayerInfluencedObj
+  m_Name: InvertedInfluencedObj
   m_Shader: {fileID: -6465566751694194690, guid: 6e10369a837b5fb43ac872d7bc115b2f, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -42,10 +42,10 @@ Material:
     m_Ints: []
     m_Floats:
     - _TimeOffset: 0
-    - _WindIntensity: 0
+    - _WindIntensity: 3
     - _WindScale: 0
     - _WindSpeed: 0
-    - _YMaskInfluence: -1
+    - _YMaskInfluence: -4
     - _externalInfluence: 0
     m_Colors:
     - White: {r: 1, g: 1, b: 1, a: 1}
