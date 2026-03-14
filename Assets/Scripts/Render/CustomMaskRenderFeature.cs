@@ -8,8 +8,8 @@ using UnityEngine.Rendering.Universal;
 public class CustomMaskRenderFeature : ScriptableRendererFeature
 {
     [SerializeField] CustomMaskRenderFeatureSettings settings;
-    [SerializeField] RenderPassEvent pass;
-    CustomMaskRenderFeaturePass foregroundPass;
+
+    private CustomMaskRenderFeaturePass foregroundPass;
 
     private RTHandle handle;
     private RenderTexture tex;
@@ -40,7 +40,7 @@ public class CustomMaskRenderFeature : ScriptableRendererFeature
         }
     }
 
-    void OnBeginCameraRendering(ScriptableRenderContext ctx, Camera cam)
+    private void OnBeginCameraRendering(ScriptableRenderContext ctx, Camera cam)
     {
 
 
@@ -65,6 +65,7 @@ public class CustomMaskRenderFeature : ScriptableRendererFeature
             SyncCamera(hiddenCam, cam);
 
             var request = new UniversalRenderPipeline.SingleCameraRequest();
+            request.destination = hiddenCam.targetTexture;
             RenderPipeline.SubmitRenderRequest(hiddenCam, request);
         }
         finally
@@ -72,6 +73,8 @@ public class CustomMaskRenderFeature : ScriptableRendererFeature
             _isRendering = false;
         }
     }
+
+
 
     public override void Create()
     {
@@ -100,6 +103,8 @@ public class CustomMaskRenderFeature : ScriptableRendererFeature
             handle?.Release();
             handle = null;
 
+
+
             if (tex != null) { tex.Release(); tex = null; }
 
             var desc = new RenderTextureDescriptor(w, h, RenderTextureFormat.ARGB32, 0)
@@ -110,10 +115,18 @@ public class CustomMaskRenderFeature : ScriptableRendererFeature
                 sRGB = true
             };
             tex = new RenderTexture(desc) { name = "__BlurRT" + System.Guid.NewGuid() };
-            tex.Create();
-            handle = RTHandles.Alloc(tex);
 
-            foregroundPass = new CustomMaskRenderFeaturePass(settings, handle);
+            RenderingUtils.ReAllocateHandleIfNeeded(ref handle,
+                Vector2.one / settings.downscaling, // Scale factor
+                desc,
+                FilterMode.Bilinear,
+                TextureWrapMode.Clamp,
+                name: "_CustomMaskTex");
+
+            /*tex.Create();
+            handle = RTHandles.Alloc(tex);*/
+
+            foregroundPass = new CustomMaskRenderFeaturePass(settings, handle, this);
             foregroundPass.InvalidateRTInfo();
         }
 
@@ -127,7 +140,7 @@ public class CustomMaskRenderFeature : ScriptableRendererFeature
         hiddenCam = hiddenCamGO.AddComponent<Camera>();
         hiddenCam.cullingMask = settings.foregroundLayers;
         hiddenCam.depthTextureMode = DepthTextureMode.None;
-        hiddenCam.targetTexture = tex;
+        hiddenCam.targetTexture = handle.rt;
         hiddenCam.forceIntoRenderTexture = true;
         hiddenCam.enabled = false;
         hiddenCam.clearFlags = CameraClearFlags.SolidColor;
@@ -193,6 +206,7 @@ public class CustomMaskRenderFeature : ScriptableRendererFeature
         public LayerMask foregroundLayers;
         [Range(1, 8)] public int downscaling = 1;
         public bool renderBehindScene = false;
+        public int rendererIndex = 1;
     }
 
     class CustomMaskRenderFeaturePass : ScriptableRenderPass
@@ -201,16 +215,17 @@ public class CustomMaskRenderFeature : ScriptableRendererFeature
         readonly CustomMaskRenderFeatureSettings settings;
         static readonly int BlurAmountID = Shader.PropertyToID("_BlurAmount");
         static readonly int DirectionID = Shader.PropertyToID("_Direction");
-        static readonly int TexelSizeID = Shader.PropertyToID("_TexelSize");
 
         private RenderTargetInfo _rtInfo;
         private ImportResourceParams _importParams;
         private bool _rtInfoDirty = true;
+        private CustomMaskRenderFeature feature;
 
-        public CustomMaskRenderFeaturePass(CustomMaskRenderFeatureSettings settings, RTHandle handle)
+        public CustomMaskRenderFeaturePass(CustomMaskRenderFeatureSettings settings, RTHandle handle, CustomMaskRenderFeature feature)
         {
             this.settings = settings;
             this.rt = handle;
+            this.feature = feature;
         }
 
         class PassData
@@ -270,13 +285,9 @@ public class CustomMaskRenderFeature : ScriptableRendererFeature
 
             TextureHandle tempA = renderGraph.CreateTexture(tempDesc);
 
-            var tempDescB = tempDesc;
-            tempDescB.name = "BlurTempB";
-            TextureHandle tempB = renderGraph.CreateTexture(tempDescB);
-
             using (var builder = renderGraph.AddRasterRenderPass<PassData>("BlurPass1", out var passData))
             {
-                builder.AllowPassCulling(false);
+                builder.AllowPassCulling(true);
                 builder.SetRenderAttachment(tempA, 0, AccessFlags.Write);
                 passData.source = sourceHandle;
                 passData.blitMaterial = settings.material;
@@ -292,8 +303,8 @@ public class CustomMaskRenderFeature : ScriptableRendererFeature
 
             using (var builder = renderGraph.AddRasterRenderPass<PassData>("BlurPass2", out var passData))
             {
-                builder.AllowPassCulling(false);
-                builder.SetRenderAttachment(cameraColor, 0, AccessFlags.ReadWrite);
+                builder.AllowPassCulling(true);
+                builder.SetRenderAttachment(cameraColor, 0, AccessFlags.Write);
                 passData.source = tempA;
                 passData.blitMaterial = settings.mat2;
                 passData.blurAmount = settings.blurAmount;

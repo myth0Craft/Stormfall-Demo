@@ -116,7 +116,7 @@ MonoBehaviour:
       m_Bits: 0
     downscaling: 1
     renderBehindScene: 0
-  pass: 0
+    rendererIndex: 1
 --- !u!114 &4024492890531530637
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -137,9 +137,9 @@ MonoBehaviour:
     foregroundLayers:
       serializedVersion: 2
       m_Bits: 18432
-    downscaling: 4
+    downscaling: 2
     renderBehindScene: 0
-  pass: 0
+    rendererIndex: 1
 --- !u!114 &5876038125951743331
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -160,9 +160,9 @@ MonoBehaviour:
     foregroundLayers:
       serializedVersion: 2
       m_Bits: 16896
-    downscaling: 4
+    downscaling: 2
     renderBehindScene: 1
-  pass: 0
+    rendererIndex: 1
 --- !u!114 &8389911850138563732
 MonoBehaviour:
   m_ObjectHideFlags: 0
