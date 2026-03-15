@@ -27,7 +27,17 @@ public class PlayerHealthManager : HealthManager
 
     public override void Die()
     {
-        print("died");
+        StartCoroutine(DeathCoroutine());
+    }
+
+    private IEnumerator DeathCoroutine()
+    {
+        Time.timeScale = 0;
+        PlayerData.AllowGameInput(false);
+        SaveSystem.Save(PlayerData.saveIndex);
+        yield return FaderController.instance.FadeOut();
+        yield return SceneLoader.instance.UnloadAllScenes();
+        
     }
 
     protected override void AddHitEffects()

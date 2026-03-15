@@ -13,4 +13,16 @@ public class EventSystemController : MonoBehaviour
     {
         eventSystem.SetActive(false);
     }
+
+    public void StartGameLoad(int saveIndex)
+    {
+        SceneLoader.instance.LoadGame(saveIndex);
+    }
+
+    public void StartLoadTitle()
+    {
+        SceneLoader.instance.LoadTitleScreen();
+    }
+
+
 }

@@ -342,6 +342,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -419,9 +420,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 188447332}
-        m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
-        m_MethodName: LoadGame
+      - m_Target: {fileID: 72448080}
+        m_TargetAssemblyTypeName: EventSystemController, Assembly-CSharp
+        m_MethodName: StartGameLoad
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -480,7 +481,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aca00fb90e00e6144951b28412db85e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  startScene: Room1
 --- !u!4 &188447333
 Transform:
   m_ObjectHideFlags: 0
@@ -609,6 +609,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -686,9 +687,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 188447332}
-        m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
-        m_MethodName: LoadGame
+      - m_Target: {fileID: 311937133}
+        m_TargetAssemblyTypeName: EventSystemController, Assembly-CSharp
+        m_MethodName: StartGameLoad
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -738,7 +739,7 @@ GameObject:
   m_IsActive: 1
 --- !u!199 &470325380
 ParticleSystemRenderer:
-  serializedVersion: 6
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -784,6 +785,7 @@ ParticleSystemRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
+  m_MaskInteraction: 0
   m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0
@@ -815,7 +817,6 @@ ParticleSystemRenderer:
   m_MeshWeighting1: 1
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
-  m_MaskInteraction: 0
 --- !u!198 &470325381
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -6510,6 +6511,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -6587,9 +6589,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 188447332}
-        m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
-        m_MethodName: LoadGame
+      - m_Target: {fileID: 1286578170}
+        m_TargetAssemblyTypeName: EventSystemController, Assembly-CSharp
+        m_MethodName: StartGameLoad
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6638,6 +6640,7 @@ GameObject:
   m_IsActive: 1
 --- !u!212 &1424247797
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -6683,6 +6686,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 3
+  m_MaskInteraction: 0
   m_Sprite: {fileID: -3106988470233275149, guid: c9841bc084897f44daf81fab43b5dfa9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -6692,7 +6696,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &1424247798
 Transform:
@@ -7062,6 +7065,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -7139,9 +7143,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 188447332}
-        m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
-        m_MethodName: LoadGame
+      - m_Target: {fileID: 2126733685}
+        m_TargetAssemblyTypeName: EventSystemController, Assembly-CSharp
+        m_MethodName: StartGameLoad
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

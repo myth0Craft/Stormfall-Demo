@@ -218,6 +218,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CamShakeSource
   playerMovement: {fileID: 1289948509}
+--- !u!114 &396187195 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2446390696951729395, guid: 007d474f8779fff4b9c42f387820d059, type: 3}
+  m_PrefabInstance: {fileID: 3937282436542242407}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b179a16a3ffa4d4a9fe23789bcddb48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EventSystemController
 --- !u!95 &588942049 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 5575781214523206796, guid: 15b0f025f66c4c54a89769fc06f5a0a3, type: 3}
@@ -315,11 +326,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6827771851370424541, guid: 0836dac0b91edc845a07d4dc9c553974, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.8492007
+      value: -0.7124495
       objectReference: {fileID: 0}
     - target: {fileID: 6827771851370424541, guid: 0836dac0b91edc845a07d4dc9c553974, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 72.55678
+      value: -0.8648183
       objectReference: {fileID: 0}
     - target: {fileID: 6827771851370424541, guid: 0836dac0b91edc845a07d4dc9c553974, type: 3}
       propertyPath: m_LocalPosition.z
@@ -404,11 +415,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6270736036406362160, guid: 15b0f025f66c4c54a89769fc06f5a0a3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -4.74
+      value: 22.84
       objectReference: {fileID: 0}
     - target: {fileID: 6270736036406362160, guid: 15b0f025f66c4c54a89769fc06f5a0a3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.56
+      value: 71.84
       objectReference: {fileID: 0}
     - target: {fileID: 6270736036406362160, guid: 15b0f025f66c4c54a89769fc06f5a0a3, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1228,7 +1239,15 @@ PrefabInstance:
     - target: {fileID: 9109409796613010902, guid: 007d474f8779fff4b9c42f387820d059, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1592963292}
+      objectReference: {fileID: 396187195}
+    - target: {fileID: 9109409796613010902, guid: 007d474f8779fff4b9c42f387820d059, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: StartLoadTitle
+      objectReference: {fileID: 0}
+    - target: {fileID: 9109409796613010902, guid: 007d474f8779fff4b9c42f387820d059, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: EventSystemController, Assembly-CSharp
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

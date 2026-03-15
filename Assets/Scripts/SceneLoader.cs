@@ -6,13 +6,24 @@ public class SceneLoader : MonoBehaviour
 {
     private string startScene = "1_Ancient_Springs";
     private string persistentGame = "PersistentData";
-    private FaderController fader;
+    //private FaderController fader;
+    public static SceneLoader instance { get; private set; }
 
     private void Awake()
     {
+        if (instance != null && instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            instance = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
+
         startScene = PlayerData.currentScene;
-        fader = GetComponentInChildren<FaderController>();
-        DontDestroyOnLoad(this.gameObject);
+        //fader = GetComponentInChildren<FaderController>();
+        
     }
 
 
@@ -27,13 +38,25 @@ public class SceneLoader : MonoBehaviour
 
     public IEnumerator LoadTitleScreenCoroutine()
     {
-        yield return fader.FadeOut();
-        fader.setOpaque();
+        yield return FaderController.instance.FadeOut();
+        FaderController.instance.setOpaque();
         PlayerData.gamePaused = false;
         SceneManager.LoadScene("Title");
         Time.timeScale = 1;
-        yield return fader.FadeIn();
-        Destroy(this.gameObject);
+        yield return FaderController.instance.FadeIn();
+        //Destroy(this.gameObject);
+    }
+
+    public IEnumerator UnloadAllScenes()
+    {
+        int numActiveScenes = SceneManager.sceneCount;
+
+        for (int i = 0; i < numActiveScenes; i++)
+        {
+            yield return SceneManager.UnloadSceneAsync(SceneManager.GetSceneAt(i - 1));
+            
+        }
+
     }
 
 
@@ -59,8 +82,8 @@ public class SceneLoader : MonoBehaviour
     public IEnumerator LoadGameCoroutine()
     {
         PlayerData.AllowGameInput(false);
-        yield return fader.FadeOut();
-        fader.setOpaque();
+        yield return FaderController.instance.FadeOut();
+        FaderController.instance.setOpaque();
         SaveSystem.Load(PlayerData.saveIndex);
         startScene = PlayerData.currentScene;
         yield return SceneManager.UnloadSceneAsync("Title");
@@ -76,9 +99,32 @@ public class SceneLoader : MonoBehaviour
         
         PlayerData.AllowGameInput(false);
         Time.timeScale = 1;
-        yield return fader.FadeIn();
+        yield return FaderController.instance.FadeIn();
         PlayerData.AllowGameInput(true);
-        Destroy(this.gameObject);
+        //Destroy(this.gameObject);
+    }
+
+    public IEnumerator LoadGameFromPlayerDeath()
+    {
+
+        FaderController.instance.setOpaque();
+        SaveSystem.Load(PlayerData.saveIndex);
+        startScene = PlayerData.currentScene;
+
+        yield return SceneManager.LoadSceneAsync(persistentGame);
+
+
+        if (!SceneManager.GetSceneByName(startScene).isLoaded)
+            yield return SceneManager.LoadSceneAsync(startScene, LoadSceneMode.Additive);
+
+
+
+
+        PlayerData.AllowGameInput(false);
+        Time.timeScale = 1;
+        yield return FaderController.instance.FadeIn();
+        PlayerData.AllowGameInput(true);
+        //Destroy(this.gameObject);
     }
 
     //private IEnumerator Start()

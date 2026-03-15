@@ -5,20 +5,21 @@ using UnityEngine.UI;
 public class FaderController : MonoBehaviour
 {
 
-    //public static FaderController instance { get; private set; }
+    public static FaderController instance { get; private set; }
     private Image fadeImage;
     [SerializeField] private float fadeDuration = 1f;
     private void Awake()
     {
         fadeImage = GetComponent<Image>();
-        //if (instance != null && instance != this)
-        //{
-        //    Destroy(this.gameObject);
-        //} else
-        //{
-        //    instance = this;
-        //    DontDestroyOnLoad(this.gameObject);
-        //}
+        if (instance != null && instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            instance = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
     }
 
     public IEnumerator FadeIn()
