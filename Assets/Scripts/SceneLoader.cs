@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
 public class SceneLoader : MonoBehaviour
@@ -31,7 +32,7 @@ public class SceneLoader : MonoBehaviour
     {
         SaveSystem.Save(PlayerData.saveIndex);
         PlayerData.AllowGameInput(false);
-
+        
         Time.timeScale = 0;
         StartCoroutine(LoadTitleScreenCoroutine());
     }
@@ -43,21 +44,36 @@ public class SceneLoader : MonoBehaviour
         PlayerData.gamePaused = false;
         SceneManager.LoadScene("Title");
         Time.timeScale = 1;
+
+        /*EventSystem eventSystem = EventSystem.current;
+        while (eventSystem == null)
+        {
+            eventSystem = EventSystem.current;
+            yield return null;
+        }
+
+        eventSystem.enabled = false;*/
         yield return FaderController.instance.FadeIn();
+        //eventSystem.enabled = true;
+        
         //Destroy(this.gameObject);
     }
 
-    public IEnumerator UnloadAllScenes()
+    /*public IEnumerator UnloadAllScenes()
     {
-        int numActiveScenes = SceneManager.sceneCount;
+
+        int numActiveScenes = SceneManager.loadedSceneCount;
 
         for (int i = 0; i < numActiveScenes; i++)
         {
-            yield return SceneManager.UnloadSceneAsync(SceneManager.GetSceneAt(i - 1));
+
+            Debug.Log("unloading scene at index " + i);
+
+            yield return SceneManager.UnloadSceneAsync(SceneManager.GetSceneAt(i));
             
         }
 
-    }
+    }*/
 
 
     //public void LoadGame()
@@ -106,25 +122,25 @@ public class SceneLoader : MonoBehaviour
 
     public IEnumerator LoadGameFromPlayerDeath()
     {
-
+        PlayerData.AllowGameInput(false);
+        yield return FaderController.instance.FadeOut();
         FaderController.instance.setOpaque();
         SaveSystem.Load(PlayerData.saveIndex);
         startScene = PlayerData.currentScene;
 
-        yield return SceneManager.LoadSceneAsync(persistentGame);
 
+        yield return SceneManager.LoadSceneAsync(persistentGame, LoadSceneMode.Single);
 
-        if (!SceneManager.GetSceneByName(startScene).isLoaded)
-            yield return SceneManager.LoadSceneAsync(startScene, LoadSceneMode.Additive);
+        //if (!SceneManager.GetSceneByName(startScene).isLoaded)
+        yield return SceneManager.LoadSceneAsync(startScene, LoadSceneMode.Additive);
 
-
-
+        
+        
 
         PlayerData.AllowGameInput(false);
         Time.timeScale = 1;
         yield return FaderController.instance.FadeIn();
         PlayerData.AllowGameInput(true);
-        //Destroy(this.gameObject);
     }
 
     //private IEnumerator Start()

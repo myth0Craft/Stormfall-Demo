@@ -24,19 +24,24 @@ public class FaderController : MonoBehaviour
 
     public IEnumerator FadeIn()
     {
+        instance.StopAllCoroutines();
+        //StopCoroutine("FadeRoutine");
         yield return FadeRoutine(1, 0);
-        gameObject.SetActive(false);
+        //gameObject.SetActive(false);
     }
 
     public IEnumerator FadeOut()
     {
-        gameObject.SetActive(true);
+        instance.StopAllCoroutines();
+        //StopCoroutine("FadeRoutine");
+        //gameObject.SetActive(true);
         yield return FadeRoutine(0, 1);
         
     }
 
     private IEnumerator FadeRoutine(float startAlpha, float endAlpha)
     {
+        
         float elapsedPercentage = 0f;
         float elapsedTime = 0f;
         while (elapsedPercentage < 1)

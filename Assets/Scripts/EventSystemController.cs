@@ -23,6 +23,4 @@ public class EventSystemController : MonoBehaviour
     {
         SceneLoader.instance.LoadTitleScreen();
     }
-
-
 }

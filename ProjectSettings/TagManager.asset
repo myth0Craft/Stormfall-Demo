@@ -13,6 +13,7 @@ TagManager:
   - CinemachineImpulseSource
   - Slope
   - SaveIconController
+  - EventSystem
   layers:
   - Default
   - TransparentFX
