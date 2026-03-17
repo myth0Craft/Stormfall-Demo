@@ -120,8 +120,16 @@ public class SceneLoader : MonoBehaviour
         //Destroy(this.gameObject);
     }
 
-    public IEnumerator LoadGameFromPlayerDeath()
+
+    public void LoadGameFromPlayerDeath()
     {
+        StartCoroutine(LoadGameFromPlayerDeathCoroutine());
+    }
+    public IEnumerator LoadGameFromPlayerDeathCoroutine()
+    {
+
+        SaveSystem.Save(PlayerData.saveIndex);
+        Time.timeScale = 0;
         PlayerData.AllowGameInput(false);
         yield return FaderController.instance.FadeOut();
         FaderController.instance.setOpaque();
@@ -137,7 +145,6 @@ public class SceneLoader : MonoBehaviour
         
         
 
-        PlayerData.AllowGameInput(false);
         Time.timeScale = 1;
         yield return FaderController.instance.FadeIn();
         PlayerData.AllowGameInput(true);

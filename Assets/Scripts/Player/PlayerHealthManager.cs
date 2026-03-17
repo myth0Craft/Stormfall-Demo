@@ -9,9 +9,16 @@ public class PlayerHealthManager : HealthManager
     public Material hurtMat;
     public ParticleSystem hitParticle;
     private CamShakeSource camShakeSource;
+    
+
+
+    private bool isDead = false;
 
     private void Awake()
     {
+        this.iFrameDuration = 1.0f;
+
+        isDead = false;
         hitParticle.enableEmission = false;
         this.maxHealth = PlayerData.maxHealth;
         this.currentHealth = PlayerData.currentHealth;
@@ -27,10 +34,12 @@ public class PlayerHealthManager : HealthManager
 
     public override void Die()
     {
-        SaveSystem.Save(PlayerData.saveIndex);
-        Time.timeScale = 0;
-
-        StartCoroutine(SceneLoader.instance.LoadGameFromPlayerDeath());
+        if (!isDead)
+        {
+            isDead = true;
+            StopAllCoroutines();
+            SceneLoader.instance.LoadGameFromPlayerDeath();
+        }
     }
 
     /*private IEnumerator DeathCoroutine()
@@ -69,19 +78,33 @@ public class PlayerHealthManager : HealthManager
 
     public IEnumerator HitColorCoroutine()
     {
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 2; i++)
         {
             for (int x = 0; x < spriteRenderers.Length; x++)
             {
                 spriteRenderers[x].material = hurtMat;
             }
 
-            yield return new WaitForSecondsRealtime(0.1f);
+            yield return new WaitForSecondsRealtime(0.15f);
             for (int x = 0; x < spriteRenderers.Length; x++)
             {
                 spriteRenderers[x].material = defaultMat;
             }
-            yield return new WaitForSecondsRealtime(0.1f);
+            yield return new WaitForSecondsRealtime(0.15f);
+        }
+        for (int i = 0; i < 4; i++)
+        {
+            for (int x = 0; x < spriteRenderers.Length; x++)
+            {
+                spriteRenderers[x].material = hurtMat;
+            }
+
+            yield return new WaitForSecondsRealtime(0.075f);
+            for (int x = 0; x < spriteRenderers.Length; x++)
+            {
+                spriteRenderers[x].material = defaultMat;
+            }
+            yield return new WaitForSecondsRealtime(0.075f);
         }
     }
 }
