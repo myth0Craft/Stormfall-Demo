@@ -38,6 +38,14 @@ public class PlayerHealthManager : HealthManager
         {
             isDead = true;
             StopAllCoroutines();
+            for (int x = 0; x < spriteRenderers.Length; x++)
+            {
+                spriteRenderers[x].material = defaultMat;
+            }
+            hitParticle.enableEmission = false;
+
+
+
             SceneLoader.instance.LoadGameFromPlayerDeath();
         }
     }
@@ -54,7 +62,7 @@ public class PlayerHealthManager : HealthManager
 
     protected override void AddHitEffects()
     {
-        camShakeSource.AddScreenShake(0.04f);
+        CamShakeSource.instance.AddScreenShake(0.05f);
         StartCoroutine(HitColorCoroutine());
         StartCoroutine(hitParticles());
         GlobalHitstopManager.DoHitstop(0.05f);

@@ -2,11 +2,13 @@ using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
 
-public class CamShakeSource : MonoBehaviour
+public class ContinuousCameraShakeSource : MonoBehaviour
 {
     private CinemachineImpulseSource impulseSource;
 
-    public static CamShakeSource instance { get; private set; }
+    public static ContinuousCameraShakeSource instance { get; private set; }
+
+    public float currentForce = 0f;
 
     private void Awake()
     {
@@ -39,5 +41,32 @@ public class CamShakeSource : MonoBehaviour
     {
         Vector3 force = new Vector3(0, amount, 0);
         impulseSource.GenerateImpulse(force);
+    }
+
+    public void AddScreenShakeOverTime(float amount, float durationSeconds, float frequencySeconds)
+    {
+        StartCoroutine(AddScreenShakeOverTimeCoroutine(amount, durationSeconds, frequencySeconds));
+    }
+
+    
+
+    private IEnumerator AddScreenShakeOverTimeCoroutine(float amount, float durationSeconds, float frequencySeconds)
+    {
+        currentForce = amount;
+
+        float elapsedTime = 0f;
+        float nextShakeTime = 0f;
+
+        while (elapsedTime < durationSeconds)
+        {
+            if (elapsedTime >= nextShakeTime)
+            {
+                AddScreenShake(currentForce);
+                nextShakeTime += frequencySeconds;
+            }
+
+            elapsedTime += Time.unscaledDeltaTime;
+            yield return null;
+        }
     }
 }

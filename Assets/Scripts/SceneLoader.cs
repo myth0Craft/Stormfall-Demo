@@ -127,11 +127,13 @@ public class SceneLoader : MonoBehaviour
     }
     public IEnumerator LoadGameFromPlayerDeathCoroutine()
     {
-
+        ContinuousCameraShakeSource.instance.AddScreenShakeOverTime(1f, 5f, 0.1f);
         SaveSystem.Save(PlayerData.saveIndex);
         Time.timeScale = 0;
         PlayerData.AllowGameInput(false);
-        yield return FaderController.instance.FadeOut();
+        FaderController.instance.fadeDuration = 1.5f;
+        yield return FaderController.instance.FadeToWhite();
+        FaderController.instance.fadeDuration = 1.0f;
         FaderController.instance.setOpaque();
         SaveSystem.Load(PlayerData.saveIndex);
         startScene = PlayerData.currentScene;
@@ -142,11 +144,15 @@ public class SceneLoader : MonoBehaviour
         //if (!SceneManager.GetSceneByName(startScene).isLoaded)
         yield return SceneManager.LoadSceneAsync(startScene, LoadSceneMode.Additive);
 
-        
-        
 
+        CamShakeSource.instance.StopAllCoroutines();
+        ContinuousCameraShakeSource.instance.StopAllCoroutines();
+        yield return new WaitForSecondsRealtime(0.5f);
+        
+        PlayerData.AllowGameInput(false);
         Time.timeScale = 1;
-        yield return FaderController.instance.FadeIn();
+        yield return FaderController.instance.FadeFromWhite();
+        
         PlayerData.AllowGameInput(true);
     }
 

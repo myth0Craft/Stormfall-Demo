@@ -26,12 +26,12 @@ public class PlayerAttackDamageObject : MonoBehaviour
         if (health != null)
         {
             health.ApplyDamage();
-            camShakeSource.AddScreenShake(0.04f);
+            CamShakeSource.instance.AddScreenShake(0.05f);
         }
         if (enemyHealth != null)
         {
             enemyHealth.ApplyDamage();
-            camShakeSource.AddScreenShake(0.08f);
+            CamShakeSource.instance.AddScreenShake(0.08f);
 
             GlobalHitstopManager.DoHitstop(0.05f);
             //StartCoroutine(hitStopCoroutine());

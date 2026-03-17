@@ -76,6 +76,7 @@ public class SwordCollectEvent : QuicktimeEvent
         bgLight.intensity = 5;
         interactPressed = false;
         swirlParticles.gameObject.SetActive(true);
+        
         for (int i = 0; i < 5; i++)
         {
             interactHintTrigger.interactText = "";
@@ -88,15 +89,18 @@ public class SwordCollectEvent : QuicktimeEvent
             {
                 yield return null;
             }
+
+            CamShakeSource.instance.AddScreenShake(0.2f);
+            ContinuousCameraShakeSource.instance.currentForce *= 1.5f;
             bgLight.intensity *= 1.5f;
             bgLight.pointLightOuterRadius *= 1.2f;
             bgLight.pointLightInnerRadius *= 1.2f;
             interactHintTrigger.SetInteractPopupActive(false);
-            camShakeSource.AddVerticalScreenShake(0.8f);
+            /*camShakeSource.AddVerticalScreenShake(0.8f);
             yield return new WaitForSecondsRealtime(0.1f);
             camShakeSource.AddVerticalScreenShake(0.8f);
             yield return new WaitForSecondsRealtime(0.1f);
-            camShakeSource.AddVerticalScreenShake(0.8f);
+            camShakeSource.AddVerticalScreenShake(0.8f);*/
             if (particleInstance != null)
             {
                 Destroy(particleInstance);
@@ -109,17 +113,23 @@ public class SwordCollectEvent : QuicktimeEvent
 
             interactPressed = false;
         }
+        FaderController.instance.fadeDuration = 1f;
+        yield return FaderController.instance.FadeToWhite();
         yield return new WaitForSecondsRealtime(0.8f);
-        spriteRenderer.sprite = spriteToSwitch;
+        ContinuousCameraShakeSource.instance.StopAllCoroutines();
         bgLight.intensity = 0;
         bgLight.gameObject.SetActive(false);
         Destroy(particleInstance);
         interactHintTrigger.shouldCheckForCollision = false;
         interactHintTrigger.SetInteractPopupActive(false);
         swirlParticles.gameObject.SetActive(false);
+        FaderController.instance.fadeDuration = 0.5f;
+        yield return FaderController.instance.FadeFromWhite();
+        FaderController.instance.fadeDuration = 1.0f;
         //yield return new WaitForSecondsRealtime(0.3f);
 
         PlayerAnimationManager.instance.SetGainSwordAbility(false);
+        spriteRenderer.sprite = spriteToSwitch;
         StartCoroutine(saveIconConrtoller.DisplaySaveIconCoroutine());
 
         if (id == null)
@@ -158,7 +168,7 @@ public class SwordCollectEvent : QuicktimeEvent
                 if (interactPressed)
                 {
                     interactHintTrigger.SetInteractPopupActive(false);
-                    camShakeSource.AddVerticalScreenShake(0.7f);
+                    ContinuousCameraShakeSource.instance.AddScreenShakeOverTime(0.3f, 200000f, 0.1f);
                     interactPressed = false;
                     StartQuicktimeEvent();
                     
