@@ -115,8 +115,10 @@ public class SwordCollectEvent : QuicktimeEvent
         }
         FaderController.instance.fadeDuration = 1f;
         yield return FaderController.instance.FadeToWhite();
-        yield return new WaitForSecondsRealtime(0.8f);
         ContinuousCameraShakeSource.instance.StopAllCoroutines();
+        CamShakeSource.instance.StopAllCoroutines();
+        yield return new WaitForSecondsRealtime(0.8f);
+        
         bgLight.intensity = 0;
         bgLight.gameObject.SetActive(false);
         Destroy(particleInstance);
