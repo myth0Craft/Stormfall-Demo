@@ -507,6 +507,7 @@ Transform:
   - {fileID: 2103983642}
   - {fileID: 1963288926}
   - {fileID: 996203284}
+  - {fileID: 979043319}
   m_Father: {fileID: 525057047}
   m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
 --- !u!1 &99882287
@@ -3141,7 +3142,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 979043319}
   - {fileID: 752848026}
   - {fileID: 82586624}
   - {fileID: 318991561}
@@ -4216,8 +4216,8 @@ GameObject:
   - component: {fileID: 979043321}
   - component: {fileID: 979043320}
   m_Layer: 6
-  m_Name: StairCol
-  m_TagString: Slope
+  m_Name: CompositeCollider
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4230,14 +4230,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 979043318}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -1, z: -0, w: 0}
-  m_LocalPosition: {x: -17.908, y: -8, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2123573492}
   - {fileID: 451506729}
-  m_Father: {fileID: 525057047}
+  m_Father: {fileID: 82586624}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!66 &979043320
 CompositeCollider2D:

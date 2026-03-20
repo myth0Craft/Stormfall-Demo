@@ -16743,7 +16743,7 @@ GameObject:
   - component: {fileID: 1143344059}
   m_Layer: 6
   m_Name: StairCol
-  m_TagString: Slope
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -6,7 +6,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
 
-    public static PlayerMovement instance {  get; private set; }
+    public static PlayerMovement instance { get; private set; }
     public Rigidbody2D body;
     private LayerMask groundLayer;
     private BoxCollider2D boxCollider;
@@ -18,7 +18,7 @@ public class PlayerMovement : MonoBehaviour
     private PlayerMeleeAttack playerMeleeAttack;
 
     private Vector3 sizeScale;
-    
+
 
 
     //movement values
@@ -33,7 +33,7 @@ public class PlayerMovement : MonoBehaviour
     private bool facingRight = true;
     private bool doubleJumpUsed = false;
     private bool dashUsed = false;
-    
+
 
     //movement fine-tuning values
     private int maxJumpHoldFrames = 15;
@@ -95,7 +95,7 @@ public class PlayerMovement : MonoBehaviour
 
         instance = this;
 
-            //gets values from unity
+        //gets values from unity
         body = GetComponent<Rigidbody2D>();
         boxCollider = GetComponent<BoxCollider2D>();
         controls = PlayerData.getControls();
@@ -103,7 +103,7 @@ public class PlayerMovement : MonoBehaviour
         groundLayer = LayerMask.GetMask("Ground");
         sprintParticles = GetComponentInChildren<ParticleSystem>();
         playerMeleeAttack = GetComponent<PlayerMeleeAttack>();
-        
+
 
 
         //maps controls
@@ -119,9 +119,9 @@ public class PlayerMovement : MonoBehaviour
         controls.Player.Jump.canceled += ctx => jumpHeld = false;
         controls.Player.Jump.started += ctx => jumpHeld = true;
 
-        #if !UNITY_EDITOR
+#if !UNITY_EDITOR
             gameObject.transform.position = new Vector2(PlayerData.posX, PlayerData.posY);
-        #endif
+#endif
     }
 
     private void Start()
@@ -198,7 +198,7 @@ public class PlayerMovement : MonoBehaviour
             dashFrames--;
         }
 
-        
+
         if (dashCooldown > 0)
         {
             dashCooldown--;
@@ -240,12 +240,13 @@ public class PlayerMovement : MonoBehaviour
 
         if (jumpBufferTimer > 0f)
         {
-            if (StuckToWallBuffered() && !IsGroundedBuffered() && (PlayerData.wallJumpUnlocked || abilityDebug)) { 
+            if (StuckToWallBuffered() && !IsGroundedBuffered() && (PlayerData.wallJumpUnlocked || abilityDebug))
+            {
                 ExecuteWallJump();
                 jumpBufferTimer = 0f;
                 isWallJumping = true;
-                
-                
+
+
             }
             else
             {
@@ -287,7 +288,7 @@ public class PlayerMovement : MonoBehaviour
             dashPressed = false;
         }
 
-        
+
 
         //apply current gravity
         body.gravityScale = getGravity() * gravityMultiplier;
@@ -295,13 +296,15 @@ public class PlayerMovement : MonoBehaviour
         {
             body.linearVelocity = new Vector2(body.linearVelocity.x, Mathf.Max(body.linearVelocity.y, -5f));
 
-        } else
+        }
+        else
             body.linearVelocity = new Vector2(body.linearVelocity.x, Mathf.Max(body.linearVelocity.y, -15f));
 
         if (!IsGroundedBuffered() && !StuckToWallBuffered() && body.linearVelocity.y <= -0.1f)
         {
             fallTime++;
-        } else
+        }
+        else
         {
             fallTime = 0f;
         }
@@ -314,28 +317,30 @@ public class PlayerMovement : MonoBehaviour
         if (!IsGroundedBuffered() && !StuckToWallBuffered())
         {
             jumpTime++;
-        } else
+        }
+        else
         {
             jumpTime = 0f;
         }
 
-        
 
-        
 
-        
 
-        
 
-        
 
-        
+
+
+
+
+
+
 
         //emit sprint particles while sprinting
         if (IsGroundedBuffered() && dashHeld && (PlayerData.sprintUnlocked || abilityDebug))
         {
             sprintParticles.enableEmission = true;
-        } else
+        }
+        else
         {
             sprintParticles.enableEmission = false;
         }
@@ -346,7 +351,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    
+
 
     public float getDashFrames()
     {
@@ -363,12 +368,12 @@ public class PlayerMovement : MonoBehaviour
 
 
         //check for sprite turning every frame of movement
-        
+
 
         //if dashing, increase horizontal velocity to 10
         if (dashFrames > 0 && !StuckToWallBuffered() && (PlayerData.dashUnlocked || abilityDebug))
         {
-           
+
             dashUsed = true;
             float xVel = getFacingDirection() ? 10 : -10;
             body.linearVelocity = new Vector2(xVel, 0);
@@ -390,7 +395,7 @@ public class PlayerMovement : MonoBehaviour
              print("dashed");
              }*/
 
-            
+
             float accel = IsGroundedBuffered() ? accelGrounded : accelInAir;
 
             //accelerate from current speed to target speed
@@ -398,27 +403,42 @@ public class PlayerMovement : MonoBehaviour
 
             if (IsOnSlope() && IsGrounded())
             {
-                /*if (Mathf.Abs(horizontalMovement) <= 0.01f)
-                {
-                    body.linearVelocity = new Vector2(0.0f, body.linearVelocity.y);
-                } else*/
-
                 if (IsFacingSlope())
                 {
-                    body.linearVelocity = new Vector2(newVelX * SlopeNormalPerp.x * -1.1f, body.linearVelocity.y);
+
+                    if (!(Mathf.Abs(horizontalMovement) > 0.1f && body.linearVelocity.y >= -0.1f))
+                    {
+                        body.linearVelocity = new Vector2(0f, 0f);
+                        return;
+                    }
+
+                    if (getFacingDirection())
+                    {
+                        body.linearVelocity = new Vector2(Mathf.Min(newVelX * 2, 4.1f) * (SlopeNormalPerp.x * -1.1f), body.linearVelocity.y);
+
+                    }
+                    else
+                    {
+                        body.linearVelocity = new Vector2(newVelX * (SlopeNormalPerp.x * -1.1f), body.linearVelocity.y);
+                    }
                 }
                 else
                 {
 
                     body.linearVelocity = new Vector2(newVelX * SlopeNormalPerp.x * -1, body.linearVelocity.y);
                 }
-                
-                
-            } else
+
+                if (Mathf.Abs(horizontalMovement) < 0.1f)
+                {
+                    body.linearVelocity = new Vector2(0f, body.linearVelocity.y);
+                    return;
+                }
+            }
+            else
             {
                 body.linearVelocity = new Vector2(newVelX, body.linearVelocity.y);
             }
-            
+
 
         }
     }
@@ -474,7 +494,7 @@ public class PlayerMovement : MonoBehaviour
     private void Dash()
     {
 
-        
+
     }
 
     public Vector3 getLinearVelocity()
@@ -506,11 +526,11 @@ public class PlayerMovement : MonoBehaviour
             facingRight = false;
         }*/
 
-        
+
         bool shouldFaceRight = horizontalMovement > 0;
 
         //turn logic - only executes if player is not currently attacking. If the player is in midair, turn logic still applies regardless of attack state
-        if (shouldFaceRight != facingRight && !playerMeleeAttack.isMidAttack && playerMeleeAttack.getAttackTimerTime() <=0)
+        if (shouldFaceRight != facingRight && !playerMeleeAttack.isMidAttack && playerMeleeAttack.getAttackTimerTime() <= 0)
         {
 
             //rotates player
@@ -523,7 +543,7 @@ public class PlayerMovement : MonoBehaviour
 
             PlayerAnimationManager.instance.SetTurnTrigger();
 
-            
+
             //armsAnim.SetTrigger("turn");
 
 
@@ -562,7 +582,7 @@ public class PlayerMovement : MonoBehaviour
 
 
 
-        
+
 
         //if dashing in midair, slow gravity
         if (dashHeld && body.linearVelocity.y < 0 && (PlayerData.dashUnlocked || abilityDebug))
@@ -576,7 +596,7 @@ public class PlayerMovement : MonoBehaviour
             finalGravity = 0f;
         }
 
-        
+
 
         return finalGravity;
 
@@ -599,7 +619,7 @@ public class PlayerMovement : MonoBehaviour
         {
             Debug.DrawRay(hit.point, hit.normal, Color.green);
         }
-        
+
 
         return hit.collider != null;
     }
@@ -616,13 +636,14 @@ public class PlayerMovement : MonoBehaviour
         groundLayer
         );
 
-        
+
 
         if (hit.collider != null)
         {
             SlopeNormalPerp = Vector2.Perpendicular(hit.normal).normalized;
             return hit.collider.CompareTag("Slope");
-        } else
+        }
+        else
         {
             return false;
         }
@@ -630,29 +651,30 @@ public class PlayerMovement : MonoBehaviour
 
     public bool IsFacingSlope()
     {
-        
+
         Vector2 direction = getFacingDirection() ? Vector2.right : Vector2.left;
 
         RaycastHit2D hit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, direction, 0.1f, groundLayer);
         if (hit.collider != null)
         {
             return hit.collider.CompareTag("Slope");
-        } else
+        }
+        else
         {
             return false;
         }
 
 
-            /*RaycastHit2D hit = Physics2D.BoxCast(
-                boxCollider.bounds.center,
-                boxCollider.bounds.size,
-                0f,
-                direction,
-                0.1f,
-                groundLayer
-            );*/
+        /*RaycastHit2D hit = Physics2D.BoxCast(
+            boxCollider.bounds.center,
+            boxCollider.bounds.size,
+            0f,
+            direction,
+            0.1f,
+            groundLayer
+        );*/
 
-            //return hit.collider != null
+        //return hit.collider != null
     }
 
 
@@ -707,10 +729,11 @@ public class PlayerMovement : MonoBehaviour
             body.linearVelocity = new Vector2(body.linearVelocity.x, jumpStrength);
             //body.AddForce(Vector2.up * jumpStrength, ForceMode2D.Impulse);
             jumpHoldCounter = maxJumpHoldFrames;
-            
-            
+
+
             //starting from midair (double jump)
-        } else if (!doubleJumpUsed && (PlayerData.doubleJumpUnlocked || abilityDebug))
+        }
+        else if (!doubleJumpUsed && (PlayerData.doubleJumpUnlocked || abilityDebug))
         {
             body.linearVelocity = new Vector2(body.linearVelocity.x, jumpStrength);
             //body.AddForce(Vector2.up * jumpStrength, ForceMode2D.Impulse);
@@ -741,7 +764,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
 
-    
+
 
     //makes the player jump off of a wall
     private void ExecuteWallJump()

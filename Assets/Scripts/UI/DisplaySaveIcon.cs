@@ -14,11 +14,17 @@ public class DisplaySaveIcon : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null || Instance != this)
+        if (Instance == null)
+        {
             Instance = this;
+            DontDestroyOnLoad(this);
+        }
+            
+        else if (Instance != this)
+            Destroy(gameObject);
 
 
-        
+
     }
 
     private void Start()
@@ -29,11 +35,15 @@ public class DisplaySaveIcon : MonoBehaviour
     public IEnumerator DisplaySaveIconCoroutine()
     {
 
-        if (coroutineActive)
+        /*if (coroutineActive)
         {
             StopCoroutine(DisplaySaveIconCoroutine());
             StartCoroutine(DisplaySaveIconCoroutine());
-        }
+        }*/
+        if (coroutineActive)
+            yield break;
+
+        
         coroutineActive = true;
 
         saveIcon.color = new Color(saveIcon.color.r, saveIcon.color.g, saveIcon.color.b, 0f);

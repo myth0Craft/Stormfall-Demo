@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class SavePoint : MonoBehaviour
@@ -28,7 +29,14 @@ public class SavePoint : MonoBehaviour
             PlayerData.posX = gameObject.transform.position.x;
             PlayerData.posY = gameObject.transform.position.y;
             SaveSystem.Save(PlayerData.saveIndex);
-            StartCoroutine(saveIconConrtoller.DisplaySaveIconCoroutine());
+            try
+            {
+                StartCoroutine(saveIconConrtoller.DisplaySaveIconCoroutine());
+            } catch (Exception e)
+            {
+                Debug.Log(e);
+            }
+            
         }
     }
 }

@@ -19,7 +19,10 @@ public class PlayerAnimationEvent : MonoBehaviour
 
     public void disableAttackQueued()
     {
-        PlayerAnimationManager.instance.SetAttackQueued(false);
+        if (PlayerAnimationManager.instance != null)
+        {
+            PlayerAnimationManager.instance.SetAttackQueued(false);
+        }
     }
 
     public void EnableSword()
