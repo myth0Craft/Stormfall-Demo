@@ -40,7 +40,7 @@ public class SavePointHealthRestore : MonoBehaviour
                     isCurrentlyRestoringHealth = true;
                 }
                 
-            } else if (!isCurrentlyRestoringHealth)
+            } else if (!isCurrentlyRestoringHealth && playerHealth.currentHealth < playerHealth.getMaxHealth())
             {
                 interactHintTrigger.SetInteractPopupActive(true);
             }

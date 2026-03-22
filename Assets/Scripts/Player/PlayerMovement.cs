@@ -345,10 +345,10 @@ public class PlayerMovement : MonoBehaviour
             sprintParticles.enableEmission = false;
         }
 
-        if (IsOnSlope() && (Mathf.Abs(horizontalMovement) <= 0.1f || IsFacingSlope() && body.linearVelocity.x > 0.1f) && IsGrounded() && !jumpPressed && !(jumpHeld && jumpHoldCounter > 0))
+        /*if (IsOnSlope() && (Mathf.Abs(horizontalMovement) <= 0.1f || IsFacingSlope() && body.linearVelocity.x > 0.1f) && IsGrounded() && !jumpPressed && !(jumpHeld && jumpHoldCounter > 0))
         {
             body.linearVelocityY = 0f;
-        }
+        }*/
     }
 
 
@@ -428,9 +428,10 @@ public class PlayerMovement : MonoBehaviour
                     body.linearVelocity = new Vector2(newVelX * SlopeNormalPerp.x * -1, body.linearVelocity.y);
                 }
 
-                if (Mathf.Abs(horizontalMovement) < 0.1f)
+
+                if (Mathf.Abs(horizontalMovement) < 0.1f && jumpPressed == false && body.linearVelocity.y <= 0.01f && Mathf.Abs(SlopeNormalPerp.x) != 1f)
                 {
-                    body.linearVelocity = new Vector2(0f, body.linearVelocity.y);
+                    body.linearVelocity = new Vector2(0f, 0f);
                     return;
                 }
             }
