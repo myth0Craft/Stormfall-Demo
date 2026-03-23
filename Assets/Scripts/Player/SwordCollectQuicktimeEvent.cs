@@ -134,6 +134,8 @@ public class SwordCollectEvent : QuicktimeEvent
         spriteRenderer.sprite = spriteToSwitch;
         StartCoroutine(saveIconConrtoller.DisplaySaveIconCoroutine());
 
+        AbilityObtainedUI.instance.FadeInAbilityScreen(0, 0, "Sword", "desc");
+
         if (id == null)
         {
             Debug.Log("Id of Waystone is null!");
