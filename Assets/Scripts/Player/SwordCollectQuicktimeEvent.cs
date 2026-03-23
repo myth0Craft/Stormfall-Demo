@@ -125,6 +125,9 @@ public class SwordCollectEvent : QuicktimeEvent
         interactHintTrigger.shouldCheckForCollision = false;
         interactHintTrigger.SetInteractPopupActive(false);
         swirlParticles.gameObject.SetActive(false);
+
+        yield return AbilityObtainedUI.instance.FadeInAbilityScreen(0, 0, "Obtained a Sword", "You've reached the end of the demo.", "Left Click to Attack");
+
         FaderController.instance.fadeDuration = 0.5f;
         yield return FaderController.instance.FadeFromWhite();
         FaderController.instance.fadeDuration = 1.0f;
@@ -134,7 +137,7 @@ public class SwordCollectEvent : QuicktimeEvent
         spriteRenderer.sprite = spriteToSwitch;
         StartCoroutine(saveIconConrtoller.DisplaySaveIconCoroutine());
 
-        AbilityObtainedUI.instance.FadeInAbilityScreen(0, 0, "Sword", "desc");
+        
 
         if (id == null)
         {

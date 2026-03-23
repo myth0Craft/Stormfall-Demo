@@ -13,6 +13,7 @@ public class AbilityObtainedUI : MonoBehaviour
     private Image abilityImage;
     private Image inputHintImage;
     private TextMeshProUGUI abilityText;
+    private TextMeshProUGUI abilitySubText;
     private TextMeshProUGUI abilityDescriptor;
     private Image overlay;
 
@@ -45,10 +46,11 @@ public class AbilityObtainedUI : MonoBehaviour
         inputHintImage = transform.Find("InputHintIcon").GetComponent<Image>();
 
         abilityText = transform.Find("AbilityText").GetComponent <TextMeshProUGUI>();
+        abilitySubText = transform.Find("AbilitySubText").GetComponent<TextMeshProUGUI>();
         abilityDescriptor = transform.Find("AbilityDescription").GetComponent<TextMeshProUGUI>();
         overlay = transform.Find("Overlay").GetComponent<Image>();
 
-        if (abilityImage == null || inputHintImage == null || abilityText == null || abilityDescriptor == null || overlay == null)
+        if (abilityImage == null || inputHintImage == null || abilityText == null || abilitySubText == null || abilityDescriptor == null || overlay == null)
         {
             Debug.Log("Ability UI not configured correctly! Ensure no components are missing and child game object names are set correctly!");
         }
@@ -62,7 +64,7 @@ public class AbilityObtainedUI : MonoBehaviour
 
 
 
-    public void FadeInAbilityScreen(int abilityIndex, int inputIconIndex, string abilityName, string abilityDesc)
+    public IEnumerator FadeInAbilityScreen(int abilityIndex, int inputIconIndex, string abilityName, string abilitySubText, string abilityDesc)
     {
         FaderController.instance.setOpaque();
 
@@ -89,18 +91,20 @@ public class AbilityObtainedUI : MonoBehaviour
         }
 
         abilityText.text = abilityName;
+        this.abilitySubText.text = abilitySubText;
         abilityDescriptor.text = abilityDesc;
-        StartCoroutine(FadeInAbilityScreenCoroutine(1.0f));
+        yield return FadeInAbilityScreenCoroutine(1.0f);
         
     }
 
-    public IEnumerator FadeInAbilityScreenCoroutine(float fadeDuration)
+    private IEnumerator FadeInAbilityScreenCoroutine(float fadeDuration)
     {
         FaderController.instance.fadeDuration = fadeDuration;
         yield return FaderController.instance.FadeFromWhite();
-        yield return new WaitForSecondsRealtime(3.0f);
-
         anyButtonPressed = false;
+        yield return new WaitForSecondsRealtime(2.5f);
+
+        
         while (anyButtonPressed == false)
         {
             yield return null;

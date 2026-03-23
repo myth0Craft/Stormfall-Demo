@@ -49,7 +49,6 @@ public class PauseGame : MonoBehaviour
 
     public void OnGamePause()
     {
-
         Time.timeScale = 0;
         PlayerData.gamePaused = true;
         for (int i = 0; i < childObjects.Length; i++)
@@ -61,11 +60,15 @@ public class PauseGame : MonoBehaviour
         {
             UIToHide[i].SetActive(false);
         }
-        
+
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+
     }
 
     public void OnGameUnpause()
     {
+        
         PlayerData.gamePaused = false;
         Time.timeScale = 1;
         for (int i = 0; i < childObjects.Length; i++)
@@ -77,6 +80,8 @@ public class PauseGame : MonoBehaviour
         {
             UIToHide[i].SetActive(true);
         }
-        
+
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 }

@@ -39,12 +39,14 @@ public class SceneLoader : MonoBehaviour
 
     public IEnumerator LoadTitleScreenCoroutine()
     {
+        
         yield return FaderController.instance.FadeOut();
         FaderController.instance.setOpaque();
         PlayerData.gamePaused = false;
         SceneManager.LoadScene("Title");
         Time.timeScale = 1;
-
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
         /*EventSystem eventSystem = EventSystem.current;
         while (eventSystem == null)
         {
@@ -89,6 +91,8 @@ public class SceneLoader : MonoBehaviour
 
     public void LoadGame(int saveIndex)
     {
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
         PlayerData.saveIndex = saveIndex;
         
         Time.timeScale = 0;
@@ -113,7 +117,7 @@ public class SceneLoader : MonoBehaviour
         
         
         
-        PlayerData.AllowGameInput(false);
+        //PlayerData.AllowGameInput(false);
         Time.timeScale = 1;
         yield return FaderController.instance.FadeIn();
         PlayerData.AllowGameInput(true);

@@ -2125,7 +2125,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 4.3705616, y: 14.337765}
+  m_Offset: {x: 4.3705616, y: 14.477586}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -2135,7 +2135,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 20.815533, y: 28.461899}
+  m_Size: {x: 20.815533, y: 28.182257}
   m_EdgeRadius: 0
 --- !u!1 &52773775
 GameObject:
@@ -3515,6 +3515,10 @@ PrefabInstance:
     - target: {fileID: 1812253769847601556, guid: b493426e37b22b447b87d905fb78a025, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2319759305002632288, guid: b493426e37b22b447b87d905fb78a025, type: 3}
+      propertyPath: maxHealth
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -44171,7 +44175,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LoadSceneAsync
   scenesToLoad:
   - 2_Ancient_Springs
-  scenesToUnload: []
+  scenesToUnload:
+  - 4_Ancient_Springs
 --- !u!61 &941928041
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -44206,7 +44211,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 5.7074223, y: -7.497636}
+  m_Offset: {x: 5.7074223, y: -12.670972}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -44216,7 +44221,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 18.141811, y: 30.937563}
+  m_Size: {x: 18.141811, y: 20.59089}
   m_EdgeRadius: 0
 --- !u!1 &944086142
 GameObject:
