@@ -43,6 +43,16 @@ public class DisplaySaveIcon : MonoBehaviour
         if (coroutineActive)
             yield break;
 
+        while(saveIcon == null)
+        {
+
+            Debug.Log("Could not find save icon!");
+            saveIcon = GameObject.FindGameObjectWithTag("SaveIcon").GetComponent<Image>();
+
+            yield return null;
+            
+
+        }
         
         coroutineActive = true;
 

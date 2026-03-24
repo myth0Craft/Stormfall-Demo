@@ -35,7 +35,11 @@ public class PlayerMeleeAttack : MonoBehaviour
         attackHitbox.SetActive(false);
         if (PlayerData.swordUnlocked)
         {
-            PlayerAnimationManager.instance.enableSword();
+
+            if (PlayerAnimationManager.instance != null)
+            {
+                PlayerAnimationManager.instance.enableSword();
+            }
             //playerMovement.enableShield();
         }
         

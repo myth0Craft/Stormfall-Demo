@@ -66,4 +66,14 @@ public class SaveSystem
         }
     }
 
+
+    public static void ResetSaveFile(int saveIndex)
+    {
+        PlayerData.SetDefaults();
+        PlayerData.Save(ref saveData.playerData);
+        saveData.roomData = new();
+        //File.WriteAllText(SaveFileName(saveIndex), JsonUtility.ToJson(saveData, true));
+        File.WriteAllText(SaveFileName(saveIndex), JsonConvert.SerializeObject(saveData, Formatting.Indented));
+    }
+
 }
