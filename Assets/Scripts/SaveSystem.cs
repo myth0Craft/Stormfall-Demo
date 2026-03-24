@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -69,11 +70,18 @@ public class SaveSystem
 
     public static void ResetSaveFile(int saveIndex)
     {
-        PlayerData.SetDefaults();
+        File.Delete(SaveFileName(saveIndex));
+
+        /*PlayerData.SetDefaults();
         PlayerData.Save(ref saveData.playerData);
         saveData.roomData = new();
         //File.WriteAllText(SaveFileName(saveIndex), JsonUtility.ToJson(saveData, true));
-        File.WriteAllText(SaveFileName(saveIndex), JsonConvert.SerializeObject(saveData, Formatting.Indented));
+        File.WriteAllText(SaveFileName(saveIndex), JsonConvert.SerializeObject(saveData, Formatting.Indented));*/
+    }
+
+    public static bool CheckIfFileExists(int saveIndex)
+    {
+        return File.Exists(SaveFileName(saveIndex));
     }
 
 }

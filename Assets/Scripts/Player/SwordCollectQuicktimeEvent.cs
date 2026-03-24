@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
@@ -30,8 +31,12 @@ public class SwordCollectEvent : QuicktimeEvent
 
     private bool swordCollected = false;
 
+    private TextMeshProUGUI text;
+
     private void Awake()
     {
+        text = GetComponentInChildren<TextMeshProUGUI>();
+        text.gameObject.SetActive(false);
         controls = PlayerData.getControls();
         interactHintTrigger = GetComponent<InteractHintTrigger>();
         controls.Player.Interact.performed += ctx => interactPressed = true;
@@ -126,12 +131,13 @@ public class SwordCollectEvent : QuicktimeEvent
         interactHintTrigger.SetInteractPopupActive(false);
         swirlParticles.gameObject.SetActive(false);
 
-        yield return AbilityObtainedUI.instance.FadeInAbilityScreen(0, 0, "Obtained a Sword", "You've reached the end of the demo.", "Left Click to Attack");
+        yield return AbilityObtainedUI.instance.FadeInAbilityScreen(0, 0, "Obtained a Sword", "", "Left Click to Attack");
 
         FaderController.instance.fadeDuration = 0.5f;
         yield return FaderController.instance.FadeFromWhite();
-        FaderController.instance.fadeDuration = 1.0f;
-        //yield return new WaitForSecondsRealtime(0.3f);
+
+
+        yield return new WaitForSecondsRealtime(0.7f);
 
         PlayerAnimationManager.instance.SetGainSwordAbility(false);
         spriteRenderer.sprite = spriteToSwitch;
@@ -153,6 +159,11 @@ public class SwordCollectEvent : QuicktimeEvent
         SaveSystem.Save(PlayerData.saveIndex);
 
         EndQuickTimeEvent();
+
+        text.color = new Color(255, 255, 255, 255);
+        text.gameObject.SetActive(true);
+        yield return new WaitForSecondsRealtime(3.0f);
+        text.gameObject.SetActive(false);
     }
 
 
