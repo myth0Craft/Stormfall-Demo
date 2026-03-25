@@ -149,7 +149,7 @@ public class PlayerMovement : MonoBehaviour
             dashUsed = false;
         }
 
-
+        //--- OLD ANIMATION STUFF. NOW LOCATED IN PLAYER ANIMATION MANAGER ---
 
         /*if (body.linearVelocity.y < fallSpeedYDampingChangeThreshold && CameraManager.instance.isLerpingYDamping && CameraManager.instance.LerpedFromPlayerFalling)
         {
@@ -204,12 +204,12 @@ public class PlayerMovement : MonoBehaviour
             dashCooldown--;
         }
 
-        //base left/right movement triggered per frame
+        //Base left/right movement triggered per frame.
         MoveHorizontal();
 
         previousHorizontalMovement = horizontalMovement;
 
-        //exits dash/sprint input when hitting a wall
+        //exits dash/sprint input when hitting a wall.
         if (StuckToWallBuffered())
         {
             dashHeld = false;
@@ -218,7 +218,7 @@ public class PlayerMovement : MonoBehaviour
             dashCooldown = 15;
         }
 
-        //prevents dash inputs pressed while in midair from being activated when the player hits the ground
+        //prevents dash inputs pressed while in midair from being activated when the player hits the ground.
         if (!IsGroundedBuffered() && dashHeld == false)
         {
             dashPressed = false;
@@ -257,7 +257,7 @@ public class PlayerMovement : MonoBehaviour
 
         ApplyJumpHold();
 
-        //activates when player releases jump input
+        //activates when player releases jump input. Immediatly slows down vertical velocity so that the player can control jump height precisely.
         if (wasJumpHeld && !jumpHeld)
         {
             OnJumpReleased();
@@ -311,9 +311,7 @@ public class PlayerMovement : MonoBehaviour
 
         float reqFallTime = Math.Abs(body.linearVelocity.x) > 0.1f ? 0f : 18f;
 
-        //capeAnim.SetBool("falling", fallTime > reqFallTime && !IsGroundedBuffered() && !StuckToWallBuffered());
 
-        //if player is midair increase the midair time counter
         if (!IsGroundedBuffered() && !StuckToWallBuffered())
         {
             jumpTime++;
@@ -384,7 +382,7 @@ public class PlayerMovement : MonoBehaviour
                 TurnSprite();
 
             float xMultiplier = 1f;
-            //if sprinting, multiply velocity by 1.7
+            //if sprinting, increase velocity.
             if (PlayerData.sprintUnlocked || abilityDebug)
             {
                 xMultiplier = dashHeld ? 1.70f : 1;
@@ -398,7 +396,6 @@ public class PlayerMovement : MonoBehaviour
 
             float accel = IsGroundedBuffered() ? accelGrounded : accelInAir;
 
-            //accelerate from current speed to target speed
             float newVelX = Mathf.MoveTowards(body.linearVelocity.x, horizontalMovement * speed * xMultiplier, accel * Time.fixedDeltaTime);
 
             if (IsOnSlope() && IsGrounded())
@@ -509,49 +506,25 @@ public class PlayerMovement : MonoBehaviour
     }
 
     public void TurnSprite()
-    {
-        //Vector3 scale = transform.localScale;
-        //scale.x = horizontalMovement > 0 ? Mathf.Abs(scale.x) : -Mathf.Abs(scale.x);
-        //scale.y = horizontalMovement > 0 ? 0f : 180f;
-        //transform.localScale = scale;
-
-        /*if (horizontalMovement > 0)
-        {
-            Vector3 rotator = new Vector3(transform.rotation.x, 0f, transform.rotation.z);
-            transform.rotation = Quaternion.Euler(rotator);
-            facingRight = true;
-        }else
-        {
-            Vector3 rotator = new Vector3(transform.rotation.x, 180f, transform.rotation.z);
-            transform.rotation = Quaternion.Euler(rotator);
-            facingRight = false;
-        }*/
-
-
+    { 
         bool shouldFaceRight = horizontalMovement > 0;
 
-        //turn logic - only executes if player is not currently attacking. If the player is in midair, turn logic still applies regardless of attack state
+        //turn logic - only executes if player is not currently attacking. If the player is in midair, turn logic still applies regardless of attack state.
         if (shouldFaceRight != facingRight && !playerMeleeAttack.isMidAttack && playerMeleeAttack.getAttackTimerTime() <= 0)
         {
 
-            //rotates player
+            //rotates player 180 on y
             Vector3 rot = visual.transform.rotation.eulerAngles;
             rot.y = shouldFaceRight ? 0f : 180f;
             visual.transform.rotation = Quaternion.Euler(rot);
-            //body.transform.localScale = new Vector3(shouldFaceRight ? 1 : -1, 1, 1);
 
             facingRight = shouldFaceRight;
 
             PlayerAnimationManager.instance.SetTurnTrigger();
-
-
-            //armsAnim.SetTrigger("turn");
-
-
         }
     }
 
-    //returns the current gravity
+    //returns the desired gravity effect. Changes based on player jump state or if they're on a wall
     private float getGravity()
     {
 
@@ -565,10 +538,10 @@ public class PlayerMovement : MonoBehaviour
             finalGravity = 0f;
         }
 
-        //starting a jump cycle
+        //Starting a jump cycle
         if (body.linearVelocity.y > 0 && !jumpHeld)
             finalGravity = lowJumpGravity;
-        //falling
+        //Falling
         else if (body.linearVelocity.y < 0 && jumpTime > 0f)
             finalGravity = fallGravity;
 
@@ -605,7 +578,6 @@ public class PlayerMovement : MonoBehaviour
     }
 
 
-    //checks if player is on ground
     public bool IsGrounded()
     {
         RaycastHit2D hit = Physics2D.BoxCast(
@@ -690,7 +662,6 @@ public class PlayerMovement : MonoBehaviour
         return groundedRememberTimer > 0f;
     }
 
-    //checks if player is attached to a wall
     private bool StuckToWall()
     {
         Vector2 direction = getFacingDirection() ? Vector2.right : Vector2.left;
@@ -743,7 +714,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    //continue to apply force if jump is held
+    //continue to apply force if jump is held past the first frame.
     private void ApplyJumpHold()
     {
         if (jumpHeld && jumpHoldCounter > 0)
@@ -754,7 +725,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    //immediatly slow down y velocity when jump is released or exceeds maximum height
+    //immediatly slow down y velocity when jump is released or exceeds maximum height. This allows player to have fine control over jump height
     private void OnJumpReleased()
     {
         if (body.linearVelocity.y > 0)

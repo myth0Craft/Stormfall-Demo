@@ -160,9 +160,32 @@ public class SwordCollectEvent : QuicktimeEvent
 
         EndQuickTimeEvent();
 
-        text.color = new Color(255, 255, 255, 255);
+
+        yield return new WaitForSeconds(2.0f);
+
+        text.color = new Color(255, 255, 255, 0);
         text.gameObject.SetActive(true);
-        yield return new WaitForSecondsRealtime(3.0f);
+
+        float demoCompleteFadeInTime = 0f;
+        while (demoCompleteFadeInTime < 1f)
+        {
+            demoCompleteFadeInTime += Time.unscaledDeltaTime;
+            float time = Mathf.Clamp01(demoCompleteFadeInTime / 1.0f);
+            text.color = Color.Lerp(new Color(text.color.r, text.color.g, text.color.b, 0), new Color(text.color.r, text.color.g, text.color.b, 1), time);
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(3.0f);
+
+        demoCompleteFadeInTime = 0f;
+
+        while (demoCompleteFadeInTime < 1f)
+        {
+            demoCompleteFadeInTime += Time.unscaledDeltaTime;
+            float time = Mathf.Clamp01(demoCompleteFadeInTime / 1.0f);
+            text.color = Color.Lerp(new Color(text.color.r, text.color.g, text.color.b, 1), new Color(text.color.r, text.color.g, text.color.b, 0), time);
+            yield return null;
+        }
         text.gameObject.SetActive(false);
     }
 

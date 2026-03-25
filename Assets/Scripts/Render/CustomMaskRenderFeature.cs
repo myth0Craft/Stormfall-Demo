@@ -56,7 +56,6 @@ public class CustomMaskRenderFeature : ScriptableRendererFeature
         _lastRenderedFrame = Time.frameCount;
 
 
-        //Debug.Log($"Driver firing - frame:{Time.frameCount} hiddenCam:{hiddenCam.GetInstanceID()}");
 
         hiddenCam.cullingMask = settings.foregroundLayers;
 
@@ -84,14 +83,12 @@ public class CustomMaskRenderFeature : ScriptableRendererFeature
 
         bool needsRealloc = tex == null || !tex.IsCreated() || tex.width != w || tex.height != h;
 
-        // Always unsubscribe first — guarantees exactly one subscription after Create()
         if (_renderHandler != null)
         {
             RenderPipelineManager.beginCameraRendering -= _renderHandler;
             _renderHandler = null;
         }
 
-        // Always destroy old hidden cam
         if (hiddenCamGO != null || hiddenCam != null)
         {
             SafeDestroy(hiddenCamGO);
@@ -118,7 +115,7 @@ public class CustomMaskRenderFeature : ScriptableRendererFeature
             tex = new RenderTexture(desc) { name = "__BlurRT" + System.Guid.NewGuid() };
 
             RenderingUtils.ReAllocateHandleIfNeeded(ref handle,
-                Vector2.one / settings.downscaling, // Scale factor
+                Vector2.one / settings.downscaling,
                 desc,
                 FilterMode.Bilinear,
                 TextureWrapMode.Clamp,
@@ -136,7 +133,7 @@ public class CustomMaskRenderFeature : ScriptableRendererFeature
                 ? RenderPassEvent.BeforeRenderingOpaques
                 : RenderPassEvent.AfterRenderingTransparents;
 
-        // Recreate hidden cam
+        //Configure the hidden camera here.
         hiddenCamGO = new GameObject("HiddenCamGO") { hideFlags = HideFlags.HideAndDontSave };
         hiddenCam = hiddenCamGO.AddComponent<Camera>();
         hiddenCam.cullingMask = settings.foregroundLayers;
@@ -159,7 +156,6 @@ public class CustomMaskRenderFeature : ScriptableRendererFeature
         urpData.requiresColorTexture = false;
         urpData.antialiasing = AntialiasingMode.None;
 
-        // Subscribe exactly once
         _renderHandler = OnBeginCameraRendering;
         RenderPipelineManager.beginCameraRendering += _renderHandler;
     }
