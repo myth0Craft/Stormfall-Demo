@@ -33,6 +33,9 @@ public class SwordCollectEvent : QuicktimeEvent
 
     private TextMeshProUGUI text;
 
+    public AudioClip hurtClip;
+    public AudioClip UIClip;
+
     private void Awake()
     {
         text = GetComponentInChildren<TextMeshProUGUI>();
@@ -88,13 +91,16 @@ public class SwordCollectEvent : QuicktimeEvent
             yield return new WaitForSecondsRealtime(0.9f);
             Destroy(particleInstance);
             interactHintTrigger.SetInteractPopupActive(true);
-
+            AudioSource.PlayClipAtPoint(hurtClip, transform.position, 5.0f);
             yield return new WaitForSecondsRealtime(0.3f);
             while(interactPressed == false)
             {
                 yield return null;
             }
 
+            AudioSource.PlayClipAtPoint(UIClip, transform.position);
+            
+            
             CamShakeSource.instance.AddScreenShake(0.2f);
             ContinuousCameraShakeSource.instance.currentForce *= 1.5f;
             bgLight.intensity *= 1.5f;
@@ -141,6 +147,7 @@ public class SwordCollectEvent : QuicktimeEvent
 
         PlayerAnimationManager.instance.SetGainSwordAbility(false);
         spriteRenderer.sprite = spriteToSwitch;
+        AudioSource.PlayClipAtPoint(UIClip, transform.position, 5.0f);
         StartCoroutine(saveIconConrtoller.DisplaySaveIconCoroutine());
 
         

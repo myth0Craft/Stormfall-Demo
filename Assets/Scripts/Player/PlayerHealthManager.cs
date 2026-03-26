@@ -62,7 +62,7 @@ public class PlayerHealthManager : HealthManager
 
     protected override void AddHitEffects()
     {
-        AudioSource.PlayClipAtPoint(hurtSound, PlayerMovement.instance.transform.position, 5.0f);
+        AudioSource.PlayClipAtPoint(hurtSound, PlayerMovement.instance.transform.position, 10.0f);
         CamShakeSource.instance.AddScreenShake(0.05f);
         StartCoroutine(HitColorCoroutine());
         StartCoroutine(hitParticles());

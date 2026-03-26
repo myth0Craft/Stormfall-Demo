@@ -59,7 +59,7 @@ public class SceneLoader : MonoBehaviour
         yield return FaderController.instance.FadeIn();
 
         MusicManager.instance.SetMusic(true);
-        MusicManager.instance.FadeIn(2.0f, 0.5f);
+        MusicManager.instance.FadeIn(2.0f, 0.3f);
         //eventSystem.enabled = true;
 
         //Destroy(this.gameObject);

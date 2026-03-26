@@ -10,6 +10,7 @@ public class EnemyHealthManager : HealthManager
     private SpriteRenderer spriteRenderer;
     public bool shouldSaveAcrossRooms = false;
     [SerializeField] private string id;
+    public AudioClip hurtSound;
 
 
     public override void Awake()
@@ -66,6 +67,7 @@ public class EnemyHealthManager : HealthManager
 
     public IEnumerator HitColorCoroutine()
     {
+        AudioSource.PlayClipAtPoint(hurtSound, transform.position, 10.0f);
         AddParticles();
         spriteRenderer.material = hurtMaterial;
         yield return new WaitForSecondsRealtime(0.15f);

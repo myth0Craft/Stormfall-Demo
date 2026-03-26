@@ -35,7 +35,7 @@ public class PlayerAnimationEvent : MonoBehaviour
         if (PlayerMovement.instance.IsGroundedBuffered() && PlayerData.inWater == false)
         {
             audioSource.pitch = Random.Range(0.5f, 1.0f);
-            audioSource.PlayOneShot(footstep, 0.2f);
+            audioSource.PlayOneShot(footstep, 0.1f);
         }
 
         

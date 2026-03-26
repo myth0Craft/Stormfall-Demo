@@ -10,6 +10,8 @@ public class SavePointHealthRestore : MonoBehaviour
 
     private PlayerHealthManager playerHealth;
 
+    public AudioClip healSound;
+
     private void Awake()
     {
         playerHealth = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerHealthManager>();
@@ -36,6 +38,7 @@ public class SavePointHealthRestore : MonoBehaviour
                 interactPressed = false;
                 if (playerHealth.currentHealth < playerHealth.getMaxHealth() && !isCurrentlyRestoringHealth)
                 {
+                    AudioSource.PlayClipAtPoint(healSound, transform.position, 0.25f);
                     StartCoroutine(RestoreHealthCoroutine());
                     isCurrentlyRestoringHealth = true;
                 }
