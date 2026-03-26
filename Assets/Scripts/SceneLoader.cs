@@ -39,8 +39,9 @@ public class SceneLoader : MonoBehaviour
 
     public IEnumerator LoadTitleScreenCoroutine()
     {
-        
+        MusicManager.instance.FadeOut(2.0f);
         yield return FaderController.instance.FadeOut();
+        
         FaderController.instance.setOpaque();
         PlayerData.gamePaused = false;
         SceneManager.LoadScene("Title");
@@ -56,8 +57,11 @@ public class SceneLoader : MonoBehaviour
 
         eventSystem.enabled = false;*/
         yield return FaderController.instance.FadeIn();
+
+        MusicManager.instance.SetMusic(true);
+        MusicManager.instance.FadeIn(2.0f, 0.5f);
         //eventSystem.enabled = true;
-        
+
         //Destroy(this.gameObject);
     }
 
@@ -96,11 +100,14 @@ public class SceneLoader : MonoBehaviour
         PlayerData.saveIndex = saveIndex;
         
         Time.timeScale = 0;
+        PlayerData.inWater = false;
         StartCoroutine(LoadGameCoroutine());
     }
 
     public IEnumerator LoadGameCoroutine()
     {
+        MusicManager.instance.FadeOut(2.0f);
+        
         PlayerData.AllowGameInput(false);
         yield return FaderController.instance.FadeOut();
         FaderController.instance.setOpaque();
@@ -121,12 +128,14 @@ public class SceneLoader : MonoBehaviour
         Time.timeScale = 1;
         yield return FaderController.instance.FadeIn();
         PlayerData.AllowGameInput(true);
+        MusicManager.instance.SetMusic(false);
         //Destroy(this.gameObject);
     }
 
 
     public void LoadGameFromPlayerDeath()
     {
+        PlayerData.inWater = false;
         StartCoroutine(LoadGameFromPlayerDeathCoroutine());
     }
     public IEnumerator LoadGameFromPlayerDeathCoroutine()

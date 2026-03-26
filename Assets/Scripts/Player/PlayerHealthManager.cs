@@ -9,8 +9,8 @@ public class PlayerHealthManager : HealthManager
     public Material hurtMat;
     public ParticleSystem hitParticle;
     private CamShakeSource camShakeSource;
-    
 
+    public AudioClip hurtSound;
 
     private bool isDead = false;
 
@@ -62,10 +62,12 @@ public class PlayerHealthManager : HealthManager
 
     protected override void AddHitEffects()
     {
+        AudioSource.PlayClipAtPoint(hurtSound, PlayerMovement.instance.transform.position, 5.0f);
         CamShakeSource.instance.AddScreenShake(0.05f);
         StartCoroutine(HitColorCoroutine());
         StartCoroutine(hitParticles());
         GlobalHitstopManager.DoHitstop(0.05f);
+        
 
         //StartCoroutine(hitStopCoroutine());
     }

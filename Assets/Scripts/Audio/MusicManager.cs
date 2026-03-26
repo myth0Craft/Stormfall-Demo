@@ -6,10 +6,16 @@ using Unity.VisualScripting;
 
 public class MusicManager : MonoBehaviour
 {
+    public AudioClip titleScreenMusic;
+    public AudioClip gameMusic;
+
+    private AudioClip currentClip;
+
     public AudioSource music;
 
     public static MusicManager instance;
 
+    public bool inTitleScreen = false;
     public bool currentlyPlaying = false;
     private Coroutine currentFade;
 
@@ -18,18 +24,31 @@ public class MusicManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
+            DontDestroyOnLoad(gameObject);
         } else
         {
-            Destroy(this.gameObject);
+            Destroy(gameObject);
         }
 
+        
 
-        if (music != null)
+
+        if (titleScreenMusic != null && gameMusic != null && music != null)
         {
+
+            if (inTitleScreen)
+            {
+                music.clip = titleScreenMusic;
+            } else
+            {
+                music.clip = gameMusic;
+            }
+
             if (currentlyPlaying)
             {
                 music.Play();
-            } else
+            }
+            else
             {
                 music.Stop();
             }
@@ -37,17 +56,32 @@ public class MusicManager : MonoBehaviour
         }
     }
 
+    public void SetMusic(bool isTitle)
+    {
+        inTitleScreen = isTitle;
+
+        AudioClip targetClip = inTitleScreen ? titleScreenMusic : gameMusic;
+
+        if (music.clip != targetClip)
+        {
+            music.clip = targetClip;
+        }
+    }
+
     public void FadeIn(float duration, float endVolume)
     {
-        if (currentlyPlaying) return;
+        if (music.isPlaying && music.volume > 0.01f) return;
 
         if (currentFade != null) StopCoroutine(currentFade);
         currentFade = StartCoroutine(FadeInCoroutine(duration, endVolume));
     }
 
+
+
     public void FadeOut(float duration)
     {
-        if (!currentlyPlaying) return;
+        if (!music.isPlaying && music.volume < 0.01f) return;
+
         if (currentFade != null) StopCoroutine(currentFade);
         currentFade = StartCoroutine(FadeOutCoroutine(duration));
     }

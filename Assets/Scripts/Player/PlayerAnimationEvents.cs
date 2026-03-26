@@ -4,16 +4,21 @@ using UnityEngine;
 public class PlayerAnimationEvent : MonoBehaviour
 {
 
-    [SerializeField] private PlayerMovement playerMovement;
+    //[SerializeField] private PlayerMovement playerMovement;
 
     [SerializeField] private PlayerMeleeAttack playerAttack;
 
     [SerializeField] private AudioClip swordSwingSoundClip;
 
+    public AudioClip footstep;
+
+    private AudioSource audioSource;
+
     private CinemachineImpulseSource impulseSource;
 
     void Awake()
     {
+        audioSource = GetComponent<AudioSource>();
         impulseSource = GetComponent<CinemachineImpulseSource>();
     }
 
@@ -23,6 +28,17 @@ public class PlayerAnimationEvent : MonoBehaviour
         {
             PlayerAnimationManager.instance.SetAttackQueued(false);
         }
+    }
+
+    public void PlayFootstepSound()
+    {
+        if (PlayerMovement.instance.IsGroundedBuffered() && PlayerData.inWater == false)
+        {
+            audioSource.pitch = Random.Range(0.5f, 1.0f);
+            audioSource.PlayOneShot(footstep, 0.2f);
+        }
+
+        
     }
 
     public void EnableSword()
@@ -44,13 +60,13 @@ public class PlayerAnimationEvent : MonoBehaviour
     public void startAttack()
     {
         playerAttack.isMidAttack = true;
-        AudioSource.PlayClipAtPoint(swordSwingSoundClip, playerMovement.transform.position);
+        AudioSource.PlayClipAtPoint(swordSwingSoundClip, PlayerMovement.instance.transform.position);
     }
 
     public void triggerAttackScreenShake()
     {
-        float xForce = playerMovement.getFacingDirection() ? -0.008f : 0.008f;
-        if (playerMovement.getLinearVelocity().x > 0.01f || playerMovement.getLinearVelocity().x < -0.01f)
+        float xForce = PlayerMovement.instance.getFacingDirection() ? -0.008f : 0.008f;
+        if (PlayerMovement.instance.getLinearVelocity().x > 0.01f || PlayerMovement.instance.getLinearVelocity().x < -0.01f)
         {
             xForce *= 3;
         }

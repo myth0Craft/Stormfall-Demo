@@ -11,6 +11,8 @@ public static class PlayerData
     public static float posX = -5.0f;
     public static float posY = -1.7f;
 
+    public static bool inWater = false;
+
     //ABILITIES
 
     public static bool dashUnlocked = false;
