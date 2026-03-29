@@ -31,71 +31,15 @@ public class CameraFollowObject : MonoBehaviour
 
     private void Update()
     {
-        //stores the ground y if player is grounded
-        /*if (player.IsGrounded() && player.getLinearVelocity().y == 0)
-        {
-            //oldYBeforeJump = yBeforeJump;
-            yBeforeJump = playerTransform.position.y;
-            *//*if (Mathf.Abs(oldYBeforeJump - yBeforeJump) <= 0.1)
-            {
-                yBeforeJump = oldYBeforeJump;
-            }*//*
-        }*/
 
         Vector3 targetOffset = new Vector3(getXOffset(), 0, 0);
 
-        //add calculated offsets to player's pos to build the final camera pos
+        
         Vector3 targetPosition = playerTransform.position + targetOffset;
-        /*if (!playerInVerticalDeadZone())
-        {
-            if (shouldLerpY())
-            {
-                targetPosition.y = Mathf.Lerp(transform.position.y, playerTransform.position.y, Time.deltaTime * smoothSpeed);
-            }
 
-        }
-        else
-        {
-            targetPosition.y = Mathf.Lerp(transform.position.y, yBeforeJump, Time.deltaTime * smoothSpeed);
-        }
-        if (!shouldLerpY())
-        {
-            if (transform.position.y < playerTransform.position.y)
-                targetPosition.y = Mathf.Lerp(transform.position.y, playerTransform.position.y, Time.deltaTime * smoothSpeed);
-        }*/
-        /*if (!player.IsGroundedBuffered())
-        {
-            if (!player.isWallJumping)
-                transform.position = new Vector3(Mathf.Lerp(transform.position.x, targetPosition.x, Time.deltaTime * smoothSpeed), targetPosition.y, targetPosition.z);
-            else
-               transform.position = new Vector3(transform.position.x, targetPosition.y, targetPosition.z);
-        } else
-        {
-            transform.position = new Vector3(targetPosition.x, targetPosition.y, targetPosition.z);
-        }*/
-
-        transform.position = new Vector3(targetPosition.x, targetPosition.y, targetPosition.z);
+        transform.position = new Vector3(targetPosition.x, Mathf.Lerp(transform.position.y, targetPosition.y, Time.deltaTime * smoothSpeed), targetPosition.z);
     }
 
-    public bool shouldLerpY()
-    {
-        if (player.getLinearVelocity().y < 0)
-        {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
-    }
-
-    private bool playerInVerticalDeadZone()
-    {
-        if (playerTransform.position.y - yBeforeJump > verticalDeadZone || playerTransform.position.y - yBeforeJump < -verticalDeadZone)
-            return false;
-        else
-            return true;
-    }
 
     public float getXOffset()
     {
@@ -124,4 +68,6 @@ public class CameraFollowObject : MonoBehaviour
 
         return currentOffset;
     }
+
+
 }

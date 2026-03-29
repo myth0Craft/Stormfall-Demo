@@ -39,7 +39,6 @@ public class QuicktimeEvent : MonoBehaviour
 
     protected virtual void EnableSpecificInput()
     {
-        //call controls.Player.controlX.Enable();
     }
 
     private void disableControls()

@@ -309,7 +309,7 @@ public class PlayerMovement : MonoBehaviour
             fallTime = 0f;
         }
 
-        float reqFallTime = Math.Abs(body.linearVelocity.x) > 0.1f ? 0f : 18f;
+        //float reqFallTime = Math.Abs(body.linearVelocity.x) > 0.1f ? 0f : 18f;
 
 
         if (!IsGroundedBuffered() && !StuckToWallBuffered())
@@ -396,7 +396,8 @@ public class PlayerMovement : MonoBehaviour
 
             float accel = IsGroundedBuffered() ? accelGrounded : accelInAir;
 
-            float newVelX = Mathf.MoveTowards(body.linearVelocity.x, horizontalMovement * speed * xMultiplier, accel * Time.fixedDeltaTime);
+            float newVelX = Mathf.MoveTowards(body.linearVelocity.x, horizontalMovement * speed * xMultiplier, accel * Time.deltaTime * 2);
+            //float newVelX = horizontalMovement * speed * xMultiplier;
 
             if (IsOnSlope() && IsGrounded())
             {

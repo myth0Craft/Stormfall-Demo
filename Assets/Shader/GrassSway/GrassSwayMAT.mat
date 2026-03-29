@@ -45,7 +45,7 @@ Material:
     - _TimeOffset: 0
     - _WindIntensity: 1
     - _WindScale: 0.31
-    - _WindSpeed: 0.92
+    - _WindSpeed: 0.5
     - _YMaskInfluence: 3
     - _externalInfluence: 1
     m_Colors:

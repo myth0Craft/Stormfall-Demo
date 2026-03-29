@@ -17,11 +17,14 @@ public class AbilityObtainedUI : MonoBehaviour
     private TextMeshProUGUI abilityDescriptor;
     private Image overlay;
 
+    private TextMeshProUGUI continueText;
+    private Image continueIcon;
+
     public Sprite[] abilityIconSprites;
     public Sprite[] inputIconSprites;
     
 
-    private InputAction anyButtonAction;
+    //private InputAction anyButtonAction;
     private bool anyButtonPressed;
 
 
@@ -34,12 +37,10 @@ public class AbilityObtainedUI : MonoBehaviour
         {
             Destroy(this);
         }
-
-        anyButtonAction = new InputAction(type: InputActionType.Button, binding: "/*/<button>");
-
-        anyButtonAction.Enable();
-
-        anyButtonAction.performed += ctx => anyButtonPressed = true;
+        PlayerControls controls = PlayerData.getControls();
+        controls.Player.Interact.performed += ctx => anyButtonPressed = true;
+        controls.Player.Jump.performed += ctx => anyButtonPressed = true;
+        controls.Player.Dash.performed += ctx => anyButtonPressed = true;
 
         abilityImage = transform.Find("AbilityImage").GetComponent<Image>();
 
@@ -50,7 +51,10 @@ public class AbilityObtainedUI : MonoBehaviour
         abilityDescriptor = transform.Find("AbilityDescription").GetComponent<TextMeshProUGUI>();
         overlay = transform.Find("Overlay").GetComponent<Image>();
 
-        if (abilityImage == null || inputHintImage == null || abilityText == null || abilitySubText == null || abilityDescriptor == null || overlay == null)
+        continueText = transform.Find("Continue").GetComponent<TextMeshProUGUI>();
+        continueIcon = transform.Find("ContinueIcon").GetComponent<Image>();
+
+        if (abilityImage == null || inputHintImage == null || abilityText == null || abilitySubText == null || abilityDescriptor == null || overlay == null || continueText == null || continueIcon == null)
         {
             Debug.Log("Ability UI not configured correctly! Ensure no components are missing and child game object names are set correctly!");
         }
@@ -109,6 +113,8 @@ public class AbilityObtainedUI : MonoBehaviour
         {
             yield return null;
         }
+
+
 
         foreach (Transform child in transform)
         {
