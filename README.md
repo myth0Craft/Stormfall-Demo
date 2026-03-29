@@ -41,6 +41,12 @@ __Attack (requires sword ability):__ Left Click
 **Pause:** Esc
 
 # Gallery
-
+<img width="1919" height="1079" alt="Screenshot 2026-03-26 095411" src="https://github.com/user-attachments/assets/5ee25c98-f6da-4a8b-8644-e827d70cc75e" />
+<img width="1919" height="1079" alt="Screenshot 2026-03-22 125802" src="https://github.com/user-attachments/assets/7dbe49ce-85c4-4ddf-9cbf-bdf3e853d467" />
+<img width="1919" height="1079" alt="Screenshot 2026-03-22 125244" src="https://github.com/user-attachments/assets/f5acfaec-e963-4f94-aeb1-4472991c6832" />
+<img width="1919" height="1079" alt="Screenshot 2026-03-22 125231" src="https://github.com/user-attachments/assets/602d7f36-12bb-4ea4-962f-863c3cc2d1dd" />
+<img width="1919" height="1079" alt="Screenshot 2026-03-18 183526" src="https://github.com/user-attachments/assets/c096a302-d41e-4e39-a464-4805d4a5c83f" />
+<img width="1919" height="1079" alt="Screenshot 2026-03-14 103537" src="https://github.com/user-attachments/assets/62a8ae65-102e-462d-a12b-f24c61d39c21" />
+<img width="1919" height="1079" alt="Screenshot 2026-02-20 182508" src="https://github.com/user-attachments/assets/e7c11099-6a99-403c-961a-101f75ae56cc" />
 
 
