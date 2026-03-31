@@ -107,6 +107,11 @@ Cakewalk Sonar.
 <br>
 <br>
 Sound effects credit: https://freesound.org/
+<br>
+<br>
+**AI Disclosure:** I used Chatgpt for research purposes only, specifically for researching how to use
+the poorly documented Unity 6 URP Render Graph API. No code, documentation, or assets
+of any kind are AI generated.
 
 <!--# Why I Made This
 I've always loved 2D games. I grew up playing the Ori games on the Xbox One and 
