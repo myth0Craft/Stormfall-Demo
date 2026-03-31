@@ -132,6 +132,18 @@ public class UIButtonFader : MonoBehaviour
         StartCoroutine(FadeOutRoutine());
     }
 
+    public void FadeOutThenFadeIn(float secondsBeforeFadeIn)
+    {
+        StartCoroutine(FadeOutThenFadeInCoroutine(secondsBeforeFadeIn));
+    }
+
+    private IEnumerator FadeOutThenFadeInCoroutine(float secondsBeforeFadeIn)
+    {
+        yield return FadeOutRoutine();
+        yield return new WaitForSeconds(secondsBeforeFadeIn);
+        yield return FadeInRoutine();
+    }
+
 
     private IEnumerator FadeInRoutine()
     {
