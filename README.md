@@ -1,6 +1,6 @@
-# **Stormfall**
+<img width="2158" height="1079" alt="banner_with_title" src="https://github.com/user-attachments/assets/c1abe7ab-7232-4a5c-89e3-293da641a1c7" />
 
-## Gameplay Demo Video
+## Gameplay Demo Video:
 
 
 [![Stormfall Demo - First 3 Minutes of Gameplay](https://github.com/user-attachments/assets/cadc0753-4ad6-4c50-a507-8dd2b8b24aa9)](https://youtu.be/ekKG5TU68Wg)
@@ -10,8 +10,15 @@ https://youtu.be/ekKG5TU68Wg
 
 Stormfall is a 2D metroidvania action-platformer set in a fallen kingdom. 
 Reborn from an ancient slumber, a lone knight must embark on an epic journey across a kingdom 
-of light and shadow. Restore the lost lights of the kingdom and master tight, fast-paced combat to save it from crumbling into a 
+of light and shadow. Restore the lost lights of the kingdom and master tight, fast-paced combat to save the world from crumbling into a 
 forgotten darkness.
+<br>
+<br>
+My current progress is a short, but highly polished vertical slice representative of the final game. It takes only a few minutes to complete, but it 
+has vibrant hand-drawn artwork, clean UI and menus, and tight movement and combat. 
+<br>
+<br>
+To create this game, I built complex systems like a layer-based animation approach and a custom internal rendering system for advanced effects. I'll go into more detail on this in the "What I Learned" section!
 
 ## Play the Demo now on Itch.io: https://myth0.itch.io/stormfall
 Available for Windows, Mac, and Linux.
@@ -28,6 +35,44 @@ For generic feedback on the game's design, art style, or anything else,
 you can fill out this form: 
 <br>
 https://forms.gle/NS4dyosp4XfVnj2N6
+
+## Download Instructions
+
+### Windows:
+
+1. Download the Stormfall_Windows_vX.X.X.zip file. 
+2. Move the file to the desired location on your device. 
+3. Extract the zip file.
+4. Run the Stormfall.exe file. That's it!
+<br>
+The game will save data to the folder:
+<br>
+%USERPROFILE%\AppData\LocalLow\myth0 Studios\Stormfall
+
+### Mac:
+
+1. Download the Stormfall_Mac_vX.X.X.zip file.
+2. Move the file to the desired location on your device.
+3. Extract the zip file.
+4. Run Stormfall_Mac_vX.X.X.app.
+5. If you get a security warning: Right click the app, click open, then open.
+<br>
+The game will save data to the folder:
+<br>
+~/Library/Application Support/myth0 Studios/Stormfall
+
+### Linux:
+
+1. Download the Stormfall_Linux_vX.X.X.zip file.
+2. Move the file to the desired location on your device.
+3. Extract the zip file.
+4. Run the Stormfall_Linux_vX.X.X.x86_64 file. 
+5. If the game does not launch, run:
+chmod +x Stormfall_Linux_vX.X.X.x86_64
+<br>
+The game will save data to the folder:
+<br>
+~/.config/unity3d/myth0 Studios/Stormfall
 
 ## Controls
 **Move Left:** A
@@ -87,22 +132,29 @@ I started out with coding the player movement system. I set up a simple script a
 tweaked the values until I got it
 feeling good. However, that was the easy part. Then I had to
 work on the hard part, the art. So I drew out a few first basic sprites in Krita.
+<br>
+<br>
 It initially looked something like this:
 <br>
 <br>
 <img width="1403" height="705" alt="Screenshot 2025-10-21 133331" src="https://github.com/user-attachments/assets/296b96c8-07f2-4183-b4fd-5d8cacad4452" />
 
 I also had to spend several weeks at this stage of the project building my rendering system. 
+<br>
+<br>
 Unity doesn't come with built in 2D blur effects, which turned out to be a major problem
 because I wanted a depth of field effect with a blurred background and foreground. To achieve the effect, I had to write a custom
 Gaussian weighted shader using Unity shader graphs, and a custom Render Feature to inject
-into the rendering pipeline. The Render Feature was super complex and not very well-documented for Unity 6,
+into the rendering pipeline. 
+<br>
+<br>
+Render features and render graphs are complex and not very well-documented for Unity 6,
 so it was super frusturating to get working. My initial setup had two extra scene cameras rendering to render textures.
 The render textures were then passed into my render feature where the blur shader was applied to them, and then they got blitted back onto the screen to form
 the background and foreground.
 <br>
 <br>
-I spent a few weeks refining my art style. I learned the basics of 
+After finalizing my depth of field effect, I spent a few weeks refining my art style. I learned the basics of 
 2D animation, making readable sprites, and how to do game art efficiently. Every time the
 art started to burn me out, which was often, I switched over to coding for a few days and made a few more
 game mechanics. 
@@ -110,7 +162,10 @@ game mechanics.
 <br>
 I also ran into a problem doing the player's animations. The player had to be able to play the walk animation and the attack animation at the same time.
 However, this is near impossible to set up with one sprite alone because I would have had to make a seperate attack animation starting on every single frame of the walk animation, so the walk
-animation didn't get cut off. In the end, I switched to a layer-based player sprite. Each part of the player, like the body, cape, sword, arms, and legs are all controlled independently by 
+animation didn't get cut off. 
+<br>
+<br>
+In the end, I switched to a layer-based player sprite. Each part of the player, like the body, cape, sword, arms, and legs are all controlled independently by 
 seperate animation controllers. Then they are layered on top of each other in the scene to form the full player body. 
 <br>
 <br>
@@ -135,7 +190,10 @@ At one point in this process, I updated my art style again to be more bloomy and
 <br>
 <br>
 But even though the game demo itself was mostly done, my blur rendering system from earlier still had room for improvement. It was very unoptimized, annoying to set up, and all around not that great. 
-So I decided to rewrite it. I made it so blur cameras were all created and rendered internally in a more optimized way. I implemented downsampling and fixed the UI for setting up the render feature. Now users 
+So I decided to rewrite it. 
+<br>
+<br>
+I made it so blur cameras were all created and rendered internally in a more optimized way. I implemented downsampling and fixed the UI for setting up the render feature. Now users 
 simply have to add the feature to the renderer asset, select which layers to blur, and it does everything internally.
 <br>
 <br>
