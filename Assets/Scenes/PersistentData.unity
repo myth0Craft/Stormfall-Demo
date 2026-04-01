@@ -1462,7 +1462,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4615566162392958578, guid: 15b0f025f66c4c54a89769fc06f5a0a3, type: 3}
       propertyPath: attackDebug
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4645579845114001996, guid: 15b0f025f66c4c54a89769fc06f5a0a3, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'

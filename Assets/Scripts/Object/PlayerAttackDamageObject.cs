@@ -26,7 +26,7 @@ public class PlayerAttackDamageObject : MonoBehaviour
         if (health != null)
         {
             health.ApplyDamage();
-            CamShakeSource.instance.AddScreenShake(0.05f);
+            CamShakeSource.instance.AddScreenShake(0.08f);
         }
         if (enemyHealth != null)
         {

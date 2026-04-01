@@ -7095,6 +7095,7 @@ MonoBehaviour:
   shouldSaveAcrossRooms: 0
   id: R1E2
   hurtSound: {fileID: 0}
+  hitParticlesPrefab: {fileID: 0}
 --- !u!212 &148509365
 SpriteRenderer:
   serializedVersion: 2
@@ -8111,6 +8112,7 @@ MonoBehaviour:
   shouldSaveAcrossRooms: 0
   id: R1E1
   hurtSound: {fileID: 8300000, guid: 0e2841f09a4100b4f95021db8fc23fb0, type: 3}
+  hitParticlesPrefab: {fileID: 0}
 --- !u!212 &190993966
 SpriteRenderer:
   serializedVersion: 2
@@ -19377,6 +19379,7 @@ MonoBehaviour:
   maxHealth: 1
   iFrameDuration: 0.5
   breakParticlesPrefab: {fileID: 3680454763949365995, guid: 4a6125f9cf121b6438795dd2399b5649, type: 3}
+  hitParticlesPrefab: {fileID: 0}
   saveState: 0
   id: 
 --- !u!114 &540714524
@@ -25326,6 +25329,7 @@ MonoBehaviour:
   maxHealth: 1
   iFrameDuration: 0.5
   breakParticlesPrefab: {fileID: 3680454763949365995, guid: 4a6125f9cf121b6438795dd2399b5649, type: 3}
+  hitParticlesPrefab: {fileID: 0}
   saveState: 0
   id: 
 --- !u!114 &1014496016
@@ -26525,6 +26529,7 @@ MonoBehaviour:
   shouldSaveAcrossRooms: 0
   id: R2E1
   hurtSound: {fileID: 0}
+  hitParticlesPrefab: {fileID: 0}
 --- !u!212 &1072313569
 SpriteRenderer:
   serializedVersion: 2

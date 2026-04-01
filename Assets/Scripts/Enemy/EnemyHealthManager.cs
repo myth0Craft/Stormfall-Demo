@@ -11,6 +11,7 @@ public class EnemyHealthManager : HealthManager
     public bool shouldSaveAcrossRooms = false;
     [SerializeField] private string id;
     public AudioClip hurtSound;
+    public GameObject hitParticlesPrefab;
 
 
     public override void Awake()
@@ -57,7 +58,7 @@ public class EnemyHealthManager : HealthManager
         print("enemy killed");
         Destroy(this.gameObject);
 
-        AddParticles();
+        AddParticles(deathParticlesPrefab);
     }
 
     protected override void AddHitEffects()
@@ -68,23 +69,18 @@ public class EnemyHealthManager : HealthManager
     public IEnumerator HitColorCoroutine()
     {
         AudioSource.PlayClipAtPoint(hurtSound, transform.position, 10.0f);
-        AddParticles();
+        AddParticles(hitParticlesPrefab);
         spriteRenderer.material = hurtMaterial;
         yield return new WaitForSecondsRealtime(0.15f);
         spriteRenderer.material = defaultMaterial;
     }
 
-    private void AddParticles()
+    private void AddParticles(GameObject particleInstance)
     {
-        if (deathParticlesPrefab != null)
+        if (particleInstance != null && particleInstance.GetComponent<ParticleSystem>() != null)
         {
-            Destroy(particleInstance);
-            particleInstance = Instantiate(
-                deathParticlesPrefab,
-                transform.position,
-                Quaternion.identity
-            );
-            
+            GameObject instance = Instantiate(particleInstance, transform.position, Quaternion.identity);
+            instance.GetComponent<ParticleSystem>().Play();
         }
     }
 

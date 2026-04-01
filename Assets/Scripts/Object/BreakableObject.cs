@@ -4,6 +4,7 @@ public class BreakableObject : HealthManager
 {
 
     public GameObject breakParticlesPrefab;
+    public GameObject hitParticlesPrefab;
     public bool saveState = false;
     [SerializeField] private string id;
 
@@ -49,13 +50,20 @@ public class BreakableObject : HealthManager
         print("object broken");
         Destroy(this.gameObject);
 
-        if (breakParticlesPrefab != null)
+        if (breakParticlesPrefab != null && breakParticlesPrefab.GetComponent<ParticleSystem>() != null)
         {
-            Instantiate(
-                breakParticlesPrefab,
-                transform.position,
-                Quaternion.identity
-            );
+            GameObject instance = Instantiate(breakParticlesPrefab, transform.position, Quaternion.identity);
+            instance.GetComponent<ParticleSystem>().Play();
+        }
+    }
+
+    protected override void AddHitEffects()
+    {
+        
+        if (currentHealth > 0 && hitParticlesPrefab != null && hitParticlesPrefab.GetComponent<ParticleSystem>() != null)
+        {
+            GameObject instance = Instantiate(hitParticlesPrefab, transform.position, Quaternion.identity);
+            instance.GetComponent<ParticleSystem>().Play();
         }
     }
 }
