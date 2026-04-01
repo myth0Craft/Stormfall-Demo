@@ -19,6 +19,12 @@ has vibrant hand-drawn artwork, clean UI and menus, and tight movement and comba
 <br>
 <br>
 To create this game, I built complex systems like a layer-based animation approach and a custom internal rendering system for advanced effects. I'll go into more detail on this in the "What I Learned" section!
+<br>
+<br>
+Other stuff I built for this game:
+- 10+ different shader effects including moving grass, the smoke effect on the title screen, the glowing aura around the save point, scrolling background fog, and much more!
+- A realtime 2d reflection system.
+- Advanced particle effects like sparks, water splashes, explosions of light, and ambient particles.
 
 ## Play the Demo now on Itch.io: https://myth0.itch.io/stormfall
 Available for Windows, Mac, and Linux.
