@@ -38,6 +38,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/AncientSprings/6_Ancient_Springs.unity
     guid: 1a44e919e21b8c247856506bb7e54e5f
+  - enabled: 1
+    path: Assets/Scenes/AncientSprings/7_Ancient_Springs.unity
+    guid: e254a8d245b7c3345a2d5d7c5634267c
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

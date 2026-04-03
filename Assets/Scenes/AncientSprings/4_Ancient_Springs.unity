@@ -257,7 +257,7 @@ MonoBehaviour:
     ScreenPosition: {x: 0, y: 0}
     DeadZone:
       Enabled: 1
-      Size: {x: 0, y: 0.3}
+      Size: {x: 0, y: 0.2}
     HardLimits:
       Enabled: 0
       Size: {x: 0.8, y: 0.8}
@@ -12547,6 +12547,7 @@ MonoBehaviour:
   shouldSaveAcrossRooms: 0
   id: R1E1
   hurtSound: {fileID: 8300000, guid: 0e2841f09a4100b4f95021db8fc23fb0, type: 3}
+  hitParticlesPrefab: {fileID: 0}
 --- !u!212 &209505700
 SpriteRenderer:
   serializedVersion: 2
@@ -59478,6 +59479,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LoadSceneAsync
   scenesToLoad:
   - 6_Ancient_Springs
+  - 7_Ancient_Springs
   scenesToUnload:
   - 3_Ancient_Springs
 --- !u!61 &1203953555
@@ -90707,8 +90709,8 @@ Transform:
   m_GameObject: {fileID: 1707397061}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0.9961293, w: -0.08790083}
-  m_LocalPosition: {x: 14.239998, y: 36.18, z: 0}
-  m_LocalScale: {x: 10.815295, y: 14.927693, z: 0.6328}
+  m_LocalPosition: {x: 13.3427, y: 31.1353, z: 0}
+  m_LocalScale: {x: 10.815295, y: 4.6798315, z: 0.6328}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 844974175}
@@ -97673,6 +97675,7 @@ MonoBehaviour:
   shouldSaveAcrossRooms: 0
   id: R1E1
   hurtSound: {fileID: 8300000, guid: 0e2841f09a4100b4f95021db8fc23fb0, type: 3}
+  hitParticlesPrefab: {fileID: 0}
 --- !u!212 &1966990588
 SpriteRenderer:
   serializedVersion: 2
