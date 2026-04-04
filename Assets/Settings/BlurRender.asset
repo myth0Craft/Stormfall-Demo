@@ -47,7 +47,7 @@ MonoBehaviour:
   - name: Additive with Mask
     maskTextureChannel: 1
     blendMode: 0
-  m_UseDepthStencilBuffer: 1
+  m_UseDepthStencilBuffer: 0
   m_UseCameraSortingLayersTexture: 1
   m_CameraSortingLayersTextureBound: 2041769115
   m_CameraSortingLayerDownsamplingMethod: 0

@@ -95,7 +95,6 @@ public class PlayerMovement : MonoBehaviour
 
         instance = this;
 
-        //gets values from unity
         body = GetComponent<Rigidbody2D>();
         boxCollider = GetComponent<BoxCollider2D>();
         controls = PlayerData.getControls();
@@ -106,7 +105,6 @@ public class PlayerMovement : MonoBehaviour
 
 
 
-        //maps controls
         controls.Player.Move.performed += ctx => horizontalMovement = ctx.ReadValue<Vector2>().x;
         controls.Player.Move.canceled += ctx => horizontalMovement = 0f;
 
@@ -511,7 +509,9 @@ public class PlayerMovement : MonoBehaviour
         bool shouldFaceRight = horizontalMovement > 0;
 
         //turn logic - only executes if player is not currently attacking. If the player is in midair, turn logic still applies regardless of attack state.
-        if (shouldFaceRight != facingRight && !playerMeleeAttack.isMidAttack && playerMeleeAttack.getAttackTimerTime() <= 0)
+        if (shouldFaceRight != facingRight && !playerMeleeAttack.isMidAttack 
+            && playerMeleeAttack.getAttackTimerTime() <= 0
+            )
         {
 
             //rotates player 180 on y
