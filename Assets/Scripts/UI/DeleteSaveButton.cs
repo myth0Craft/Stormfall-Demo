@@ -36,7 +36,7 @@ public class DeleteSaveButton : MonoBehaviour
     {
         deleteConfirmation.SetActive(true);
         
-        deleteConfirmation.transform.position = new Vector3(gameObject.transform.position.x + 3, gameObject.transform.position.y, 0);
+        deleteConfirmation.transform.position = new Vector3(deleteConfirmation.transform.position.x, gameObject.transform.position.y, deleteConfirmation.transform.position.z);
 
         foreach(Transform t in deleteConfirmation.transform)
         {

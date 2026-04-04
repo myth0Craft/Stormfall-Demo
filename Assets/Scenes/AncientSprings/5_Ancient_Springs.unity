@@ -6574,7 +6574,7 @@ GameObject:
   - component: {fileID: 184221377}
   - component: {fileID: 184221376}
   m_Layer: 0
-  m_Name: SecretCam
+  m_Name: SecretCam2
   m_TagString: CinemachineCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19608,7 +19608,7 @@ GameObject:
   - component: {fileID: 548883454}
   - component: {fileID: 548883453}
   m_Layer: 0
-  m_Name: SecretCam
+  m_Name: SecretCam1
   m_TagString: CinemachineCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
