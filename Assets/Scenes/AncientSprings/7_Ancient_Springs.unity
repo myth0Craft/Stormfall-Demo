@@ -5070,7 +5070,7 @@ Transform:
   m_GameObject: {fileID: 528999306}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 2, z: -4}
+  m_LocalPosition: {x: 1, y: 2, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5130,7 +5130,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 2
-  m_Size: {x: 12, y: 9.000001}
+  m_Size: {x: 14, y: 9.000001}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -6585,7 +6585,7 @@ GameObject:
   - component: {fileID: 754381134}
   - component: {fileID: 754381136}
   - component: {fileID: 754381135}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ArenaGate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6638,7 +6638,7 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 32768
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -7358,7 +7358,7 @@ GameObject:
   m_Component:
   - component: {fileID: 849688163}
   - component: {fileID: 849688164}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8812,7 +8812,7 @@ Transform:
   m_GameObject: {fileID: 1077566284}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.5, z: -1}
+  m_LocalPosition: {x: 1, y: 1.5, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8872,7 +8872,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 2
-  m_Size: {x: 12, y: 10.000001}
+  m_Size: {x: 14, y: 10.000001}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -9712,7 +9712,8 @@ Transform:
   m_LocalPosition: {x: 1.47, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 2083675795}
   m_Father: {fileID: 1803112220}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &1198735432
@@ -9778,12 +9779,15 @@ MonoBehaviour:
   - {fileID: 1893953529}
   arenaCam: {fileID: 1524826198}
   secondsBetweenWaves: 1
-  startDelay: 0
+  startDelay: 1
   waves:
   - waveName: wave1
     enemies:
     - enemy: {fileID: 42473061096175327, guid: b493426e37b22b447b87d905fb78a025, type: 3}
       worldPosition: {x: 53.29, y: 70.98}
+    - enemy: {fileID: 42473061096175327, guid: a74489ac9a18d7042900606f81b323fa, type: 3}
+      worldPosition: {x: 60.89, y: 70.98}
+  startEffects: {fileID: 2083675796}
 --- !u!1 &1220821723
 GameObject:
   m_ObjectHideFlags: 0
@@ -12186,7 +12190,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1623896478}
   - component: {fileID: 1623896479}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Arena Gate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12857,7 +12861,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1731464118}
   - component: {fileID: 1731464119}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fire (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12948,7 +12952,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1733930120}
   - component: {fileID: 1733930121}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fire (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13343,7 +13347,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1776269191}
   - component: {fileID: 1776269192}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13743,7 +13747,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1808910188}
   - component: {fileID: 1808910189}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Arena Gate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14369,7 +14373,7 @@ GameObject:
   - component: {fileID: 1893953528}
   - component: {fileID: 1893953530}
   - component: {fileID: 1893953529}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ArenaGate (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14422,7 +14426,7 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 32768
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -14572,8 +14576,8 @@ Transform:
   m_GameObject: {fileID: 1916592640}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.5, y: -3.5, z: 0}
-  m_LocalScale: {x: -11.999122, y: -21, z: 1}
+  m_LocalPosition: {x: 1, y: -3.5, z: 0}
+  m_LocalScale: {x: -12.998649, y: -21, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1031834387}
@@ -15576,6 +15580,53 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!1 &2083675794
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2083675795}
+  - component: {fileID: 2083675796}
+  m_Layer: 0
+  m_Name: startfx
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2083675795
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2083675794}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1198735431}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2083675796
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2083675794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d783b48a7b860c418b3e02dd48b212e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ArenaBattleStartEffects
+  cameraShakeStrength: 1
+  particles: {fileID: 5510325621544698895, guid: 29fdcf27969dafb4dbe7e5d66c87e01c, type: 3}
+  effectsDurationSeconds: 4
 --- !u!1 &2108111540
 GameObject:
   m_ObjectHideFlags: 0

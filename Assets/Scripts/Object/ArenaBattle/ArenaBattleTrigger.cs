@@ -1,6 +1,7 @@
 using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ArenaBattleTrigger : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class ArenaBattleTrigger : MonoBehaviour
     public float secondsBetweenWaves = 1.0f;
     public float startDelay = 0.0f;
     [SerializeField] public EnemyWave[] waves;
+
+    public ArenaBattleStartEffects startEffects;
 
     private bool arenaBattleActive = false;
     
@@ -29,7 +32,7 @@ public class ArenaBattleTrigger : MonoBehaviour
             arenaGates[i].BeginArenaBattle();
         }
         arenaCam.Priority = 20;
-
+        
         StartCoroutine(ArenaFightCoroutine());
     }
 
@@ -47,16 +50,28 @@ public class ArenaBattleTrigger : MonoBehaviour
     {
         yield return new WaitForSecondsRealtime(startDelay);
 
+        if (startEffects != null)
+        {
+            yield return startEffects.AddArenaBattleStartEffects();
+
+        }
+
+        
+
         for (int i = 0; i < waves.Length;i++)
         {
+            yield return new WaitForSecondsRealtime(secondsBetweenWaves);
             for (int j = 0; j < waves[i].enemies.Length; j++)
             {
-                Instantiate(
+                GameObject enemy = Instantiate(
                     waves[i].enemies[j].enemy,
                     waves[i].enemies[j].worldPosition,
                     Quaternion.identity
                 );
+                SceneManager.MoveGameObjectToScene(enemy, gameObject.scene);
             }
+
+            
         }
         //EndArenaBattle();
         yield return null;
