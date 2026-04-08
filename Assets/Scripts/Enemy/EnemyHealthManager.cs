@@ -56,9 +56,10 @@ public class EnemyHealthManager : HealthManager
         }
 
         print("enemy killed");
-        Destroy(this.gameObject);
-
         AddParticles(deathParticlesPrefab);
+        Destroy(transform.parent.gameObject);
+
+        
     }
 
     protected override void AddHitEffects()

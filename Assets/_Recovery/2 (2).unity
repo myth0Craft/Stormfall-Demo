@@ -44273,7 +44273,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1337702185
 Transform:
   m_ObjectHideFlags: 0
@@ -59795,10 +59795,6 @@ PrefabInstance:
     - target: {fileID: 8167541484351000318, guid: 9d79e71e84316b042ab05a686273e7a9, type: 3}
       propertyPath: m_Name
       value: BackgroundMasks
-      objectReference: {fileID: 0}
-    - target: {fileID: 8230184619506359767, guid: 9d79e71e84316b042ab05a686273e7a9, type: 3}
-      propertyPath: m_LocalScale.x
-      value: -29
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

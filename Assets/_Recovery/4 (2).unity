@@ -6671,37 +6671,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.1581192, y: 2.5911484}
   m_EdgeRadius: 0
---- !u!1 &757680296
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 757680297}
-  m_Layer: 0
-  m_Name: ENEMIES
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &757680297
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 757680296}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1605732027}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &794437294
 GameObject:
   m_ObjectHideFlags: 0
@@ -9818,13 +9787,6 @@ MonoBehaviour:
       worldPosition: {x: 53.29, y: 70.98}
     - enemy: {fileID: 42473061096175327, guid: a74489ac9a18d7042900606f81b323fa, type: 3}
       worldPosition: {x: 60.89, y: 70.98}
-  - waveName: wave2
-    enemies:
-    - enemy: {fileID: 1746850871029555069, guid: 5c07b61afdce00947934031ee3231317, type: 3}
-      worldPosition: {x: 53.29, y: 70.98}
-    - enemy: {fileID: 1746850871029555069, guid: 5c07b61afdce00947934031ee3231317, type: 3}
-      worldPosition: {x: 60.89, y: 70.98}
-  arenaBattleComplete: 0
   startEffects: {fileID: 2083675796}
 --- !u!1 &1220821723
 GameObject:
@@ -12034,7 +11996,6 @@ Transform:
   - {fileID: 2071026925}
   - {fileID: 303941758}
   - {fileID: 308916608}
-  - {fileID: 757680297}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1621676375
@@ -14616,7 +14577,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 1, y: -3.5, z: 0}
-  m_LocalScale: {x: -13, y: -21, z: 1}
+  m_LocalScale: {x: -12.998649, y: -21, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1031834387}

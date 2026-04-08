@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -11,6 +12,8 @@ public class ArenaBattleTrigger : MonoBehaviour
     public float startDelay = 0.0f;
     [SerializeField] public EnemyWave[] waves;
 
+    public bool arenaBattleComplete;
+
     public ArenaBattleStartEffects startEffects;
 
     private bool arenaBattleActive = false;
@@ -18,7 +21,7 @@ public class ArenaBattleTrigger : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player") && !arenaBattleActive)
+        if (collision.CompareTag("Player") && !arenaBattleActive && !arenaBattleComplete)
         {
             StartArenaBattle();
         }
@@ -38,6 +41,7 @@ public class ArenaBattleTrigger : MonoBehaviour
 
     public void EndArenaBattle()
     {
+        arenaBattleComplete = true;
         for (int i = 0; i < arenaGates.Length;i++)
         {
             arenaGates[i].EndArenaBattle();
@@ -60,6 +64,8 @@ public class ArenaBattleTrigger : MonoBehaviour
 
         for (int i = 0; i < waves.Length;i++)
         {
+
+            List<GameObject> enemiesThisWave = new List<GameObject>();
             yield return new WaitForSecondsRealtime(secondsBetweenWaves);
             for (int j = 0; j < waves[i].enemies.Length; j++)
             {
@@ -69,11 +75,17 @@ public class ArenaBattleTrigger : MonoBehaviour
                     Quaternion.identity
                 );
                 SceneManager.MoveGameObjectToScene(enemy, gameObject.scene);
+                enemiesThisWave.Add(enemy);
             }
 
-            
+            yield return new WaitUntil(() =>
+            {
+                enemiesThisWave.RemoveAll(e => e == null);
+                return enemiesThisWave.Count == 0;
+            });
+
+
         }
-        //EndArenaBattle();
-        yield return null;
+        EndArenaBattle();
     }
 }
