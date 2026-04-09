@@ -28488,6 +28488,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::InteractHintTrigger
   shouldCheckForCollision: 1
   interactText: Restore Health
+  onlyCheckIfHealthLow: 1
 --- !u!61 &802336150
 BoxCollider2D:
   m_ObjectHideFlags: 0

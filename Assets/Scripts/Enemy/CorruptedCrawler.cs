@@ -4,7 +4,7 @@ public class CorruptedCrawler : MonoBehaviour
 {
 
     [SerializeField] private bool facingRight = true;
-    [SerializeField] private float speed = 2f;
+    [SerializeField] private float speed = 4f;
     [SerializeField] private float accel = 2f;
 
     private Rigidbody2D body;
@@ -24,22 +24,28 @@ public class CorruptedCrawler : MonoBehaviour
     {
         float targetSpeed = facingRight ? speed : -speed;
 
-        bool facingPlayer = false;
-        Ray ray = new Ray(transform.position, transform.forward);
-        RaycastHit[] hits = Physics.RaycastAll(ray, 10f);
+       /* bool facingPlayer = false;
+        //Ray ray = new Ray(transform.position, new Vector2(facingRight ? 1f : -1f, 0));
+        //Debug.DrawRay(transform.position, new Vector2(facingRight ? 1f : -1f, 0), Color.blue, 1f);
+        RaycastHit2D hit = Physics2D.BoxCast(
+                transform.position,
+                new Vector2(10f, 5f),
+                0f,
+                new Vector2(facingRight ? 1f : -1f, 0),
+                20f
+            );
 
-        foreach (var hit in hits)
-        {
-            if (hit.collider.CompareTag("Player"))
+
+        if (hit.collider.CompareTag("Player"))
             {
                 facingPlayer = true;
             }
-        }
+        Debug.Log(facingPlayer);*/
 
 
         float newVelX = Mathf.MoveTowards(
             body.linearVelocity.x,
-            facingPlayer ? targetSpeed * 2 : targetSpeed,
+            targetSpeed,
             accel * Time.fixedDeltaTime
         );
 

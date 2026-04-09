@@ -7,12 +7,26 @@ public class InteractHintTrigger : MonoBehaviour
     //private TextMeshProUGUI interactTextObj;
     public bool shouldCheckForCollision = true;
     public string interactText = "Interact";
+    public bool onlyCheckIfHealthLow = false;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player") && shouldCheckForCollision && PlayerData.currentHealth < PlayerData.maxHealth)
+        if (collision.CompareTag("Player") && shouldCheckForCollision)
         {
-            SetInteractPopupActive(true);
+            
+                if (onlyCheckIfHealthLow)
+                {
+                    if (PlayerData.currentHealth < PlayerData.maxHealth)
+                    {
+                        SetInteractPopupActive(true);
+                    }
+                }
+                else
+                {
+                    SetInteractPopupActive(true);
+                }
+            
+            
 
         }
     }
