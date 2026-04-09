@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: afc3cd0206013b041a5caa101603f075
+guid: 408d43129dbeece468422fe62f03ca9f
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5193298701060031186
-    second: water_shape_1_0
+      213: 2646350188441355363
+    second: bush_midbg_heavy_shadow_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,7 +46,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -96,17 +96,30 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: water_shape_1_0
+      name: bush_midbg_heavy_shadow_0
       rect:
         serializedVersion: 2
-        x: 23
-        y: 171
-        width: 466
-        height: 175
+        x: 18
+        y: 135
+        width: 486
+        height: 253
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2d24e2147ad421840800000000000000
-      internalID: 5193298701060031186
+      spriteID: 364c555b979b9b420800000000000000
+      internalID: 2646350188441355363
       vertices: []
       indices: 
       edges: []
@@ -125,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -135,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      water_shape_1_0: 5193298701060031186
+      bush_midbg_heavy_shadow_0: 2646350188441355363
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

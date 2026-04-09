@@ -42,10 +42,16 @@ public class InteractUIController : MonoBehaviour
 
     public void disableInteractUI()
     {
-        foreach (Transform t in transform)
+        if (gameObject != null)
         {
-            t.gameObject.SetActive(false);
+
+
+            foreach (Transform t in transform)
+            {
+                t.gameObject.SetActive(false);
+            }
         }
+        
     }
 
     public void enableInteractUI()

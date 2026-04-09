@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 57aff616b8fec6648bb8e7a713ae1a20
+guid: 7314cef1385b1d844bbaa7248b126854
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4763415714078566847
-    second: banner_0
+      213: -5395969979836932615
+    second: water_shape_2_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,7 +46,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -96,17 +96,30 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: banner_0
+      name: water_shape_2_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 2158
-        height: 1079
+        x: 30
+        y: 123
+        width: 964
+        height: 177
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: fb9aa23ba5d0b1240800000000000000
-      internalID: 4763415714078566847
+      spriteID: 9fdd52574e9ad15b0800000000000000
+      internalID: -5395969979836932615
       vertices: []
       indices: 
       edges: []
@@ -125,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -135,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      banner_0: 4763415714078566847
+      water_shape_2_0: -5395969979836932615
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
