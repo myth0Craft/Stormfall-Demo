@@ -51,7 +51,6 @@ public class InteractUIController : MonoBehaviour
                 t.gameObject.SetActive(false);
             }
         }
-        
     }
 
     public void enableInteractUI()
