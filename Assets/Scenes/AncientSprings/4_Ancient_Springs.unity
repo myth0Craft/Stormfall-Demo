@@ -26807,6 +26807,7 @@ GameObject:
   - component: {fileID: 503165057}
   - component: {fileID: 503165056}
   - component: {fileID: 503165058}
+  - component: {fileID: 503165059}
   m_Layer: 0
   m_Name: NPC-RuinWatcher
   m_TagString: Untagged
@@ -27042,6 +27043,33 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 4.138139, y: 4.49}
   m_EdgeRadius: 0
+--- !u!50 &503165059
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 503165051}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 0
+  m_CollisionDetection: 1
+  m_Constraints: 7
 --- !u!1 &507739409
 GameObject:
   m_ObjectHideFlags: 0

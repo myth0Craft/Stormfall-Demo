@@ -63,7 +63,6 @@ public class DialogueUI : MonoBehaviour
     public IEnumerator DisplayDialogueChain(List<string> dialogue)
     {
         
-        
         text.enabled = true;
         background.enabled = true;
         background.color = new Color(background.color.r, background.color.g, background.color.b, 1f);
@@ -88,7 +87,7 @@ public class DialogueUI : MonoBehaviour
             stringBuilder.Remove(0, stringBuilder.Length);
         }
         controls.Player.Enable();
-        yield return FadeInDialogueBackgroundCoroutine(1.0f, 1f, 0f);
+        yield return FadeInDialogueBackgroundCoroutine(0.5f, 1f, 0f);
         
     }
 

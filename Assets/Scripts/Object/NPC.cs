@@ -69,6 +69,6 @@ public class NPC : MonoBehaviour
         currentlySpeaking = false;
         interactHintTrigger.shouldCheckForCollision = true;
         interactPressed = false;
-        //interactHintTrigger.SetInteractPopupActive(true);
+        interactHintTrigger.SetInteractPopupActive(true);
     }
 }
