@@ -153,7 +153,7 @@ public class SwordCollectEvent : QuicktimeEvent
 
         if (id == null)
         {
-            Debug.Log("Id of Waystone is null!");
+            Debug.Log("Id of sword stone is null!");
         }
         else
         {

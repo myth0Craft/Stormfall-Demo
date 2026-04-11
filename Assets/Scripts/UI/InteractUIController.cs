@@ -44,11 +44,16 @@ public class InteractUIController : MonoBehaviour
     {
         if (gameObject != null)
         {
-
-
-            foreach (Transform t in transform)
+            try
             {
-                t.gameObject.SetActive(false);
+
+                foreach (Transform t in transform)
+                {
+                    t.gameObject.SetActive(false);
+                }
+            } catch
+            {
+                Debug.Log("An error occured with the interaction UI.");
             }
         }
     }
