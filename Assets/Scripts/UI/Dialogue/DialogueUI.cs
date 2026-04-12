@@ -69,7 +69,7 @@ public class DialogueUI : MonoBehaviour
         text.text = "";
         stringBuilder.Remove(0, stringBuilder.Length);
 
-        //yield return FadeInDialogueBackgroundCoroutine(1.0f, 0f, 1f);
+        yield return FadeInDialogueBackgroundCoroutine(0.1f, 0f, 1f);
         disableControls();
         controls.Player.Interact.Enable();
         for (int i = 0; i < dialogue.Count; i++)
@@ -87,7 +87,7 @@ public class DialogueUI : MonoBehaviour
             stringBuilder.Remove(0, stringBuilder.Length);
         }
         controls.Player.Enable();
-        yield return FadeInDialogueBackgroundCoroutine(0.5f, 1f, 0f);
+        yield return FadeInDialogueBackgroundCoroutine(0.1f, 1f, 0f);
         
     }
 
@@ -110,7 +110,7 @@ public class DialogueUI : MonoBehaviour
         while (elapsedTime < fadeInDuration)
         {
             elapsedTime += Time.unscaledDeltaTime;
-            float t = Mathf.Clamp01(elapsedTime / 0.1f);
+            float t = Mathf.Clamp01(elapsedTime / fadeInDuration);
 
 
 

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 public static class PlayerData
 {
     public static int saveIndex = 0;
@@ -22,6 +24,23 @@ public static class PlayerData
     public static bool wallJumpUnlocked = false;
     public static bool shieldUnlocked = false;
 
+
+    //NPC DATA
+    public static HashSet<string> talkedToNPCs = new HashSet<string>();
+
+    public static bool HasTalkedTo(string npcId)
+    {
+        return talkedToNPCs.Contains(npcId);
+    }
+
+    public static void MarkTalkedTo(string npcId)
+    {
+        if (!talkedToNPCs.Contains(npcId))
+        {
+            talkedToNPCs.Add(npcId);
+        }
+        
+    }
 
     public static PlayerControls getControls()
     {
@@ -55,7 +74,10 @@ public static class PlayerData
         data.doubleJumpUnlocked = doubleJumpUnlocked;
         data.wallJumpUnlocked = wallJumpUnlocked;
         data.shieldUnlocked = shieldUnlocked;
-        
+
+        //NPC DATA
+        data.talkedToNPCs = new List<string>(talkedToNPCs);
+
     }
 
     public static void Load(PlayerSaveData data)
@@ -73,6 +95,9 @@ public static class PlayerData
         doubleJumpUnlocked = data.doubleJumpUnlocked;
         wallJumpUnlocked = data.wallJumpUnlocked;
         shieldUnlocked = data.shieldUnlocked;
+
+        //NPC DATA
+        talkedToNPCs = new HashSet<string>(data.talkedToNPCs ?? new List<string>());
     }
 
     public static void SetDefaults()
@@ -91,6 +116,9 @@ public static class PlayerData
         doubleJumpUnlocked = false;
         wallJumpUnlocked = false;
         shieldUnlocked = false;
+
+        //NPC DATA
+        talkedToNPCs = new HashSet<string>();
     }
 
 }
@@ -110,4 +138,7 @@ public struct PlayerSaveData
     public bool doubleJumpUnlocked;
     public bool wallJumpUnlocked;
     public bool shieldUnlocked;
+
+    //NPC DATA
+    public List<string> talkedToNPCs;
 }

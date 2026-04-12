@@ -1399,11 +1399,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6827771851370424541, guid: 0836dac0b91edc845a07d4dc9c553974, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 37.86755
+      value: 55.90736
       objectReference: {fileID: 0}
     - target: {fileID: 6827771851370424541, guid: 0836dac0b91edc845a07d4dc9c553974, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 74.11519
+      value: 72.2181
       objectReference: {fileID: 0}
     - target: {fileID: 6827771851370424541, guid: 0836dac0b91edc845a07d4dc9c553974, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3228,12 +3228,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3829458281276948502, guid: 007d474f8779fff4b9c42f387820d059, type: 3}
       propertyPath: UIToHide.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3829458281276948502, guid: 007d474f8779fff4b9c42f387820d059, type: 3}
       propertyPath: 'UIToHide.Array.data[1]'
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1681028894}
     - target: {fileID: 4674519750464725691, guid: 007d474f8779fff4b9c42f387820d059, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 2

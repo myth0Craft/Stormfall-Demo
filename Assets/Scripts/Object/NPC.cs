@@ -12,9 +12,11 @@ public class NPC : MonoBehaviour
     public bool shouldMovePlayerToPosition = false;
     public Vector2 playerPositionOffset = Vector2.zero;
 
-    public List<string> dialogue = new List<string>();
+    public DialogueScriptableObj dialogueEntries;
 
     private bool currentlySpeaking = false;
+
+    public string npcId;
 
 
 
@@ -29,13 +31,18 @@ public class NPC : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            if (interactPressed && !currentlySpeaking)
+            if (!currentlySpeaking)
             {
-                interactHintTrigger.SetInteractPopupActive(false);
-                interactHintTrigger.shouldCheckForCollision = false;
-                currentlySpeaking = true;
-                interactPressed = false;
-                DisplayDialogue();
+                interactHintTrigger.SetInteractPopupActive(true);
+
+                if (interactPressed)
+                {
+                    interactHintTrigger.SetInteractPopupActive(false);
+                    interactHintTrigger.shouldCheckForCollision = false;
+                    currentlySpeaking = true;
+                    interactPressed = false;
+                    DisplayDialogue();
+                }
             }
         }
     }
@@ -48,8 +55,17 @@ public class NPC : MonoBehaviour
         }
     }
 
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player"))
+        {
+            interactHintTrigger.SetInteractPopupActive(false);
+        }
+    }
+
     private void DisplayDialogue()
     {
+        
         StartCoroutine(DisplayDialogueCoroutine());
     }
 
@@ -65,10 +81,34 @@ public class NPC : MonoBehaviour
             }
         }
 
-        yield return DialogueUI.instance.DisplayDialogueChain(dialogue);
+        yield return DialogueUI.instance.DisplayDialogueChain(GetBestDialogue().text);
+        //interactHintTrigger.SetInteractPopupActive(true);
         currentlySpeaking = false;
         interactHintTrigger.shouldCheckForCollision = true;
         interactPressed = false;
-        interactHintTrigger.SetInteractPopupActive(true);
+        PlayerData.MarkTalkedTo(npcId);
+    }
+
+
+    public DialogueEntry GetBestDialogue()
+    {
+        DialogueEntry best = null;
+
+
+
+        foreach (var entry in dialogueEntries.entries)
+        {
+            /*if (entry.condition != null)
+                Debug.Log(entry.condition.IsMet(npcId));*/
+            if (entry.condition == null || entry.condition.IsMet(npcId))
+            {
+                if (best == null || entry.priority > best.priority)
+                {
+                    best = entry;
+                }
+            }
+        }
+
+        return best;
     }
 }
