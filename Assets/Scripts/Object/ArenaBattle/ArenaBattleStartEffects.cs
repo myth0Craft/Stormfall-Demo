@@ -35,7 +35,7 @@ public class ArenaBattleStartEffects : MonoBehaviour
         particleSystem.Stop();
         /*yield return new WaitForSecondsRealtime(5f);
         Destroy(particle);*/
-
+        yield return new WaitForSecondsRealtime(1.0f);
         source.Stop();
     }
 

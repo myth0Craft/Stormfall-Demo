@@ -30,6 +30,8 @@ public class ArenaBattleTrigger : MonoBehaviour
     public AudioClip areaMusic;
 
     public AudioClip gateSound;
+
+    public AudioSource battleEndMusic;
     
 
     public void Awake()
@@ -76,6 +78,9 @@ public class ArenaBattleTrigger : MonoBehaviour
 
     public void EndArenaBattle()
     {
+        battleEndMusic.Play();
+        //MusicManager.instance.SwitchTrack(battleEndMusic, 0.2f, 0.0f, 0.8f, 0.0f);
+        
         arenaBattleComplete = true;
         for (int i = 0; i < arenaGates.Length;i++)
         {
@@ -94,7 +99,7 @@ public class ArenaBattleTrigger : MonoBehaviour
             room.pickups[id] = true;
         }
 
-        MusicManager.instance.SwitchTrack(areaMusic, 0.1f, 0.5f, 0.8f, 3.0f);
+        MusicManager.instance.SwitchTrack(areaMusic, 0.2f, 0.5f, 0.4f, 7.0f);
     }
 
     public IEnumerator ArenaFightCoroutine()
