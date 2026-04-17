@@ -131,8 +131,8 @@ GameObject:
   - component: {fileID: 5675863}
   - component: {fileID: 5675867}
   - component: {fileID: 5675866}
-  - component: {fileID: 5675865}
   - component: {fileID: 5675864}
+  - component: {fileID: 5675865}
   m_Layer: 0
   m_Name: MainCam
   m_TagString: CinemachineCamera
@@ -23655,7 +23655,7 @@ TilemapRenderer:
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
   m_SortOrder: 0
-  m_Mode: 0
+  m_Mode: 1
   m_DetectChunkCullingBounds: 0
 --- !u!1839735485 &423627033
 Tilemap:
@@ -30063,7 +30063,7 @@ TilemapRenderer:
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
   m_SortOrder: 0
-  m_Mode: 0
+  m_Mode: 1
   m_DetectChunkCullingBounds: 0
 --- !u!1839735485 &561783348
 Tilemap:
@@ -73053,12 +73053,12 @@ TilemapRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
-  m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
+  m_ChunkCullingBounds: {x: 0, y: 0.2, z: 0}
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
   m_SortOrder: 0
-  m_Mode: 0
-  m_DetectChunkCullingBounds: 0
+  m_Mode: 1
+  m_DetectChunkCullingBounds: 1
 --- !u!1839735485 &1338574970
 Tilemap:
   m_ObjectHideFlags: 0

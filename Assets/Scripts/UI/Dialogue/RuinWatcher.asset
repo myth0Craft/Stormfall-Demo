@@ -14,12 +14,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DialogueScriptableObj
   entries:
   - text:
-    - Greetings!
-    - That's sick dude!
+    - So it begins...
+    - 'An age has passed since anyone''s come up that way from beyond the ancient
+      springs. '
+    - Not since the old kingdom fell to ashes and ruin.
+    - Ah, but I must be getting ahead of myself.
+    - I'm the watcher of these ruins. The caretaker.
+    - Keep going on and up, and you'll reach the old road soon enough. Though I can't
+      imagine why you want to go that way.
+    - But you must be cautious. The shadow spreads. The road is no longer safe, not
+      anymore.
+    - 'You''ll be needing a weapon if you hope to survive. '
+    - Unfortunately, I don't have any to spare, but you may be able to lay claim
+      to a forgotten weapon up on the road.
+    - Good luck, wherever you're going. May your paths lead you far from the Shadow.
     condition: {fileID: 0}
     priority: 0
   - text:
-    - Oh youre back!
-    - That's sick dude!
+    - 'You''ll be needing a weapon if you hope to survive. '
+    - Unfortunately, I don't have any to spare, but you may be able to lay claim
+      to a forgotten weapon up on the road.
+    - Good luck, wherever you're going. May your paths lead you far from the Shadow.
     condition: {fileID: 11400000, guid: fa867954539b57e42bfb786b0a32d69d, type: 2}
     priority: 1

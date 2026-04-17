@@ -25,6 +25,13 @@ public class ArenaBattleTrigger : MonoBehaviour
 
     private bool arenaBattleActive = false;
 
+
+    public AudioClip arenaMusic;
+    public AudioClip areaMusic;
+
+    public AudioClip gateSound;
+    
+
     public void Awake()
     {
         if (id == null)
@@ -60,8 +67,11 @@ public class ArenaBattleTrigger : MonoBehaviour
             arenaGates[i].BeginArenaBattle();
         }
         arenaCam.Priority = 20;
-        
+        AudioSource.PlayClipAtPoint(gateSound, transform.position, 10.0f);
         StartCoroutine(ArenaFightCoroutine());
+
+
+        MusicManager.instance.SwitchTrack(arenaMusic, 1.0f, 0.1f, 0.4f, 3.0f);
     }
 
     public void EndArenaBattle()
@@ -83,6 +93,8 @@ public class ArenaBattleTrigger : MonoBehaviour
             var room = SaveSystem.getRoom(gameObject.scene.name);
             room.pickups[id] = true;
         }
+
+        MusicManager.instance.SwitchTrack(areaMusic, 0.1f, 0.5f, 0.8f, 3.0f);
     }
 
     public IEnumerator ArenaFightCoroutine()

@@ -127,5 +127,24 @@ public class MusicManager : MonoBehaviour
         currentlyPlaying = true;
     }
 
+    public void SwitchTrack(AudioClip musicToSwitch, float fadeOutDuration, float fadeInDuration, float newVolume, float silentSeconds)
+    {
+        if (currentFade != null) StopCoroutine(currentFade);
+        StartCoroutine(SwitchTrackCoroutine(musicToSwitch, fadeOutDuration, fadeInDuration, newVolume, silentSeconds));
+
+    }
+
+    private IEnumerator SwitchTrackCoroutine(AudioClip musicToSwitch, float fadeOutDuration, float fadeInDuration, float newVolume, float silentSeconds)
+    {
+        yield return FadeOutCoroutine(fadeOutDuration);
+
+        music.clip = musicToSwitch;
+        yield return new WaitForSecondsRealtime(silentSeconds);
+
+        yield return FadeInCoroutine(fadeInDuration, newVolume);
+
+    }
+
+
 
 }

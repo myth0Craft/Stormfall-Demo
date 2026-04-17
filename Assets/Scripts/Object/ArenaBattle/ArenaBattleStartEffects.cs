@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
@@ -9,8 +10,15 @@ public class ArenaBattleStartEffects : MonoBehaviour
     //public Vector2 particleWorldPos;
     public float effectsDurationSeconds = 2.0f;
 
+    public AudioSource source;
+
     public IEnumerator AddArenaBattleStartEffects()
     {
+
+        source.Play();
+        
+
+        
         GameObject particle = Instantiate(
             particles,
             transform.position,
@@ -27,7 +35,8 @@ public class ArenaBattleStartEffects : MonoBehaviour
         particleSystem.Stop();
         /*yield return new WaitForSecondsRealtime(5f);
         Destroy(particle);*/
-        
+
+        source.Stop();
     }
 
 

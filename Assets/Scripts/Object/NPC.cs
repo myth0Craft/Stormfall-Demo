@@ -89,7 +89,7 @@ public class NPC : MonoBehaviour
         PlayerData.MarkTalkedTo(npcId);
     }
 
-
+    
     public DialogueEntry GetBestDialogue()
     {
         DialogueEntry best = null;
