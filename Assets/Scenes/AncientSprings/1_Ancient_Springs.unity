@@ -5773,7 +5773,7 @@ TilemapRenderer:
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
   m_SortOrder: 0
-  m_Mode: 1
+  m_Mode: 0
   m_DetectChunkCullingBounds: 0
 --- !u!1839735485 &46392834
 Tilemap:
@@ -16043,7 +16043,7 @@ TilemapRenderer:
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
   m_SortOrder: 0
-  m_Mode: 1
+  m_Mode: 0
   m_DetectChunkCullingBounds: 0
 --- !u!1839735485 &429519649
 Tilemap:
@@ -24609,7 +24609,7 @@ TilemapRenderer:
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
   m_SortOrder: 0
-  m_Mode: 1
+  m_Mode: 0
   m_DetectChunkCullingBounds: 0
 --- !u!1839735485 &956947930
 Tilemap:
@@ -29808,7 +29808,7 @@ TilemapRenderer:
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
   m_SortOrder: 0
-  m_Mode: 1
+  m_Mode: 0
   m_DetectChunkCullingBounds: 0
 --- !u!1839735485 &1291494780
 Tilemap:
@@ -40163,7 +40163,7 @@ TilemapRenderer:
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
   m_SortOrder: 0
-  m_Mode: 1
+  m_Mode: 0
   m_DetectChunkCullingBounds: 0
 --- !u!1839735485 &1846115435
 Tilemap:
