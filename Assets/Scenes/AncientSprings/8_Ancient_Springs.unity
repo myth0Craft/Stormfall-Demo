@@ -328,7 +328,7 @@ MonoBehaviour:
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.605
   m_Color: {r: 0.37863553, g: 0.26980242, b: 0.4433962, a: 1}
-  m_Intensity: 0
+  m_Intensity: 40
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
   m_ApplyToSortingLayers: 2d3b00ad
@@ -536,7 +536,7 @@ MonoBehaviour:
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.605
   m_Color: {r: 0.37863553, g: 0.26980242, b: 0.4433962, a: 1}
-  m_Intensity: 37.210907
+  m_Intensity: 40
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
   m_ApplyToSortingLayers: 2d3b00ad
@@ -1970,7 +1970,7 @@ MonoBehaviour:
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.605
   m_Color: {r: 0.37863553, g: 0.26980242, b: 0.4433962, a: 1}
-  m_Intensity: 31.206957
+  m_Intensity: 40
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
   m_ApplyToSortingLayers: 2d3b00ad
@@ -2134,7 +2134,7 @@ SpriteRenderer:
   m_SortingOrder: -23
   m_MaskInteraction: 0
   m_Sprite: {fileID: -6822537389761897335, guid: 39fdd3a0a924c114db27975f0d73216f, type: 3}
-  m_Color: {r: 0.8904088, g: 0.8066038, b: 1, a: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -2289,7 +2289,7 @@ MonoBehaviour:
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.605
   m_Color: {r: 0.37863553, g: 0.26980242, b: 0.4433962, a: 1}
-  m_Intensity: 0
+  m_Intensity: 40
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
   m_ApplyToSortingLayers: 2d3b00ad
@@ -3146,7 +3146,7 @@ MonoBehaviour:
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.605
   m_Color: {r: 0.37863553, g: 0.26980242, b: 0.4433962, a: 1}
-  m_Intensity: 0
+  m_Intensity: 40
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
   m_ApplyToSortingLayers: 2d3b00ad
@@ -3459,7 +3459,7 @@ SpriteRenderer:
   m_SortingOrder: -22
   m_MaskInteraction: 0
   m_Sprite: {fileID: -6822537389761897335, guid: 39fdd3a0a924c114db27975f0d73216f, type: 3}
-  m_Color: {r: 0.89411765, g: 0.80784315, b: 1, a: 0.5153866}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -4586,7 +4586,7 @@ SpriteRenderer:
   m_SortingOrder: -22
   m_MaskInteraction: 0
   m_Sprite: {fileID: -6822537389761897335, guid: 39fdd3a0a924c114db27975f0d73216f, type: 3}
-  m_Color: {r: 0.89411765, g: 0.80784315, b: 1, a: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
@@ -4917,7 +4917,7 @@ MonoBehaviour:
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.605
   m_Color: {r: 0.37863553, g: 0.26980242, b: 0.4433962, a: 1}
-  m_Intensity: 0
+  m_Intensity: 40
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
   m_ApplyToSortingLayers: 2d3b00ad
@@ -6352,7 +6352,7 @@ SpriteRenderer:
   m_SortingOrder: -22
   m_MaskInteraction: 0
   m_Sprite: {fileID: -6822537389761897335, guid: 39fdd3a0a924c114db27975f0d73216f, type: 3}
-  m_Color: {r: 0.89411765, g: 0.80784315, b: 1, a: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -6863,7 +6863,7 @@ SpriteRenderer:
   m_SortingOrder: -22
   m_MaskInteraction: 0
   m_Sprite: {fileID: -6822537389761897335, guid: 39fdd3a0a924c114db27975f0d73216f, type: 3}
-  m_Color: {r: 0.89411765, g: 0.80784315, b: 1, a: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
@@ -7563,7 +7563,7 @@ MonoBehaviour:
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.605
   m_Color: {r: 0.37863553, g: 0.26980242, b: 0.4433962, a: 1}
-  m_Intensity: 0
+  m_Intensity: 40
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
   m_ApplyToSortingLayers: 2d3b00ad
@@ -7960,7 +7960,7 @@ MonoBehaviour:
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.605
   m_Color: {r: 0.37863553, g: 0.26980242, b: 0.4433962, a: 1}
-  m_Intensity: 0
+  m_Intensity: 40
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
   m_ApplyToSortingLayers: 2d3b00ad
@@ -8659,7 +8659,7 @@ MonoBehaviour:
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.605
   m_Color: {r: 0.37863553, g: 0.26980242, b: 0.4433962, a: 1}
-  m_Intensity: 8.325206
+  m_Intensity: 40
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
   m_ApplyToSortingLayers: 2d3b00ad
@@ -8847,7 +8847,7 @@ MonoBehaviour:
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.605
   m_Color: {r: 0.37863553, g: 0.26980242, b: 0.4433962, a: 1}
-  m_Intensity: 0
+  m_Intensity: 40
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
   m_ApplyToSortingLayers: 2d3b00ad
@@ -9146,7 +9146,7 @@ MonoBehaviour:
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.605
   m_Color: {r: 0.37863553, g: 0.26980242, b: 0.4433962, a: 1}
-  m_Intensity: 0
+  m_Intensity: 40
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
   m_ApplyToSortingLayers: 2d3b00ad
@@ -9321,7 +9321,7 @@ MonoBehaviour:
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.605
   m_Color: {r: 0.37863553, g: 0.26980242, b: 0.4433962, a: 1}
-  m_Intensity: 0
+  m_Intensity: 40
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
   m_ApplyToSortingLayers: 2d3b00ad

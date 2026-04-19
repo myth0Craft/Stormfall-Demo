@@ -140,6 +140,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+
+
         //resets double jump if player is on ground
         if (IsGroundedBuffered() || StuckToWallBuffered())
         {
@@ -190,6 +192,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+
+        UpdateTimers();
 
         if (dashFrames > 0)
         {
@@ -655,10 +659,8 @@ public class PlayerMovement : MonoBehaviour
     //checks if player was on ground in last 0.1s
     public bool IsGroundedBuffered()
     {
-        if (IsGrounded())
-            groundedRememberTimer = groundedRememberTime;
-        else
-            groundedRememberTimer -= Time.deltaTime;
+        
+       
 
         return groundedRememberTimer > 0f;
     }
@@ -684,10 +686,7 @@ public class PlayerMovement : MonoBehaviour
 
     public bool StuckToWallBuffered()
     {
-        if (StuckToWall())
-            wallRememberTimer = wallRememberTime;
-        else
-            wallRememberTimer -= Time.deltaTime;
+        
         return wallRememberTimer > 0f;
     }
 
@@ -751,6 +750,23 @@ public class PlayerMovement : MonoBehaviour
             body.linearVelocity = new Vector2(wallJumpHorizontalForce, jumpStrength * 1.3f);
         }
         //body.linearVelocity = new Vector2(body.linearVelocityX, jumpStrength * 1.2f);
+
+    }
+
+
+
+    private void UpdateTimers()
+    {
+        if (IsGrounded())
+            groundedRememberTimer = groundedRememberTime;
+        else
+            groundedRememberTimer -= Time.fixedDeltaTime;
+
+        if (StuckToWall())
+            wallRememberTimer = wallRememberTime;
+        else
+            wallRememberTimer -= Time.fixedDeltaTime;
+
 
     }
 }
