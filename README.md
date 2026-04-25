@@ -201,7 +201,8 @@ By this point, I had coded most of the basic mechanics and gotten the art style 
 Slowly, over the weeks and months I expanded the world and filled in the game's art. The current world map looks more like this: 
 <br>
 <br>
-<img width="1036" height="713" alt="Screenshot 2026-03-30 085520" src="https://github.com/user-attachments/assets/4481ec23-f521-494b-afe0-e21104295ab6" />
+<img width="1261" height="709" alt="Screenshot 2026-04-25 122110" src="https://github.com/user-attachments/assets/f6f98244-c5f5-4c5a-bae9-8b2d1e1f389f" />
+
 At one point in this process, I updated my art style again to be more bloomy and saturated. I also completely redid my combat system by making it combo-based and improving the animations.
 <br>
 <br>
