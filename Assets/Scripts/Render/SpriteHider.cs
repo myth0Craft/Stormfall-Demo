@@ -20,7 +20,7 @@ public class SpriteHider : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+        if (collision.CompareTag("Player") && Application.isPlaying && gameObject.activeSelf)
         {
             StartCoroutine(HideSpritesCoroutine(transparency, 1.0f));
         }
