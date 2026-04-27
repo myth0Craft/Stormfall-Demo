@@ -60,6 +60,7 @@ public class SceneLoader : MonoBehaviour
 
         MusicManager.instance.SetMusic(true);
         MusicManager.instance.FadeIn(2.0f, 0.3f);
+        PlayerData.AllowWindowInput(true);
         //eventSystem.enabled = true;
 
         //Destroy(this.gameObject);
@@ -129,6 +130,7 @@ public class SceneLoader : MonoBehaviour
         yield return FaderController.instance.FadeIn();
         PlayerData.AllowGameInput(true);
         MusicManager.instance.SetMusic(false);
+        PlayerData.AllowWindowInput(true);
         //Destroy(this.gameObject);
     }
 
@@ -167,6 +169,7 @@ public class SceneLoader : MonoBehaviour
         yield return FaderController.instance.FadeFromWhite();
         
         PlayerData.AllowGameInput(true);
+        PlayerData.AllowWindowInput(true);
     }
 
     //private IEnumerator Start()

@@ -4,10 +4,12 @@ public static class PlayerData
 {
     public static int saveIndex = 0;
     private static PlayerControls globalControls = new PlayerControls();
+    
     public static int maxHealth = 5;
     public static int currentHealth = 5;
     public static bool gamePaused = false;
     private static bool _allowGameInput = false;
+    private static bool _allowWindowInput = true;
     public static string currentScene = "1_Ancient_Springs";
     //public static Vector2 currentPosition = new Vector2(-3.0f, -1.0f);
     public static float posX = -5.0f;
@@ -52,10 +54,24 @@ public static class PlayerData
         _allowGameInput = allowGameInput;
         if (allowGameInput)
         {
-            globalControls.Enable();
+            
+            globalControls.Player.Enable();
         } else
         {
-            globalControls.Disable();
+            globalControls.Player.Disable();
+        }
+    }
+
+    public static void AllowWindowInput(bool allowWindowInput)
+    {
+        _allowWindowInput = allowWindowInput;
+
+        if (allowWindowInput)
+        {
+            globalControls.Window.Enable();
+        } else
+        {
+            globalControls.Window.Disable();
         }
     }
 

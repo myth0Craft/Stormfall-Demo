@@ -228,6 +228,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Window",
+            "id": "730ca46e-fbb9-4de0-90a3-2face7995f8f",
+            "actions": [
+                {
+                    "name": "Fullscreen",
+                    "type": "Button",
+                    "id": "8fc8ba21-cca4-45d9-a5cf-03e9803709e1",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "37425a75-ed97-465d-adf0-be4c839f6967",
+                    "path": "<Keyboard>/f11",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Fullscreen",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []
