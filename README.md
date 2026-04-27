@@ -89,11 +89,12 @@ The game will save data to the folder:
 <br>
 __Attack (requires sword ability):__ Left Click
 <br>
-**Interact:** Right Click
+**Interact/Skip Dialogue:** Right Click
 <br>
 **Pause:** Esc
 
 ## Gallery
+<img width="1919" height="1079" alt="Screenshot 2026-04-25 121214" src="https://github.com/user-attachments/assets/7367e191-c5ba-4298-9e95-4a10200a44ee" />
 <img width="1919" height="1079" alt="Screenshot 2026-02-20 182508" src="https://github.com/user-attachments/assets/e7c11099-6a99-403c-961a-101f75ae56cc" />
 <img width="1919" height="1079" alt="Screenshot 2026-03-26 095411" src="https://github.com/user-attachments/assets/5ee25c98-f6da-4a8b-8644-e827d70cc75e" />
 <img width="1919" height="1079" alt="Screenshot 2026-03-22 125802" src="https://github.com/user-attachments/assets/7dbe49ce-85c4-4ddf-9cbf-bdf3e853d467" />
@@ -101,6 +102,10 @@ __Attack (requires sword ability):__ Left Click
 <img width="1919" height="1079" alt="Screenshot 2026-03-22 125231" src="https://github.com/user-attachments/assets/602d7f36-12bb-4ea4-962f-863c3cc2d1dd" />
 <img width="1919" height="1079" alt="Screenshot 2026-03-18 183526" src="https://github.com/user-attachments/assets/c096a302-d41e-4e39-a464-4805d4a5c83f" />
 <img width="1919" height="1079" alt="Screenshot 2026-03-14 103537" src="https://github.com/user-attachments/assets/62a8ae65-102e-462d-a12b-f24c61d39c21" />
+<img width="1919" height="1079" alt="Screenshot 2026-04-25 121320" src="https://github.com/user-attachments/assets/1ad8d91d-6e83-4065-bb5a-674b2e445b47" />
+<img width="1919" height="1079" alt="Screenshot 2026-04-25 121106" src="https://github.com/user-attachments/assets/1f1a972c-a693-44fd-b5a9-baf9d56d5f70" />
+<img width="1919" height="1079" alt="Screenshot 2026-04-25 121116" src="https://github.com/user-attachments/assets/ac703865-4e3e-4be3-bf23-14c72843eae3" />
+<img width="1919" height="1079" alt="Screenshot 2026-04-25 121242" src="https://github.com/user-attachments/assets/80569dce-5c10-4ff1-aa9d-e336d07f429c" />
 
 
 ## Credits
@@ -196,7 +201,8 @@ By this point, I had coded most of the basic mechanics and gotten the art style 
 Slowly, over the weeks and months I expanded the world and filled in the game's art. The current world map looks more like this: 
 <br>
 <br>
-<img width="1036" height="713" alt="Screenshot 2026-03-30 085520" src="https://github.com/user-attachments/assets/4481ec23-f521-494b-afe0-e21104295ab6" />
+<img width="1261" height="709" alt="Screenshot 2026-04-25 122110" src="https://github.com/user-attachments/assets/f6f98244-c5f5-4c5a-bae9-8b2d1e1f389f" />
+
 At one point in this process, I updated my art style again to be more bloomy and saturated. I also completely redid my combat system by making it combo-based and improving the animations.
 <br>
 <br>
@@ -208,7 +214,7 @@ I made it so blur cameras were all created and rendered internally in a more opt
 simply have to add the feature to the renderer asset, select which layers to blur, and it does everything internally.
 <br>
 <br>
-Building this short, 3 minute vertical slice was a long, complicated process. When I started, I never expected it to take this long for only a few minutes of gameplay. 
+Building this short, 5 minute vertical slice was a long, complicated process. When I started, I never expected it to take this long for only a few minutes of gameplay. 
 I now have a solid foundation to build from, though. I simply need to keep iterating on it and building more content.
 I plan to keep on working on the project until I get bored of it or finish it. Who knows, maybe in a year, or a few, you'll see this game on Steam. 
 <br>
