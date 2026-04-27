@@ -3048,7 +3048,7 @@ RectTransform:
   - {fileID: 1975217268}
   - {fileID: 1797639733}
   - {fileID: 2059151204}
-  m_Father: {fileID: 493849698}
+  m_Father: {fileID: 814581417}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -3284,10 +3284,10 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
-          m_FloatArgument: 0
+          m_FloatArgument: 0.2
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 1
+        m_CallState: 2
       - m_Target: {fileID: 1975217270}
         m_TargetAssemblyTypeName: UIButtonFader, Assembly-CSharp
         m_MethodName: FadeInButtons
@@ -3387,6 +3387,7 @@ GameObject:
   - component: {fileID: 1995978785}
   - component: {fileID: 1995978784}
   - component: {fileID: 1995978783}
+  - component: {fileID: 1995978787}
   m_Layer: 5
   m_Name: Options
   m_TagString: Untagged
@@ -3575,8 +3576,32 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1995978783}
         m_TargetAssemblyTypeName: UIButtonFader, Assembly-CSharp
-        m_MethodName: FadeOutThenFadeIn
-        m_Mode: 4
+        m_MethodName: FadeOutButtons
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0.2
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
+      - m_Target: {fileID: 1995978783}
+        m_TargetAssemblyTypeName: UIButtonFader, Assembly-CSharp
+        m_MethodName: FadeInButtons
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1995978787}
+        m_TargetAssemblyTypeName: UIButtonEnableGameObjects, Assembly-CSharp
+        m_MethodName: UpdateGameObjectVisibility
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -3605,6 +3630,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1995978781}
   m_CullTransparentMesh: 1
+--- !u!114 &1995978787
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1995978781}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f117c92fe379b914fbf5662d489c54b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIButtonEnableGameObjects
+  gameObjectsToHide: []
+  gameObjectsToShow:
+  - {fileID: 1797639732}
 --- !u!95 &2022634693 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 3188862849062327169, guid: 15b0f025f66c4c54a89769fc06f5a0a3, type: 3}
@@ -4244,6 +4284,9 @@ PrefabInstance:
       addedObject: {fileID: 1681028895}
     - targetCorrespondingSourceObject: {fileID: 576269816461229492, guid: 007d474f8779fff4b9c42f387820d059, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 1848572743}
+    - targetCorrespondingSourceObject: {fileID: 576269816461229492, guid: 007d474f8779fff4b9c42f387820d059, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 1846754481}
     - targetCorrespondingSourceObject: {fileID: 576269816461229492, guid: 007d474f8779fff4b9c42f387820d059, type: 3}
       insertIndex: -1
@@ -4251,9 +4294,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4961264679918145640, guid: 007d474f8779fff4b9c42f387820d059, type: 3}
       insertIndex: 4
       addedObject: {fileID: 1995978782}
-    - targetCorrespondingSourceObject: {fileID: 4961264679918145640, guid: 007d474f8779fff4b9c42f387820d059, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1848572743}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 007d474f8779fff4b9c42f387820d059, type: 3}
 --- !u!1001 &4065098729977675908
