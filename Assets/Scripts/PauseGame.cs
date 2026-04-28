@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PauseGame : MonoBehaviour
 {
@@ -8,6 +9,8 @@ public class PauseGame : MonoBehaviour
     public GameObject parentObject;
     private GameObject[] childObjects;
     public GameObject[] UIToHide;
+    private bool _inOptionsMenu = false;
+    public Button backButton;
 
     private void Awake()
     {
@@ -40,11 +43,25 @@ public class PauseGame : MonoBehaviour
         else if (pausePressed && PlayerData.gamePaused)
         {
             pausePressed = false;
-            PlayerData.gamePaused = false;
+
+            if (!_inOptionsMenu)
+            {
+                PlayerData.gamePaused = false;
+
+                OnGameUnpause();
+            } else
+            {
+                backButton.onClick.Invoke();
+            }
+
             
-            OnGameUnpause();
             
         }
+    }
+
+    public void SetInOptionsMenu(bool inOptionsMenu)
+    {
+        _inOptionsMenu = inOptionsMenu;
     }
 
     public void OnGamePause()

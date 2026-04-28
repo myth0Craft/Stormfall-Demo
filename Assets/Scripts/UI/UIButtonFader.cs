@@ -206,6 +206,7 @@ public class UIButtonFader : MonoBehaviour
         {
             buttonsToDisable[i].gameObject.SetActive(true);
             buttonsToDisable[i].interactable = false;
+            
 
         }
 

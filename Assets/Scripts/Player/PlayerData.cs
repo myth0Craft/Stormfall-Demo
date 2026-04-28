@@ -2,6 +2,9 @@ using System.Collections.Generic;
 
 public static class PlayerData
 {
+
+
+    public static bool VsyncEnabled = true;
     public static int saveIndex = 0;
     private static PlayerControls globalControls = new PlayerControls();
     
