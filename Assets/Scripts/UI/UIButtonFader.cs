@@ -147,10 +147,11 @@ public class UIButtonFader : MonoBehaviour
 
     private IEnumerator FadeInRoutine()
     {
-
+        enableGameObjects();
         for (int i = 0; i < buttonsToEnable.Count; i++)
         {
             buttonsToEnable[i].gameObject.SetActive(true);
+            
             buttonsToEnable[i].interactable = false;
 
         }
@@ -241,7 +242,9 @@ public class UIButtonFader : MonoBehaviour
             
         }
 
-        /*for (int i = 0; i < buttonsToDisable.Count; i++)
+        disableGameObjects();
+        /*yield return null;
+        for (int i = 0; i < buttonsToDisable.Count; i++)
         {
             buttonsToDisable[i].gameObject.SetActive(false);
 
@@ -250,6 +253,31 @@ public class UIButtonFader : MonoBehaviour
 
         //fadeImage.color = new Color(fadeImage.color.r, fadeImage.color.g, fadeImage.color.b, endAlpha);
     }
+
+    public void disableGameObjects()
+    {
+        for (int i = 0; i < textToFadeOut.Count; i++)
+        {
+            textToFadeOut[i].raycastTarget = false;
+        }
+        for (int i = 0; i < imagesToFadeOut.Count; i++)
+        {
+            imagesToFadeOut[i].raycastTarget = false;
+        }
+    }
+
+    public void enableGameObjects()
+    {
+        for (int i = 0; i < textToFadeIn.Count; i++)
+        {
+            textToFadeIn[i].raycastTarget = true;
+        }
+        for (int i = 0; i < imagesToFadeIn.Count; i++)
+        {
+            imagesToFadeIn[i].raycastTarget = true;
+        }
+    }
+
 
 
 
