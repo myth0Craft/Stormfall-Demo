@@ -28,6 +28,22 @@ public class UIButtonFader : MonoBehaviour
 
     public float fadeDurationSeconds = 1.0f;
 
+
+    private void OnDisable()
+    {
+        for (int i = 0; i < buttonsToEnable.Count; i++)
+        {
+            buttonsToEnable[i].interactable = true;
+        }
+
+        for (int i = 0; i < buttonsToDisable.Count; i++)
+        {
+            buttonsToDisable[i].interactable = false;
+        }
+
+        enableGameObjects();
+        disableGameObjects();
+    }
     private void Awake()
     {
 
@@ -253,6 +269,8 @@ public class UIButtonFader : MonoBehaviour
 
         //fadeImage.color = new Color(fadeImage.color.r, fadeImage.color.g, fadeImage.color.b, endAlpha);
     }
+
+    
 
     public void disableGameObjects()
     {

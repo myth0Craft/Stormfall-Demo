@@ -44710,8 +44710,9 @@ MonoBehaviour:
   iFrameDuration: 0.5
   breakParticlesPrefab: {fileID: 3680454763949365995, guid: 4a6125f9cf121b6438795dd2399b5649, type: 3}
   hitParticlesPrefab: {fileID: 1877443918924586591, guid: c2618f7234673d040996216d48f30f19, type: 3}
+  hitSound: {fileID: 8300000, guid: 0e2841f09a4100b4f95021db8fc23fb0, type: 3}
   saveState: 1
-  id: R5BW1
+  id: R5BW2
 --- !u!212 &1394536741
 SpriteRenderer:
   serializedVersion: 2
@@ -54372,8 +54373,9 @@ MonoBehaviour:
   iFrameDuration: 0.5
   breakParticlesPrefab: {fileID: 3680454763949365995, guid: 4a6125f9cf121b6438795dd2399b5649, type: 3}
   hitParticlesPrefab: {fileID: 1877443918924586591, guid: c2618f7234673d040996216d48f30f19, type: 3}
+  hitSound: {fileID: 8300000, guid: 0e2841f09a4100b4f95021db8fc23fb0, type: 3}
   saveState: 1
-  id: R5BW1
+  id: R5BW3
 --- !u!212 &1763649416
 SpriteRenderer:
   serializedVersion: 2
@@ -58861,6 +58863,7 @@ MonoBehaviour:
   iFrameDuration: 0.5
   breakParticlesPrefab: {fileID: 3680454763949365995, guid: 4a6125f9cf121b6438795dd2399b5649, type: 3}
   hitParticlesPrefab: {fileID: 1877443918924586591, guid: c2618f7234673d040996216d48f30f19, type: 3}
+  hitSound: {fileID: 8300000, guid: 0e2841f09a4100b4f95021db8fc23fb0, type: 3}
   saveState: 1
   id: R5BW1
 --- !u!212 &2142312436

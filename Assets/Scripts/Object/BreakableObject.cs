@@ -5,6 +5,7 @@ public class BreakableObject : HealthManager
 
     public GameObject breakParticlesPrefab;
     public GameObject hitParticlesPrefab;
+    public AudioClip hitSound;
     public bool saveState = false;
     [SerializeField] private string id;
 
@@ -64,6 +65,11 @@ public class BreakableObject : HealthManager
         {
             GameObject instance = Instantiate(hitParticlesPrefab, transform.position, Quaternion.identity);
             instance.GetComponent<ParticleSystem>().Play();
+        }
+
+        if (hitSound != null)
+        {
+            AudioSource.PlayClipAtPoint(hitSound, transform.position);
         }
     }
 }

@@ -39,6 +39,7 @@ public class WindowManager : MonoBehaviour
         Screen.fullScreenMode = FullScreenMode.FullScreenWindow;
         PlayerData.fullScreenEnabled = true;
         SaveSystem.SaveSettingsData();
+        Canvas.ForceUpdateCanvases();
     }
 
     public void SetWindowed()
@@ -46,6 +47,7 @@ public class WindowManager : MonoBehaviour
         Screen.fullScreenMode = FullScreenMode.Windowed;
         PlayerData.fullScreenEnabled = false;
         SaveSystem.SaveSettingsData();
+        Canvas.ForceUpdateCanvases();
     }
 
     public void ToggleScreenState()
@@ -56,13 +58,14 @@ public class WindowManager : MonoBehaviour
             Screen.SetResolution(res.width, res.height, FullScreenMode.FullScreenWindow);
 
             PlayerData.fullScreenEnabled = true;
+
         }
         else
         {
             Screen.SetResolution(1280, 720, FullScreenMode.Windowed);
             PlayerData.fullScreenEnabled = false;
         }
-        
+        Canvas.ForceUpdateCanvases();
         SaveSystem.SaveSettingsData();
     }
 

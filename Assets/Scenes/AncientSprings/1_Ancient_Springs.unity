@@ -19380,6 +19380,7 @@ MonoBehaviour:
   iFrameDuration: 0.5
   breakParticlesPrefab: {fileID: 3680454763949365995, guid: 4a6125f9cf121b6438795dd2399b5649, type: 3}
   hitParticlesPrefab: {fileID: 0}
+  hitSound: {fileID: 0}
   saveState: 0
   id: 
 --- !u!114 &540714524
@@ -25330,6 +25331,7 @@ MonoBehaviour:
   iFrameDuration: 0.5
   breakParticlesPrefab: {fileID: 3680454763949365995, guid: 4a6125f9cf121b6438795dd2399b5649, type: 3}
   hitParticlesPrefab: {fileID: 0}
+  hitSound: {fileID: 0}
   saveState: 0
   id: 
 --- !u!114 &1014496016

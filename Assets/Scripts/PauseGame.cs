@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -44,15 +45,18 @@ public class PauseGame : MonoBehaviour
         {
             pausePressed = false;
 
-            if (!_inOptionsMenu)
+            if (!backButton.gameObject.activeInHierarchy)
             {
-                PlayerData.gamePaused = false;
-
-                OnGameUnpause();
-            } else
-            {
-                backButton.onClick.Invoke();
+                backButton.gameObject.SetActive(true);
             }
+            backButton.onClick.Invoke();
+
+            PlayerData.gamePaused = false;
+
+            OnGameUnpause();
+            
+            
+            
 
             
             
@@ -71,7 +75,24 @@ public class PauseGame : MonoBehaviour
         for (int i = 0; i < childObjects.Length; i++)
         {
             childObjects[i].SetActive(true);
+            if (childObjects[i].GetComponent<TextMeshProUGUI>() != null)
+            {
+                TextMeshProUGUI text = childObjects[i].GetComponent<TextMeshProUGUI>();
+                text.color = new Color(text.color.r, text.color.g, text.color.b, 1);
+            }
+
+
+            /*if (childObjects[i].GetComponent<Image>() != null)
+            {
+                Image image = childObjects[i].GetComponent<Image>();
+                image.color = new Color(image.color.r, image.color.g, image.color.b, 1);
+            }*/
         }
+
+        /*foreach(Transform t in transform)
+        {
+            transform.gameObject.SetActive(true);
+        }*/
 
         for (int i = 0; i < UIToHide.Length; i++)
         {

@@ -2062,11 +2062,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6270736036406362160, guid: 15b0f025f66c4c54a89769fc06f5a0a3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -5.1
+      value: 33.5
       objectReference: {fileID: 0}
     - target: {fileID: 6270736036406362160, guid: 15b0f025f66c4c54a89769fc06f5a0a3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.8
+      value: 72.2
       objectReference: {fileID: 0}
     - target: {fileID: 6270736036406362160, guid: 15b0f025f66c4c54a89769fc06f5a0a3, type: 3}
       propertyPath: m_LocalPosition.z
@@ -4624,12 +4624,28 @@ PrefabInstance:
       objectReference: {fileID: 1975217269}
     - target: {fileID: 3829458281276948502, guid: 007d474f8779fff4b9c42f387820d059, type: 3}
       propertyPath: UIToHide.Array.size
-      value: 2
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3829458281276948502, guid: 007d474f8779fff4b9c42f387820d059, type: 3}
       propertyPath: 'UIToHide.Array.data[1]'
       value: 
       objectReference: {fileID: 1681028894}
+    - target: {fileID: 3829458281276948502, guid: 007d474f8779fff4b9c42f387820d059, type: 3}
+      propertyPath: 'UIToHide.Array.data[2]'
+      value: 
+      objectReference: {fileID: 1975217267}
+    - target: {fileID: 3829458281276948502, guid: 007d474f8779fff4b9c42f387820d059, type: 3}
+      propertyPath: 'UIToHide.Array.data[3]'
+      value: 
+      objectReference: {fileID: 1797639732}
+    - target: {fileID: 3829458281276948502, guid: 007d474f8779fff4b9c42f387820d059, type: 3}
+      propertyPath: 'UIToHide.Array.data[4]'
+      value: 
+      objectReference: {fileID: 2059151203}
+    - target: {fileID: 3829458281276948502, guid: 007d474f8779fff4b9c42f387820d059, type: 3}
+      propertyPath: 'UIToHide.Array.data[5]'
+      value: 
+      objectReference: {fileID: 330652888}
     - target: {fileID: 4051061908108688655, guid: 007d474f8779fff4b9c42f387820d059, type: 3}
       propertyPath: m_VerticalAlignment
       value: 1024
