@@ -1,10 +1,15 @@
 <img width="2158" height="1079" alt="banner_with_title" src="https://github.com/user-attachments/assets/c1abe7ab-7232-4a5c-89e3-293da641a1c7" />
 
-## Gameplay Demo Video:
+## Demo Video #1
 
 
 [![Stormfall Demo - First 3 Minutes of Gameplay](https://github.com/user-attachments/assets/cadc0753-4ad6-4c50-a507-8dd2b8b24aa9)](https://youtu.be/ekKG5TU68Wg)
 https://youtu.be/ekKG5TU68Wg
+
+## Demo Video #2
+
+[![Stormfall Demo - The Old Road](https://github.com/user-attachments/assets/340aad6f-a536-40db-845e-bb4b116dfbe1)](https://youtu.be/cAUzvdSWE_s)
+https://youtu.be/cAUzvdSWE_s
 
 ## About the Game
 
@@ -92,6 +97,8 @@ __Attack (requires sword ability):__ Left Click
 **Interact/Skip Dialogue:** Right Click
 <br>
 **Pause:** Esc
+<br>
+**Toggle Fullscreen:** f11
 
 ## Gallery
 <img width="1919" height="1079" alt="Screenshot 2026-04-25 121214" src="https://github.com/user-attachments/assets/7367e191-c5ba-4298-9e95-4a10200a44ee" />
@@ -219,9 +226,17 @@ I now have a solid foundation to build from, though. I simply need to keep itera
 I plan to keep on working on the project until I get bored of it or finish it. Who knows, maybe in a year, or a few, you'll see this game on Steam. 
 <br>
 <br>
-If you read this far, thanks for reading. I hope you enjoy the Stormfall Demo.
+If you read this far, thanks for reading. I hope you enjoy the demo!
 
+<br>
+<br>
 
+## Concept Art
+
+Before starting on the game, I physically drew out the world map and player character in my sketchbook. This concept art was the initial idea for the game, and the final game demo is based around what I initially drew out.
+
+<img width="3024" height="4032" alt="20260429_073615" src="https://github.com/user-attachments/assets/cdab9370-1f0f-4427-9b1f-8bc1ef21c0f8" />
+<img width="4032" height="3024" alt="20260429_073631" src="https://github.com/user-attachments/assets/b3ed970a-337e-473b-8de6-54f84f92a55a" />
 
 
 
