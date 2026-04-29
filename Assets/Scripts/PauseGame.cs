@@ -1,5 +1,7 @@
+using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class PauseGame : MonoBehaviour
@@ -16,7 +18,8 @@ public class PauseGame : MonoBehaviour
     private void Awake()
     {
         controls = PlayerData.getControls();
-        controls.Player.Pause.performed += ctx => pausePressed = true;
+        //controls.Player.Pause.performed += ctx => pausePressed = true;
+        controls.Player.Pause.performed += OnPausePressed;
 
         childObjects = new GameObject[parentObject.transform.childCount];
 
@@ -31,19 +34,34 @@ public class PauseGame : MonoBehaviour
         }
     }
 
-    private void Update()
+    private void OnDestroy()
     {
-        if (pausePressed && !PlayerData.gamePaused)
+        controls.Player.Pause.performed -= OnPausePressed;
+    }
+
+    private void OnDisable()
+    {
+        controls.Player.Pause.performed -= OnPausePressed;
+    }
+
+    private void OnEnable()
+    {
+        controls.Player.Pause.performed += OnPausePressed;
+    }
+
+    private void OnPausePressed(InputAction.CallbackContext context)
+    {
+        if (!PlayerData.gamePaused)
         {
-            pausePressed = false;
+            //pausePressed = false;
             PlayerData.gamePaused = true;
-            
+
             OnGamePause();
-            
+
         }
-        else if (pausePressed && PlayerData.gamePaused)
+        else
         {
-            pausePressed = false;
+            //pausePressed = false;
 
             if (!backButton.gameObject.activeInHierarchy)
             {
@@ -54,14 +72,10 @@ public class PauseGame : MonoBehaviour
             PlayerData.gamePaused = false;
 
             OnGameUnpause();
-            
-            
-            
-
-            
-            
         }
     }
+
+
 
     public void SetInOptionsMenu(bool inOptionsMenu)
     {
