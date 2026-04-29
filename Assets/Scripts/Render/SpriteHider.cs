@@ -65,6 +65,14 @@ public class SpriteHider : MonoBehaviour
             
             yield return null;
         }
+
+        foreach (SpriteRenderer sprite in spritesToHide)
+        {
+            if (sprite != null)
+            {
+                sprite.color = new Color(sprite.color.r, sprite.color.g, sprite.color.b, endAlpha);
+            }
+        }
     }
 
 }

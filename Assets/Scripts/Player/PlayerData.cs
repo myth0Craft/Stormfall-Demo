@@ -4,10 +4,9 @@ public static class PlayerData
 {
 
 
-    public static bool VsyncEnabled = true;
     public static int saveIndex = 0;
     private static PlayerControls globalControls = new PlayerControls();
-    
+
     public static int maxHealth = 5;
     public static int currentHealth = 5;
     public static bool gamePaused = false;
@@ -30,6 +29,12 @@ public static class PlayerData
     public static bool shieldUnlocked = false;
 
 
+
+    //GAME SETTINGS
+    public static bool VsyncEnabled = true;
+    public static bool fullScreenEnabled = true;
+
+
     //NPC DATA
     public static HashSet<string> talkedToNPCs = new HashSet<string>();
 
@@ -44,7 +49,7 @@ public static class PlayerData
         {
             talkedToNPCs.Add(npcId);
         }
-        
+
     }
 
     public static PlayerControls getControls()
@@ -57,9 +62,10 @@ public static class PlayerData
         _allowGameInput = allowGameInput;
         if (allowGameInput)
         {
-            
+
             globalControls.Player.Enable();
-        } else
+        }
+        else
         {
             globalControls.Player.Disable();
         }
@@ -72,7 +78,8 @@ public static class PlayerData
         if (allowWindowInput)
         {
             globalControls.Window.Enable();
-        } else
+        }
+        else
         {
             globalControls.Window.Disable();
         }
@@ -97,6 +104,8 @@ public static class PlayerData
         //NPC DATA
         data.talkedToNPCs = new List<string>(talkedToNPCs);
 
+
+
     }
 
     public static void Load(PlayerSaveData data)
@@ -114,6 +123,11 @@ public static class PlayerData
         doubleJumpUnlocked = data.doubleJumpUnlocked;
         wallJumpUnlocked = data.wallJumpUnlocked;
         shieldUnlocked = data.shieldUnlocked;
+
+
+
+
+
 
         //NPC DATA
         talkedToNPCs = new HashSet<string>(data.talkedToNPCs ?? new List<string>());
@@ -140,6 +154,24 @@ public static class PlayerData
         talkedToNPCs = new HashSet<string>();
     }
 
+    public static void SaveSettingsData(ref PlayerSettingsData data)
+    {
+        data.vsyncEnabled = VsyncEnabled;
+        data.fullscreenEnabled = fullScreenEnabled;
+    }
+
+    public static void LoadSettingsData(PlayerSettingsData data)
+    {
+        VsyncEnabled = data.vsyncEnabled;
+        fullScreenEnabled = data.fullscreenEnabled;
+    }
+
+    public static void SetSettingsDefaults()
+    {
+        VsyncEnabled = true;
+        fullScreenEnabled = true;
+    }
+
 }
 
 [System.Serializable]
@@ -160,4 +192,15 @@ public struct PlayerSaveData
 
     //NPC DATA
     public List<string> talkedToNPCs;
+}
+
+
+
+
+
+[System.Serializable]
+public struct PlayerSettingsData
+{
+    public bool vsyncEnabled;
+    public bool fullscreenEnabled;
 }

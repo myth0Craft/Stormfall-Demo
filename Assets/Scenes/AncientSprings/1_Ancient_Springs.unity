@@ -43784,6 +43784,7 @@ MonoBehaviour:
   fadeIn: 1
   fadeDuration: 2
   endVolume: 0.5
+  musicToSwitch: {fileID: 0}
 --- !u!61 &2108815603
 BoxCollider2D:
   m_ObjectHideFlags: 0

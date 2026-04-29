@@ -17984,7 +17984,7 @@ MonoBehaviour:
   fadeIn: 1
   fadeDuration: 2
   endVolume: 0.5
-  musicToSwitch: {fileID: 0}
+  musicToSwitch: {fileID: 8300000, guid: 67b6f0ff2757bca439ba21c9372a47a0, type: 3}
 --- !u!61 &460521498
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -44912,7 +44912,7 @@ MonoBehaviour:
   fadeIn: 1
   fadeDuration: 2
   endVolume: 0.5
-  musicToSwitch: {fileID: 0}
+  musicToSwitch: {fileID: 8300000, guid: 67b6f0ff2757bca439ba21c9372a47a0, type: 3}
 --- !u!61 &1423694030
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -51511,7 +51511,7 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4294967295
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -54445,7 +54445,6 @@ GameObject:
   - component: {fileID: 1763697114}
   - component: {fileID: 1763697113}
   - component: {fileID: 1763697112}
-  - component: {fileID: 1763697111}
   m_Layer: 0
   m_Name: SavePoint
   m_TagString: Untagged
@@ -54472,19 +54471,6 @@ Transform:
   - {fileID: 1423694028}
   m_Father: {fileID: 1041732141}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1763697111
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1763697109}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67f02973f195b8343b470490efd3122e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CameraLoader
-  cam: {fileID: 0}
 --- !u!61 &1763697112
 BoxCollider2D:
   m_ObjectHideFlags: 0

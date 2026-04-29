@@ -36,10 +36,12 @@ public class FullscreenButton : MonoBehaviour
         if (Screen.fullScreenMode == FullScreenMode.FullScreenWindow)
         {
             text.text = "Fullscreen: Disabled";
+            
         }
         else
         {
             text.text = "Fullscreen: Enabled";
+            
         }
     }
 

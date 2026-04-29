@@ -37,11 +37,15 @@ public class WindowManager : MonoBehaviour
     public void SetFullscreen()
     {
         Screen.fullScreenMode = FullScreenMode.FullScreenWindow;
+        PlayerData.fullScreenEnabled = true;
+        SaveSystem.SaveSettingsData();
     }
 
     public void SetWindowed()
     {
         Screen.fullScreenMode = FullScreenMode.Windowed;
+        PlayerData.fullScreenEnabled = false;
+        SaveSystem.SaveSettingsData();
     }
 
     public void ToggleScreenState()
@@ -50,11 +54,16 @@ public class WindowManager : MonoBehaviour
         {
             Resolution res = Screen.currentResolution;
             Screen.SetResolution(res.width, res.height, FullScreenMode.FullScreenWindow);
+
+            PlayerData.fullScreenEnabled = true;
         }
         else
         {
             Screen.SetResolution(1280, 720, FullScreenMode.Windowed);
+            PlayerData.fullScreenEnabled = false;
         }
+        
+        SaveSystem.SaveSettingsData();
     }
 
 

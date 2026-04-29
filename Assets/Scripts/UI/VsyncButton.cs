@@ -11,11 +11,11 @@ public class VsyncButton : MonoBehaviour
         if (PlayerData.VsyncEnabled)
         {
             text.text = "Vsync: Enabled";
-            QualitySettings.vSyncCount = 1;
+            //QualitySettings.vSyncCount = 1;
         } else
         {
             text.text = "Vsync: Disabled";
-            QualitySettings.vSyncCount = 0;
+            //QualitySettings.vSyncCount = 0;
         }
     }
 
@@ -26,11 +26,13 @@ public class VsyncButton : MonoBehaviour
         {
             text.text = "Vsync: Enabled";
             QualitySettings.vSyncCount = 1;
+            SaveSystem.SaveSettingsData();
         }
         else
         {
             text.text = "Vsync: Disabled";
             QualitySettings.vSyncCount = 0;
+            SaveSystem.SaveSettingsData();
         }
         
     }

@@ -8,6 +8,8 @@ public class SaveSystem
 {
     private static SaveData saveData = new SaveData();
 
+    private static SettingsData settingsData = new SettingsData();
+
     [System.Serializable]
     public class SaveData
     {
@@ -15,6 +17,12 @@ public class SaveSystem
         public Dictionary<string, RoomSaveData> roomData = new();
     }
 
+
+    [System.Serializable]
+    public class SettingsData
+    {
+        public PlayerSettingsData playerSettingsData;
+    }
 
     public static RoomSaveData getRoom(string sceneId)
     {
@@ -36,17 +44,46 @@ public class SaveSystem
         return saveFile;
     }
 
+    public static string SettingsFileName()
+    {
+        string settingsFile = Application.persistentDataPath + "/game_settings.json";
+        return settingsFile;
+    }
+
     public static void Save(int saveIndex)
     {
         PlayerData.Save(ref saveData.playerData);
-
         //File.WriteAllText(SaveFileName(saveIndex), JsonUtility.ToJson(saveData, true));
         File.WriteAllText(SaveFileName(saveIndex), JsonConvert.SerializeObject(saveData, Formatting.Indented));
-        
-
+        SaveSettingsData();
         
     }
 
+    public static void SaveSettingsData()
+    {
+        PlayerData.SaveSettingsData(ref settingsData.playerSettingsData);
+
+        File.WriteAllText(SettingsFileName(), JsonConvert.SerializeObject(settingsData, Formatting.Indented));
+
+    }
+
+
+    public static void LoadSettingsData()
+    {
+        if (File.Exists(SettingsFileName()))
+        {
+            string settingsSaveContent = File.ReadAllText(SettingsFileName());
+
+            settingsData = JsonConvert.DeserializeObject<SettingsData>(settingsSaveContent);
+            PlayerData.LoadSettingsData(settingsData.playerSettingsData);
+        }
+        else
+        {
+            PlayerData.SetSettingsDefaults();
+            PlayerData.SaveSettingsData(ref settingsData.playerSettingsData);
+            File.WriteAllText(SettingsFileName(), JsonConvert.SerializeObject(settingsData, Formatting.Indented));
+        }
+    }
 
     public static void Load(int saveIndex)
     {
