@@ -63,6 +63,12 @@ public class PlayerAnimationEvent : MonoBehaviour
         AudioSource.PlayClipAtPoint(swordSwingSoundClip, PlayerMovement.instance.transform.position);
     }
 
+    public void startOverheadSlash()
+    {
+        PlayerAnimationManager.instance.StartOverheadSlash();
+    }
+
+
     public void triggerAttackScreenShake()
     {
         float xForce = PlayerMovement.instance.getFacingDirection() ? -0.008f : 0.008f;

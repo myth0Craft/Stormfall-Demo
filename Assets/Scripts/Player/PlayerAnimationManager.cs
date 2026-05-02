@@ -151,4 +151,9 @@ public class PlayerAnimationManager : MonoBehaviour
     {
         armsAnim.SetBool("gainSwordAbility", gainSwordSequenceActive);
     }
+
+    public void StartOverheadSlash()
+    {
+        bodyAnim.SetTrigger("OverheadSlash");
+    }
 }
