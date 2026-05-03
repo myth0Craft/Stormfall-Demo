@@ -43,22 +43,14 @@ public class PlayerAnimationManager : MonoBehaviour
         bodyAnim.SetBool("moving", (playerMovement.horizontalMovement > 0.01f || playerMovement.horizontalMovement < -0.01f));
         legsAnim.SetBool("moving", (playerMovement.horizontalMovement > 0.01f || playerMovement.horizontalMovement < -0.01f));
 
-        if (PlayerData.swordUnlocked)
+        if (PlayerData.swordUnlocked || PlayerMeleeAttack.instance.attackDebugActive)
         {
             swordAnim.SetBool("moving", (playerMovement.horizontalMovement > 0.01f || playerMovement.horizontalMovement < -0.01f) && playerMovement.IsGroundedBuffered());
-        }
-        else
-        {
-            disableSword();
         }
 
         if (PlayerData.shieldUnlocked)
         {
             shieldAnim.SetBool("moving", (playerMovement.horizontalMovement > 0.01f || playerMovement.horizontalMovement < -0.01f) && playerMovement.IsGroundedBuffered());
-        }
-        else
-        {
-            disableShield();
         }
 
         capeAnim.SetFloat("jumpTime", playerMovement.jumpTime);
