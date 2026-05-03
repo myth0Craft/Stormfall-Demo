@@ -269,7 +269,7 @@ public class PlayerMovement : MonoBehaviour
         wasJumpHeld = jumpHeld;
 
         //dashing
-        if (dashPressed && !dashUsed && !playerMeleeAttack.isMidAttack && playerMeleeAttack.getAttackTimerTime() <= 0 && (PlayerData.dashUnlocked || abilityDebug))
+        if (dashPressed && !dashUsed && !playerMeleeAttack.isMidAttack && !playerMeleeAttack.attackHitboxActive && (PlayerData.dashUnlocked || abilityDebug))
         {
 
             if (dashCooldown <= 0)
@@ -280,7 +280,7 @@ public class PlayerMovement : MonoBehaviour
                 dashCooldown = dashCooldownTime;
                 dashFrames = maxDashFrames;
                 dashPressed = false;
-                playerMeleeAttack.attackCooldownTimer = 0f;
+                //playerMeleeAttack.attackCooldownTimer = 0f;
                 GlobalHitstopManager.DoHitstop(0.02f);
             }
             //if (IsGroundedBuffered())
@@ -514,8 +514,7 @@ public class PlayerMovement : MonoBehaviour
 
         //turn logic - only executes if player is not currently attacking. If the player is in midair, turn logic still applies regardless of attack state.
         if (shouldFaceRight != facingRight && !playerMeleeAttack.isMidAttack 
-            && playerMeleeAttack.getAttackTimerTime() <= 0
-            )
+            && !playerMeleeAttack.attackHitboxActive)
         {
 
             //rotates player 180 on y

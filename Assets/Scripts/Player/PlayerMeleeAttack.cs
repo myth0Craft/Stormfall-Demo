@@ -1,141 +1,142 @@
+using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using System.Collections;
 
 public class PlayerMeleeAttack : MonoBehaviour
 {
+
+    public static PlayerMeleeAttack instance;
     private PlayerControls controls;
     private PlayerMovement playerMovement;
     private bool attackPressed;
-    private float attackDurationSeconds = 0.12f;
-    private float attackTimer = 0;
-
-    public float getAttackTimerTime()
-    {
-        return attackTimer;
-    }
+    private float attackHitboxActiveDurationSeconds = 0.12f;
+    public bool attackHitboxActive { get; private set; } = false;
 
     private float attackCooldownDurationSeconds = 0.4f;
-    public float attackCooldownTimer = 0;
-    //BoxCollider2D playerBox;
+    private bool attackIsOnCooldown = false;
     [SerializeField] private GameObject attackHitbox;
-    [SerializeField] private bool attackDebug = false;
+
+    [SerializeField] private bool attackDebug;
+    public bool attackDebugActive { get; private set; } = false;
     private BoxCollider2D attackCollider;
-    private bool oldFacingRight;
     public bool isMidAttack = false;
 
     public int comboNum = 0;
 
     private void Awake()
     {
+        if (instance == null)
+        {
+            instance = this;
+        } else
+        {
+            Destroy(gameObject);
+        }
+
+
         playerMovement = GetComponentInParent<PlayerMovement>();
-        //playerBox = GetComponentInParent<BoxCollider2D>();
         attackCollider = attackHitbox.GetComponent<BoxCollider2D>();
         controls = PlayerData.getControls();
-        controls.Player.Attack.performed += ctx => attackPressed = true;
-        oldFacingRight = playerMovement.getFacingDirection();
+        controls.Player.Attack.performed += OnAttackPressed;
         attackHitbox.SetActive(false);
-        if (PlayerData.swordUnlocked)
-        {
-
-            if (PlayerAnimationManager.instance != null)
-            {
-                PlayerAnimationManager.instance.enableSword();
-            }
-            //playerMovement.enableShield();
-        }
-        
+        attackDebugActive = attackDebug;
     }
 
-    private void Update()
+    
+
+    
+
+    private void OnDestroy()
     {
-        if (PlayerData.swordUnlocked || attackDebug)
+        controls.Player.Attack.performed -= OnAttackPressed;
+    }
+
+    void OnEnable()
+    {
+        if (controls != null)
         {
+            controls.Player.Enable();
+        }
+        controls.Player.Attack.performed += OnAttackPressed;
+    }
 
+    void OnDisable()
+    {
+        if (controls != null)
+        {
+            controls.Player.Disable();
+        }
+        controls.Player.Attack.performed -= OnAttackPressed;
+    }
 
-            //if the player dashes, disable the attack
-            if (playerMovement.getDashFrames() > 0)
+    private void OnAttackPressed(InputAction.CallbackContext context)
+    {
+        if ((PlayerData.swordUnlocked || attackDebugActive) && !PlayerData.gamePaused)
+        {
+            //cancel attack if player is dashing
+            /*if (playerMovement.getDashFrames() <= 0)
             {
-                PlayerAnimationManager.instance.SetAttackQueued(false);
-                attackTimer = 0f;
-                attackHitbox.SetActive(false);
-                PlayerAnimationManager.instance.enableSword();
-                //if (isMidAttack)
-                //{
-                //    attackPressed = true;
-                //}
-                attackPressed = false;
-                isMidAttack = false;
+                Debug.Log("Dash canceled attack");
+                return;
+            }*/
+
+
+            if (!attackHitboxActive && !attackIsOnCooldown)
+            {
+                Debug.Log("Attack started");
+                StartAttack();
             }
-
-            //handle in-between attack cooldown
-            if (attackCooldownTimer > 0)
+            else if (!isMidAttack)
             {
-                attackCooldownTimer -= Time.deltaTime;
-                if (attackCooldownTimer < 0)
-                    attackCooldownTimer = 0;
-            }
-
-            //counts down damage hitbox active time. When it gets disabled, start the in-between attack cooldown timer.
-            if (attackTimer > 0)
-            {
-                attackTimer -= Time.deltaTime;
-                if (attackTimer < 0)
-                    attackTimer = 0;
-
-                if (attackTimer == 0)
-                {
-                    attackHitbox.SetActive(false);
-                    attackCooldownTimer = attackCooldownDurationSeconds;
-                    //playerMovement.enableSword();
-                }
-            }
-
-
-            if (attackPressed)
-            {
-                //disable input if game is paused
-                if (PlayerData.gamePaused)
-                {
-                    attackPressed = false;
-                }
-
-                //if there is no cooldown active start attack animation
-                if (attackCooldownTimer == 0 && attackTimer == 0)
-                {
-                    StartAttack();
-
-
-                }
-                else if (!isMidAttack)
-                {
-
-                    //if pressed mid attack queue a combo attack
-                    PlayerAnimationManager.instance.SetAttackQueued(true);
-                }
-
-                //disable input if player is dashing
-                if (playerMovement.getDashFrames() <= 0)
-                {
-                    attackPressed = false;
-                }
+                Debug.Log("combo queued");
+                //if pressed mid attack queue a combo attack
+                PlayerAnimationManager.instance.SetAttackQueued(true);
             }
         } else
         {
-            attackPressed = false;
+            Debug.Log("Cannot attack");
         }
+
+
+    }
+
+    private IEnumerator AttackCooldownCoroutine()
+    {
+        attackHitboxActive = true;
+        yield return new WaitForSeconds(attackHitboxActiveDurationSeconds);
+        attackHitbox.SetActive(false);
+        attackHitboxActive = false;
+
+        attackIsOnCooldown = true;
+        yield return new WaitForSeconds(attackCooldownDurationSeconds);
+        attackIsOnCooldown = false;
+    }
+
+    private void CancelAttack()
+    {
+        PlayerAnimationManager.instance.SetAttackQueued(false);
+        StopAllCoroutines();
+        attackHitboxActive = false;
+        attackIsOnCooldown = false;
+        attackHitbox.SetActive(false);
+        PlayerAnimationManager.instance.enableSword();
+        attackPressed = false;
+        isMidAttack = false;
     }
 
     //currently unused
-    private void UpdateComboNum()
-    {
-        if (attackCooldownTimer == 0 && attackTimer == 0)
-        {
-            comboNum = 0;
-        } else { 
-            comboNum++;
-        if (comboNum >= 2)
-            comboNum = 0;
-        }
-    }
+    //private void UpdateComboNum()
+    //{
+    //    if (!attackIsOnCooldown && !attackHitboxActive)
+    //    {
+    //        comboNum = 0;
+    //    } else { 
+    //        comboNum++;
+    //    if (comboNum >= 2)
+    //        comboNum = 0;
+    //    }
+    //}
 
     //updates attack damage hitbox position to be in front of the player
     private void UpdateFacingDirection()
@@ -145,21 +146,7 @@ public class PlayerMeleeAttack : MonoBehaviour
         attackHitbox.transform.position = playerPos += offsetVector;
     }
 
-    void OnEnable()
-    {
-        if (controls != null)
-        {
-            controls.Player.Enable();
-        }
-    }
-
-    void OnDisable()
-    {
-        if (controls != null)
-        {
-            controls.Player.Disable();
-        }
-    }
+    
     
     //called when the attack animation starts, begins execution of attack anim
     public void StartAttack()
@@ -181,14 +168,16 @@ public class PlayerMeleeAttack : MonoBehaviour
     public void ApplyDamage()
     {
         UpdateFacingDirection();
-        //attackAnimator.SetBool("attackQueued", false);
-        attackTimer = attackDurationSeconds;
+        
         attackHitbox.SetActive(true);
         isMidAttack = false;
-        comboNum++;
-        if (comboNum >= 1)
-        {
-            comboNum = 0;
-        }
+
+        StartCoroutine(AttackCooldownCoroutine());
+
+        //comboNum++;
+        //if (comboNum >= 1)
+        //{
+        //    comboNum = 0;
+        //}
     }
 }

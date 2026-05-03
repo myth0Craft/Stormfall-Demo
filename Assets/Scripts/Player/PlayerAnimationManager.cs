@@ -28,6 +28,12 @@ public class PlayerAnimationManager : MonoBehaviour
     private void Start()
     {
         playerMovement = PlayerMovement.instance;
+
+        if (PlayerData.swordUnlocked || PlayerMeleeAttack.instance.attackDebugActive)
+        {
+            enableSword();
+        }
+
     }
 
 
