@@ -1,12 +1,31 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
+
+public enum HorizontalState
+{
+    Idle,
+    Walking,
+    Dashing,
+    Sprinting,
+}
+
+public enum VerticalState
+{
+    Idle,
+    Jumping,
+    Falling,
+    StuckToWall
+}
 
 public class PlayerMovement : MonoBehaviour
 {
-
+    
     public static PlayerMovement instance { get; private set; }
+    public HorizontalState currentHorizontalState;
+    public VerticalState currentVerticalState;
     public Rigidbody2D body;
     private LayerMask groundLayer;
     private BoxCollider2D boxCollider;
@@ -17,9 +36,11 @@ public class PlayerMovement : MonoBehaviour
 
     private PlayerMeleeAttack playerMeleeAttack;
 
-    private Vector3 sizeScale;
+    private bool groundedThisFrame;
 
-
+    private float horizontalInput;
+    private Coroutine jumpHoldRoutine;
+    private Vector2 SlopeNormalPerp;
 
     //movement values
     private float speed = 4f;
@@ -98,7 +119,6 @@ public class PlayerMovement : MonoBehaviour
         body = GetComponent<Rigidbody2D>();
         boxCollider = GetComponent<BoxCollider2D>();
         controls = PlayerData.getControls();
-        sizeScale = transform.localScale;
         groundLayer = LayerMask.GetMask("Ground");
         sprintParticles = GetComponentInChildren<ParticleSystem>();
         playerMeleeAttack = GetComponent<PlayerMeleeAttack>();
@@ -106,6 +126,9 @@ public class PlayerMovement : MonoBehaviour
 
 
         controls.Player.Move.performed += ctx => horizontalMovement = ctx.ReadValue<Vector2>().x;
+        controls.Player.Move.performed += OnHorizontalInput;
+        controls.Player.Move.performed += ctx => horizontalInput = ctx.ReadValue<Vector2>().x;
+        controls.Player.Move.canceled += ctx => horizontalInput = 0f;
         controls.Player.Move.canceled += ctx => horizontalMovement = 0f;
 
         controls.Player.Jump.performed += ctx => jumpPressed = true;
@@ -114,18 +137,212 @@ public class PlayerMovement : MonoBehaviour
         controls.Player.Dash.canceled += ctx => dashHeld = false;
 
 
-        controls.Player.Jump.canceled += ctx => jumpHeld = false;
-        controls.Player.Jump.started += ctx => jumpHeld = true;
+        //controls.Player.Jump.canceled += ctx => jumpHeld = false;
+        //controls.Player.Jump.started += ctx => jumpHeld = true;
+        controls.Player.Jump.performed += OnJumpPressed;
+        controls.Player.Jump.started += OnJumpHeld;
+        controls.Player.Jump.canceled += NewOnJumpReleased;
 
-#if !UNITY_EDITOR
+        #if !UNITY_EDITOR
             gameObject.transform.position = new Vector2(PlayerData.posX, PlayerData.posY);
-#endif
+        #endif
+
+
+        currentHorizontalState = HorizontalState.Idle;
+        currentVerticalState = VerticalState.Idle;
+
     }
 
-    private void Start()
+    
+
+    private void NewOnJumpReleased(InputAction.CallbackContext context)
     {
-        //fallSpeedYDampingChangeThreshold = CameraManager.instance.fallSpeedYDampingChangeThreshold;
+        currentVerticalState = VerticalState.Falling;
+
+        if (body.linearVelocity.y > 0)
+        {
+            body.linearVelocity = new Vector2(body.linearVelocity.x, body.linearVelocity.y * 0.4f);
+            PlayerAnimationManager.instance.SetCapeJumpTrigger();
+        }
     }
+
+    private void OnJumpHeld(InputAction.CallbackContext context)
+    {
+        if (jumpHoldRoutine != null)
+            StopCoroutine(jumpHoldRoutine);
+
+
+        jumpHoldRoutine = StartCoroutine(JumpHeldCoroutine());
+    }
+
+    private IEnumerator JumpHeldCoroutine()
+    {
+        while (currentVerticalState == VerticalState.Jumping && jumpHoldCounter > 0)
+        {
+            body.linearVelocity += Vector2.up * (jumpStrength * jumpIncreasePerFrameHeld) * Time.fixedDeltaTime;
+            jumpHoldCounter--;
+            yield return new WaitForFixedUpdate();
+        }
+    }
+
+    private void OnJumpPressed(InputAction.CallbackContext context)
+    {
+        jumpHoldCounter = maxJumpHoldFrames;
+        
+
+        if (StuckToWallBuffered() && !IsGroundedBuffered() && (PlayerData.wallJumpUnlocked || abilityDebug))
+        {
+            ExecuteWallJump();
+            currentVerticalState = VerticalState.Jumping;
+        }
+        else
+        {
+            Jump();
+            currentVerticalState = VerticalState.Jumping;
+        }
+    }
+
+    private void OnHorizontalInput(InputAction.CallbackContext context)
+    {
+        currentHorizontalState = HorizontalState.Walking;
+    }
+
+    private void ApplyVerticalMovement()
+    {
+        UpdateVerticalState();
+
+        if (currentVerticalState == VerticalState.Jumping)
+        {
+
+        } else if (currentVerticalState == VerticalState.Falling)
+        {
+
+        } else if (currentVerticalState == VerticalState.StuckToWall)
+        {
+
+        }
+    }
+
+    private void UpdateVerticalState()
+    {
+        if (StuckToWallBuffered())
+        {
+            currentVerticalState = VerticalState.StuckToWall;
+        }
+        else if (IsGroundedBuffered())
+        {
+            currentVerticalState = VerticalState.Idle;
+        }
+        else if (body.linearVelocity.y > 0)
+        {
+            currentVerticalState = VerticalState.Jumping;
+        }
+        else
+        {
+            currentVerticalState = VerticalState.Falling;
+        }
+    }
+
+    private bool IsMidairState()
+    {
+        return currentVerticalState == VerticalState.Falling || currentVerticalState == VerticalState.Jumping;
+    }
+
+    private void ApplyHorizontalMovement()
+    {
+        if (currentHorizontalState == HorizontalState.Idle)
+        {
+            return;
+        }
+
+        if (Mathf.Abs(horizontalInput) > 0.01f)
+            TurnSprite();
+
+        if (currentHorizontalState == HorizontalState.Walking)
+        {
+            ApplyNormalHorizontalMovement(1f);
+        } else if (currentHorizontalState == HorizontalState.Sprinting)
+        {
+            ApplyNormalHorizontalMovement(1.70f);
+        } else if (currentHorizontalState == HorizontalState.Dashing)
+        {
+            ApplyDashMovement();
+        }
+    }
+
+    private void ApplyDashMovement()
+    {
+        float xVel = getFacingDirection() ? 10 : -10;
+        body.linearVelocity = new Vector2(xVel, 0);
+    }
+
+    
+
+
+    private void ApplyNormalHorizontalMovement(float bonusSpeed)
+    {
+            if (IsOnSlope())
+            {
+                ApplySlopeHorizontalMovement(bonusSpeed);
+                return;
+            }
+
+        float accel = IsMidairState() ? accelInAir : accelGrounded;
+        
+
+        
+
+        float newVelX = Mathf.MoveTowards(body.linearVelocity.x, horizontalInput * speed * bonusSpeed, accel * Time.deltaTime * 2);
+
+        body.linearVelocity = new Vector2(newVelX, body.linearVelocity.y);
+    }
+
+    private void ApplySlopeHorizontalMovement(float bonusSpeed)
+    {
+
+        float newVelX = Mathf.MoveTowards(body.linearVelocity.x, horizontalInput * speed * bonusSpeed, accelGrounded * Time.deltaTime * 2);
+
+        if (IsFacingSlope())
+        {
+
+            if (!(Mathf.Abs(horizontalInput) > 0.1f && body.linearVelocity.y >= -0.1f))
+            {
+                body.linearVelocity = new Vector2(0f, 0f);
+                return;
+            }
+
+            if (getFacingDirection())
+            {
+                body.linearVelocity = new Vector2(Mathf.Min(newVelX * 2, 4.1f) * (SlopeNormalPerp.x * -1.1f), body.linearVelocity.y);
+
+            }
+            else
+            {
+                body.linearVelocity = new Vector2(newVelX * (SlopeNormalPerp.x * -1.1f), body.linearVelocity.y);
+            }
+        }
+        else
+        {
+
+            body.linearVelocity = new Vector2(newVelX * SlopeNormalPerp.x * -1, body.linearVelocity.y);
+        }
+
+
+        if (Mathf.Abs(horizontalInput) < 0.1f && jumpPressed == false && body.linearVelocity.y <= 0.01f && Mathf.Abs(SlopeNormalPerp.x) != 1f)
+        {
+            body.linearVelocity = new Vector2(0f, 0f);
+            return;
+        }
+    }
+
+
+
+    private void OnDestroy()
+    {
+        controls.Player.Jump.started -= OnJumpPressed;
+        controls.Player.Jump.canceled -= NewOnJumpReleased;
+    }
+
 
     void OnEnable()
     {
@@ -138,7 +355,20 @@ public class PlayerMovement : MonoBehaviour
     }
 
 
-    private void Update()
+
+    private void FixedUpdate()
+    {
+
+        groundedThisFrame = IsGrounded();
+
+        UpdateTimers();
+
+        ApplyHorizontalMovement();
+
+        ApplyVerticalMovement();
+    }
+
+    private void OldUpdate()
     {
 
 
@@ -190,7 +420,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
 
-    private void FixedUpdate()
+    private void OldFixedUpdate()
     {
 
         UpdateTimers();
@@ -446,37 +676,6 @@ public class PlayerMovement : MonoBehaviour
 
     public IEnumerator MoveHorizontalToPosition(float xPos)
     {
-        //print("target pos: " + xPos);
-        //horizontalMovement = 0;
-        //if (xPos < transform.position.x)
-        //{
-        //    horizontalMovement = -1;
-
-        //    while (transform.position.x > xPos)
-        //    {
-
-        //        yield return null;
-
-        //    }
-        //} else if (xPos > transform.position.x)
-        //{
-        //    horizontalMovement = 1;
-        //    while (transform.position.x < xPos)
-        //    {
-
-        //        yield return null;
-
-        //    }
-        //}
-
-        //transform.SetPositionAndRotation(new Vector3(xPos, transform.position.y, transform.position.z), Quaternion.identity);
-
-
-
-
-        //horizontalMovement = 0;
-
-
         while (Mathf.Abs(transform.position.x - xPos) > 0.01f)
         {
             Vector3 pos = transform.position;
@@ -487,15 +686,6 @@ public class PlayerMovement : MonoBehaviour
 
             yield return null;
         }
-
-
-    }
-
-    //applies sideways motion for dashing
-    private void Dash()
-    {
-
-
     }
 
     public Vector3 getLinearVelocity()
@@ -601,7 +791,7 @@ public class PlayerMovement : MonoBehaviour
         return hit.collider != null;
     }
 
-    private Vector2 SlopeNormalPerp;
+    
     public bool IsOnSlope()
     {
         RaycastHit2D hit = Physics2D.BoxCast(
@@ -640,27 +830,12 @@ public class PlayerMovement : MonoBehaviour
         {
             return false;
         }
-
-
-        /*RaycastHit2D hit = Physics2D.BoxCast(
-            boxCollider.bounds.center,
-            boxCollider.bounds.size,
-            0f,
-            direction,
-            0.1f,
-            groundLayer
-        );*/
-
-        //return hit.collider != null
     }
 
 
     //checks if player was on ground in last 0.1s
     public bool IsGroundedBuffered()
     {
-        
-       
-
         return groundedRememberTimer > 0f;
     }
 
@@ -670,22 +845,12 @@ public class PlayerMovement : MonoBehaviour
 
         bool isTouchingWall = Physics2D.Raycast(boxCollider.bounds.center, direction, boxCollider.bounds.size.x - 0.05f, groundLayer);
 
-        /*RaycastHit2D hit = Physics2D.BoxCast(
-            boxCollider.bounds.center,
-            boxCollider.bounds.size,
-            0f,
-            direction,
-            0.1f,
-            groundLayer
-        );*/
-
         //return hit.collider != null
         return isTouchingWall && body.linearVelocityY <= 0.1 && (PlayerData.wallJumpUnlocked || abilityDebug);
     }
 
     public bool StuckToWallBuffered()
     {
-        
         return wallRememberTimer > 0f;
     }
 
@@ -698,7 +863,6 @@ public class PlayerMovement : MonoBehaviour
         {
             //jump logic
             body.linearVelocity = new Vector2(body.linearVelocity.x, jumpStrength);
-            //body.AddForce(Vector2.up * jumpStrength, ForceMode2D.Impulse);
             jumpHoldCounter = maxJumpHoldFrames;
 
 
@@ -707,7 +871,6 @@ public class PlayerMovement : MonoBehaviour
         else if (!doubleJumpUsed && (PlayerData.doubleJumpUnlocked || abilityDebug))
         {
             body.linearVelocity = new Vector2(body.linearVelocity.x, jumpStrength);
-            //body.AddForce(Vector2.up * jumpStrength, ForceMode2D.Impulse);
             jumpHoldCounter = maxJumpHoldFrames;
             doubleJumpUsed = true;
         }
@@ -719,7 +882,6 @@ public class PlayerMovement : MonoBehaviour
         if (jumpHeld && jumpHoldCounter > 0)
         {
             body.linearVelocity += Vector2.up * (jumpStrength * jumpIncreasePerFrameHeld) * Time.fixedDeltaTime;
-            //body.linearVelocity = new Vector2(body.linearVelocity.x, jumpStrength);
             jumpHoldCounter--;
         }
     }
@@ -740,23 +902,19 @@ public class PlayerMovement : MonoBehaviour
     //makes the player jump off of a wall
     private void ExecuteWallJump()
     {
-        /*float accel = IsGroundedBuffered() ? accelGrounded : accelInAir;
-        float newVelX = Mathf.MoveTowards(body.linearVelocity.x, -horizontalMovement * speed, accel * Time.fixedDeltaTime);*/
         if (PlayerData.wallJumpUnlocked || abilityDebug)
         {
 
             float wallJumpHorizontalForce = facingRight ? -5.5f : 5.5f;
             body.linearVelocity = new Vector2(wallJumpHorizontalForce, jumpStrength * 1.3f);
         }
-        //body.linearVelocity = new Vector2(body.linearVelocityX, jumpStrength * 1.2f);
-
     }
 
 
 
     private void UpdateTimers()
     {
-        if (IsGrounded())
+        if (groundedThisFrame)
             groundedRememberTimer = groundedRememberTime;
         else
             groundedRememberTimer -= Time.fixedDeltaTime;
@@ -765,7 +923,5 @@ public class PlayerMovement : MonoBehaviour
             wallRememberTimer = wallRememberTime;
         else
             wallRememberTimer -= Time.fixedDeltaTime;
-
-
     }
 }
