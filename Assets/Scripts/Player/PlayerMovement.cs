@@ -207,9 +207,46 @@ public class PlayerMovement : MonoBehaviour
         currentHorizontalState = HorizontalState.Walking;
     }
 
+    private float NewGetGravity()
+    {
+        float finalGravity = baseGravity;
+
+        //prevent player from sliding on slopes
+        if (IsOnSlope() && currentHorizontalState == HorizontalState.Idle && groundedThisFrame && currentVerticalState != VerticalState.Jumping)
+        {
+            finalGravity = 0f;
+            return finalGravity;
+        }
+
+        if (currentVerticalState == VerticalState.Jumping)
+        {
+            //finalGravity = lowJumpGravity;
+        } else if (currentVerticalState == VerticalState.Falling) {
+            finalGravity = fallGravity;
+        }
+
+        //if stuck to wall, slow gravity for wall slide
+        if (currentVerticalState == VerticalState.StuckToWall)
+        {
+            finalGravity *= 0.1f;
+        }
+
+        //if dashing in midair, slow gravity
+        if (currentHorizontalState == HorizontalState.Sprinting)
+        {
+            finalGravity *= 0.6f;
+        }
+
+        return finalGravity;
+    }
+
+
+
     private void ApplyVerticalMovement()
     {
         UpdateVerticalState();
+
+        body.gravityScale = NewGetGravity() * gravityMultiplier;
 
         if (currentVerticalState == VerticalState.Jumping)
         {
@@ -219,13 +256,18 @@ public class PlayerMovement : MonoBehaviour
 
         } else if (currentVerticalState == VerticalState.StuckToWall)
         {
-
+            body.linearVelocity = new Vector2(body.linearVelocity.x, Mathf.Max(body.linearVelocity.y, -5f));
+            return;    
         }
+
+        body.linearVelocity = new Vector2(body.linearVelocity.x, Mathf.Max(body.linearVelocity.y, -15f));
     }
+
+
 
     private void UpdateVerticalState()
     {
-        if (StuckToWallBuffered())
+        if (StuckToWallBuffered() && (PlayerData.wallJumpUnlocked || abilityDebug))
         {
             currentVerticalState = VerticalState.StuckToWall;
         }
@@ -276,9 +318,6 @@ public class PlayerMovement : MonoBehaviour
         body.linearVelocity = new Vector2(xVel, 0);
     }
 
-    
-
-
     private void ApplyNormalHorizontalMovement(float bonusSpeed)
     {
             if (IsOnSlope())
@@ -288,9 +327,6 @@ public class PlayerMovement : MonoBehaviour
             }
 
         float accel = IsMidairState() ? accelInAir : accelGrounded;
-        
-
-        
 
         float newVelX = Mathf.MoveTowards(body.linearVelocity.x, horizontalInput * speed * bonusSpeed, accel * Time.deltaTime * 2);
 
