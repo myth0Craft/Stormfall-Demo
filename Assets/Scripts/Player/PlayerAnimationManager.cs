@@ -153,5 +153,6 @@ public class PlayerAnimationManager : MonoBehaviour
     public void StartOverheadSlash()
     {
         bodyAnim.SetTrigger("OverheadSlash");
+        capeAnim.SetTrigger("OverheadSlash");
     }
 }
