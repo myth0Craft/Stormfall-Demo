@@ -159,7 +159,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void NewOnJumpReleased(InputAction.CallbackContext context)
     {
-        currentVerticalState = VerticalState.Falling;
+        //currentVerticalState = VerticalState.Falling;
 
         if (body.linearVelocity.y > 0)
         {
@@ -189,18 +189,25 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnJumpPressed(InputAction.CallbackContext context)
     {
-        jumpHoldCounter = maxJumpHoldFrames;
+        jumpBufferTimer = jumpBufferTime;
+    }
+
+    private void BeginJump()
+    {
         
 
         if (StuckToWallBuffered() && !IsGroundedBuffered() && (PlayerData.wallJumpUnlocked || abilityDebug))
         {
+            jumpHoldCounter = maxJumpHoldFrames;
             ExecuteWallJump();
             currentVerticalState = VerticalState.Jumping;
         }
         else
         {
+            jumpHoldCounter = maxJumpHoldFrames;
             Jump();
             currentVerticalState = VerticalState.Jumping;
+
         }
     }
 
@@ -246,6 +253,25 @@ public class PlayerMovement : MonoBehaviour
 
     private void ApplyVerticalMovement()
     {
+
+        if (jumpBufferTimer > 0f)
+        {
+            bool canJump =
+                groundedThisFrame ||
+                groundedRememberTimer > 0f ||
+                (!doubleJumpUsed && (PlayerData.doubleJumpUnlocked || abilityDebug));
+
+            bool canWallJump =
+                StuckToWallBuffered() &&
+                !groundedThisFrame;
+
+            if (canJump || canWallJump)
+            {
+                BeginJump();
+                jumpBufferTimer = 0f;
+            }
+        }
+
         UpdateVerticalState();
 
         body.gravityScale = NewGetGravity() * gravityMultiplier;
@@ -259,7 +285,7 @@ public class PlayerMovement : MonoBehaviour
         } else if (currentVerticalState == VerticalState.StuckToWall)
         {
             body.linearVelocity = new Vector2(body.linearVelocity.x, Mathf.Max(body.linearVelocity.y, -5f));
-            return;    
+            return;   
         }
 
         body.linearVelocity = new Vector2(body.linearVelocity.x, Mathf.Max(body.linearVelocity.y, -15f));
@@ -322,15 +348,15 @@ public class PlayerMovement : MonoBehaviour
 
     private void ApplyNormalHorizontalMovement(float bonusSpeed)
     {
-            if (IsOnSlope())
-            {
-                ApplySlopeHorizontalMovement(bonusSpeed);
-                return;
-            }
+        if (IsOnSlope())
+        {
+            ApplySlopeHorizontalMovement(bonusSpeed);
+            return;
+        }
 
         float accel = IsMidairState() ? accelInAir : accelGrounded;
 
-        float newVelX = Mathf.MoveTowards(body.linearVelocity.x, horizontalInput * speed * bonusSpeed, accel * Time.deltaTime * 2);
+        float newVelX = Mathf.MoveTowards(body.linearVelocity.x, horizontalInput * speed * bonusSpeed, accel * Time.fixedDeltaTime * 2);
 
         body.linearVelocity = new Vector2(newVelX, body.linearVelocity.y);
     }
@@ -338,7 +364,7 @@ public class PlayerMovement : MonoBehaviour
     private void ApplySlopeHorizontalMovement(float bonusSpeed)
     {
 
-        float newVelX = Mathf.MoveTowards(body.linearVelocity.x, horizontalInput * speed * bonusSpeed, accelGrounded * Time.deltaTime * 2);
+        float newVelX = Mathf.MoveTowards(body.linearVelocity.x, horizontalInput * speed * bonusSpeed, accelGrounded * Time.fixedDeltaTime * 2);
 
         if (IsFacingSlope())
         {
@@ -577,6 +603,11 @@ public class PlayerMovement : MonoBehaviour
             groundedRememberTimer = groundedRememberTime;
         else
             groundedRememberTimer -= Time.fixedDeltaTime;
+
+        if (jumpBufferTimer > 0)
+        {
+            jumpBufferTimer -= Time.fixedDeltaTime;
+        } 
 
         if (StuckToWall())
             wallRememberTimer = wallRememberTime;
