@@ -38,7 +38,7 @@ public class PlayerMovement : MonoBehaviour
 
     private bool groundedThisFrame;
 
-    private float horizontalInput;
+    public float horizontalInput { get ; private set; }
     private Coroutine jumpHoldRoutine;
     private Vector2 SlopeNormalPerp;
 
@@ -68,7 +68,7 @@ public class PlayerMovement : MonoBehaviour
     private float groundedRememberTimer = 0f;
     private float wallRememberTime = 0.1f;
     private float wallRememberTimer = 0f;
-    private float gravityMultiplier = 0.4f;
+    private float gravityMultiplier = 0.35f;
     private float accelGrounded = 40f;
     private float accelInAir = 25f;
 
@@ -89,19 +89,9 @@ public class PlayerMovement : MonoBehaviour
 
     //inputs
     private PlayerControls controls;
-    public float horizontalMovement { get; private set; }
-    private float previousHorizontalMovement = 0;
-    private bool jumpPressed;
-    private bool dashPressed;
-    public bool dashHeld { get; private set; }
-    private bool jumpHeld;
-    private bool wasJumpHeld;
-
-    public bool isWallJumping = false;
 
     //camera
     private CameraFollowObject cameraFollowObject;
-    private float fallSpeedYDampingChangeThreshold;
 
     private ParticleSystem sprintParticles;
 
@@ -125,23 +115,16 @@ public class PlayerMovement : MonoBehaviour
 
 
 
-        controls.Player.Move.performed += ctx => horizontalMovement = ctx.ReadValue<Vector2>().x;
         controls.Player.Move.performed += OnHorizontalInput;
         controls.Player.Move.performed += ctx => horizontalInput = ctx.ReadValue<Vector2>().x;
         controls.Player.Move.canceled += ctx => horizontalInput = 0f;
-        controls.Player.Move.canceled += ctx => horizontalMovement = 0f;
 
-        controls.Player.Jump.performed += ctx => jumpPressed = true;
-        controls.Player.Dash.performed += ctx => dashPressed = true;
-        controls.Player.Dash.started += ctx => dashHeld = true;
-        controls.Player.Dash.canceled += ctx => dashHeld = false;
-
-
-        //controls.Player.Jump.canceled += ctx => jumpHeld = false;
-        //controls.Player.Jump.started += ctx => jumpHeld = true;
         controls.Player.Jump.performed += OnJumpPressed;
         controls.Player.Jump.started += OnJumpHeld;
         controls.Player.Jump.canceled += NewOnJumpReleased;
+
+        controls.Player.Dash.started += OnSprintHeld;
+        controls.Player.Dash.canceled += OnSprintCanceled;
 
         #if !UNITY_EDITOR
             gameObject.transform.position = new Vector2(PlayerData.posX, PlayerData.posY);
@@ -150,10 +133,29 @@ public class PlayerMovement : MonoBehaviour
 
         currentHorizontalState = HorizontalState.Idle;
         currentVerticalState = VerticalState.Idle;
+        sprintParticles.Stop();
 
     }
 
-    
+    private void OnSprintCanceled(InputAction.CallbackContext context)
+    {
+        if (PlayerData.sprintUnlocked || abilityDebug)
+        {
+            sprintParticles.Stop();
+            currentHorizontalState = HorizontalState.Walking;
+        }
+        
+    }
+
+    private void OnSprintHeld(InputAction.CallbackContext context)
+    {
+        if ( PlayerData.sprintUnlocked || abilityDebug)
+        {
+            sprintParticles.Play();
+            currentHorizontalState = HorizontalState.Sprinting;
+        }
+        
+    }
 
     private void NewOnJumpReleased(InputAction.CallbackContext context)
     {
@@ -212,7 +214,7 @@ public class PlayerMovement : MonoBehaviour
         float finalGravity = baseGravity;
 
         //prevent player from sliding on slopes
-        if (IsOnSlope() && currentHorizontalState == HorizontalState.Idle && groundedThisFrame && currentVerticalState != VerticalState.Jumping)
+        if (IsOnSlope() && Mathf.Abs(horizontalInput) < 0.1f && groundedThisFrame && currentVerticalState != VerticalState.Jumping)
         {
             finalGravity = 0f;
             return finalGravity;
@@ -341,7 +343,7 @@ public class PlayerMovement : MonoBehaviour
         if (IsFacingSlope())
         {
 
-            if (!(Mathf.Abs(horizontalInput) > 0.1f && body.linearVelocity.y >= -0.1f))
+            if (Mathf.Abs(horizontalInput) < 0.1f && currentVerticalState != VerticalState.Jumping)
             {
                 body.linearVelocity = new Vector2(0f, 0f);
                 return;
@@ -364,7 +366,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
 
-        if (Mathf.Abs(horizontalInput) < 0.1f && jumpPressed == false && body.linearVelocity.y <= 0.01f && Mathf.Abs(SlopeNormalPerp.x) != 1f)
+        if (Mathf.Abs(horizontalInput) < 0.1f && currentVerticalState != VerticalState.Jumping && body.linearVelocity.y <= 0.01f && Mathf.Abs(SlopeNormalPerp.x) != 1f)
         {
             body.linearVelocity = new Vector2(0f, 0f);
             return;
@@ -404,310 +406,10 @@ public class PlayerMovement : MonoBehaviour
         ApplyVerticalMovement();
     }
 
-    private void OldUpdate()
-    {
-
-
-        //resets double jump if player is on ground
-        if (IsGroundedBuffered() || StuckToWallBuffered())
-        {
-            doubleJumpUsed = false;
-            dashUsed = false;
-        }
-
-        //--- OLD ANIMATION STUFF. NOW LOCATED IN PLAYER ANIMATION MANAGER ---
-
-        /*if (body.linearVelocity.y < fallSpeedYDampingChangeThreshold && CameraManager.instance.isLerpingYDamping && CameraManager.instance.LerpedFromPlayerFalling)
-        {
-            CameraManager.instance.LerpYDamping(true);
-        }
-
-        if (body.linearVelocity.y >= 0f && !CameraManager.instance.isLerpingYDamping && CameraManager.instance.LerpedFromPlayerFalling)
-        {
-            CameraManager.instance.LerpedFromPlayerFalling = false;
-            CameraManager.instance.LerpYDamping(false);
-        }*/
-        //weaponsAnim.SetBool("moving", (horizontalMovement > 0.01f || horizontalMovement < -0.01f) && IsGroundedBuffered());
-        /*capeAnim.SetBool("moving", (body.linearVelocity.x < -3f || body.linearVelocity.x > 3f) && !StuckToWallBuffered());
-        bodyAnim.SetBool("moving", (horizontalMovement > 0.01f || horizontalMovement < -0.01f));
-        //armsAnim.SetBool("moving", (horizontalMovement > 0.01f || horizontalMovement < -0.01f) && IsGroundedBuffered());
-        legsAnim.SetBool("moving", (horizontalMovement > 0.01f || horizontalMovement < -0.01f));
-        
-        
-
-        if (PlayerData.swordUnlocked)
-        {
-            swordAnim.SetBool("moving", (horizontalMovement > 0.01f || horizontalMovement < -0.01f) && IsGroundedBuffered());
-        } else
-        {
-            disableSword();
-        }
-
-        if (PlayerData.shieldUnlocked)
-        {
-            shieldAnim.SetBool("moving", (horizontalMovement > 0.01f || horizontalMovement < -0.01f) && IsGroundedBuffered());
-        }
-        else
-        {
-            disableShield();
-        }*/
-
-
-    }
-
-
-    private void OldFixedUpdate()
-    {
-
-        UpdateTimers();
-
-        if (dashFrames > 0)
-        {
-            dashFrames--;
-        }
-
-
-        if (dashCooldown > 0)
-        {
-            dashCooldown--;
-        }
-
-        //Base left/right movement triggered per frame.
-        MoveHorizontal();
-
-        previousHorizontalMovement = horizontalMovement;
-
-        //exits dash/sprint input when hitting a wall.
-        if (StuckToWallBuffered())
-        {
-            dashHeld = false;
-            dashPressed = false;
-            dashFrames = 0;
-            dashCooldown = 15;
-        }
-
-        //prevents dash inputs pressed while in midair from being activated when the player hits the ground.
-        if (!IsGroundedBuffered() && dashHeld == false)
-        {
-            dashPressed = false;
-        }
-
-        //jumping
-
-        if (jumpPressed)
-        {
-            jumpBufferTimer = jumpBufferTime;
-            jumpPressed = false;
-        }
-        else
-        {
-            jumpBufferTimer -= Time.fixedDeltaTime;
-        }
-
-
-
-        if (jumpBufferTimer > 0f)
-        {
-            if (StuckToWallBuffered() && !IsGroundedBuffered() && (PlayerData.wallJumpUnlocked || abilityDebug))
-            {
-                ExecuteWallJump();
-                jumpBufferTimer = 0f;
-                isWallJumping = true;
-
-
-            }
-            else
-            {
-                Jump();
-                jumpBufferTimer = 0f;
-            }
-        }
-
-        ApplyJumpHold();
-
-        //activates when player releases jump input. Immediatly slows down vertical velocity so that the player can control jump height precisely.
-        if (wasJumpHeld && !jumpHeld)
-        {
-            OnJumpReleased();
-            isWallJumping = false;
-        }
-
-        wasJumpHeld = jumpHeld;
-
-        //dashing
-        if (dashPressed && !dashUsed && !playerMeleeAttack.isMidAttack && !playerMeleeAttack.attackHitboxActive && (PlayerData.dashUnlocked || abilityDebug))
-        {
-
-            if (dashCooldown <= 0)
-
-            {
-
-                PlayerAnimationManager.instance.Dash();
-                dashCooldown = dashCooldownTime;
-                dashFrames = maxDashFrames;
-                dashPressed = false;
-                //playerMeleeAttack.attackCooldownTimer = 0f;
-                GlobalHitstopManager.DoHitstop(0.02f);
-            }
-            //if (IsGroundedBuffered())
-            //{
-            //    dashPressed = false;
-            //}
-            dashPressed = false;
-        }
-
-
-
-        //apply current gravity
-        body.gravityScale = getGravity() * gravityMultiplier;
-        if (StuckToWallBuffered() && (PlayerData.wallJumpUnlocked || abilityDebug))
-        {
-            body.linearVelocity = new Vector2(body.linearVelocity.x, Mathf.Max(body.linearVelocity.y, -5f));
-
-        }
-        else
-            body.linearVelocity = new Vector2(body.linearVelocity.x, Mathf.Max(body.linearVelocity.y, -15f));
-
-        if (!IsGroundedBuffered() && !StuckToWallBuffered() && body.linearVelocity.y <= -0.1f)
-        {
-            fallTime++;
-        }
-        else
-        {
-            fallTime = 0f;
-        }
-
-        //float reqFallTime = Math.Abs(body.linearVelocity.x) > 0.1f ? 0f : 18f;
-
-
-        if (!IsGroundedBuffered() && !StuckToWallBuffered())
-        {
-            jumpTime++;
-        }
-        else
-        {
-            jumpTime = 0f;
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-        //emit sprint particles while sprinting
-        if (IsGroundedBuffered() && dashHeld && (PlayerData.sprintUnlocked || abilityDebug))
-        {
-            sprintParticles.enableEmission = true;
-        }
-        else
-        {
-            sprintParticles.enableEmission = false;
-        }
-
-        /*if (IsOnSlope() && (Mathf.Abs(horizontalMovement) <= 0.1f || IsFacingSlope() && body.linearVelocity.x > 0.1f) && IsGrounded() && !jumpPressed && !(jumpHeld && jumpHoldCounter > 0))
-        {
-            body.linearVelocityY = 0f;
-        }*/
-    }
-
-
 
     public float getDashFrames()
     {
         return dashFrames;
-    }
-
-
-
-    //moves the player left or right
-    private void MoveHorizontal()
-    {
-        /*float targetSpeed = input * speed;
-        body.linearVelocity = new Vector2(targetSpeed, body.linearVelocity.y);*/
-
-
-        //check for sprite turning every frame of movement
-
-
-        //if dashing, increase horizontal velocity to 10
-        if (dashFrames > 0 && !StuckToWallBuffered() && (PlayerData.dashUnlocked || abilityDebug))
-        {
-
-            dashUsed = true;
-            float xVel = getFacingDirection() ? 10 : -10;
-            body.linearVelocity = new Vector2(xVel, 0);
-        }
-        else
-        {
-            if (Mathf.Abs(horizontalMovement) > 0.01f)
-                TurnSprite();
-
-            float xMultiplier = 1f;
-            //if sprinting, increase velocity.
-            if (PlayerData.sprintUnlocked || abilityDebug)
-            {
-                xMultiplier = dashHeld ? 1.70f : 1;
-            }
-            /* if (!dashUsed && dashFrames > 0)
-             {
-                 multiplier = 20;
-             print("dashed");
-             }*/
-
-
-            float accel = IsGroundedBuffered() ? accelGrounded : accelInAir;
-
-            float newVelX = Mathf.MoveTowards(body.linearVelocity.x, horizontalMovement * speed * xMultiplier, accel * Time.deltaTime * 2);
-            //float newVelX = horizontalMovement * speed * xMultiplier;
-
-            if (IsOnSlope() && IsGrounded())
-            {
-                if (IsFacingSlope())
-                {
-
-                    if (!(Mathf.Abs(horizontalMovement) > 0.1f && body.linearVelocity.y >= -0.1f))
-                    {
-                        body.linearVelocity = new Vector2(0f, 0f);
-                        return;
-                    }
-
-                    if (getFacingDirection())
-                    {
-                        body.linearVelocity = new Vector2(Mathf.Min(newVelX * 2, 4.1f) * (SlopeNormalPerp.x * -1.1f), body.linearVelocity.y);
-
-                    }
-                    else
-                    {
-                        body.linearVelocity = new Vector2(newVelX * (SlopeNormalPerp.x * -1.1f), body.linearVelocity.y);
-                    }
-                }
-                else
-                {
-
-                    body.linearVelocity = new Vector2(newVelX * SlopeNormalPerp.x * -1, body.linearVelocity.y);
-                }
-
-
-                if (Mathf.Abs(horizontalMovement) < 0.1f && jumpPressed == false && body.linearVelocity.y <= 0.01f && Mathf.Abs(SlopeNormalPerp.x) != 1f)
-                {
-                    body.linearVelocity = new Vector2(0f, 0f);
-                    return;
-                }
-            }
-            else
-            {
-                body.linearVelocity = new Vector2(newVelX, body.linearVelocity.y);
-            }
-
-
-        }
     }
 
     public IEnumerator MoveHorizontalToPosition(float xPos)
@@ -736,7 +438,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void TurnSprite()
     { 
-        bool shouldFaceRight = horizontalMovement > 0;
+        bool shouldFaceRight = horizontalInput > 0;
 
         //turn logic - only executes if player is not currently attacking. If the player is in midair, turn logic still applies regardless of attack state.
         if (shouldFaceRight != facingRight && !playerMeleeAttack.isMidAttack 
@@ -753,60 +455,6 @@ public class PlayerMovement : MonoBehaviour
             PlayerAnimationManager.instance.SetTurnTrigger();
         }
     }
-
-    //returns the desired gravity effect. Changes based on player jump state or if they're on a wall
-    private float getGravity()
-    {
-
-
-
-        float finalGravity = baseGravity;
-
-        //prevent player from sliding on slopes
-        if (IsOnSlope() && Mathf.Abs(horizontalMovement) <= 0.1f && IsGrounded() && !jumpPressed && !(jumpHeld && jumpHoldCounter > 0))
-        {
-            finalGravity = 0f;
-        }
-
-        //Starting a jump cycle
-        if (body.linearVelocity.y > 0 && !jumpHeld)
-            finalGravity = lowJumpGravity;
-        //Falling
-        else if (body.linearVelocity.y < 0 && jumpTime > 0f)
-            finalGravity = fallGravity;
-
-
-        //if stuck to wall, slow gravity for wall slide
-        if (StuckToWallBuffered() && body.linearVelocityY <= 0f && (PlayerData.wallJumpUnlocked || abilityDebug))
-        {
-            finalGravity *= 0.1f;
-        }
-
-
-
-
-
-
-
-        //if dashing in midair, slow gravity
-        if (dashHeld && body.linearVelocity.y < 0 && (PlayerData.dashUnlocked || abilityDebug))
-        {
-            finalGravity *= 0.6f;
-        }
-
-        //if dashing into a wall, do not apply gravity
-        if (dashFrames > 0f && !StuckToWallBuffered())
-        {
-            finalGravity = 0f;
-        }
-
-
-
-        return finalGravity;
-
-
-    }
-
 
     public bool IsGrounded()
     {
@@ -912,29 +560,6 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    //continue to apply force if jump is held past the first frame.
-    private void ApplyJumpHold()
-    {
-        if (jumpHeld && jumpHoldCounter > 0)
-        {
-            body.linearVelocity += Vector2.up * (jumpStrength * jumpIncreasePerFrameHeld) * Time.fixedDeltaTime;
-            jumpHoldCounter--;
-        }
-    }
-
-    //immediatly slow down y velocity when jump is released or exceeds maximum height. This allows player to have fine control over jump height
-    private void OnJumpReleased()
-    {
-        if (body.linearVelocity.y > 0)
-        {
-            body.linearVelocity = new Vector2(body.linearVelocity.x, body.linearVelocity.y * 0.4f);
-            PlayerAnimationManager.instance.SetCapeJumpTrigger();
-        }
-    }
-
-
-
-
     //makes the player jump off of a wall
     private void ExecuteWallJump()
     {
@@ -945,8 +570,6 @@ public class PlayerMovement : MonoBehaviour
             body.linearVelocity = new Vector2(wallJumpHorizontalForce, jumpStrength * 1.3f);
         }
     }
-
-
 
     private void UpdateTimers()
     {

@@ -40,17 +40,17 @@ public class PlayerAnimationManager : MonoBehaviour
     private void Update()
     {
         capeAnim.SetBool("moving", (playerMovement.body.linearVelocity.x < -3f || playerMovement.body.linearVelocity.x > 3f) && !playerMovement.StuckToWallBuffered());
-        bodyAnim.SetBool("moving", (playerMovement.horizontalMovement > 0.01f || playerMovement.horizontalMovement < -0.01f));
-        legsAnim.SetBool("moving", (playerMovement.horizontalMovement > 0.01f || playerMovement.horizontalMovement < -0.01f));
+        bodyAnim.SetBool("moving", (playerMovement.horizontalInput > 0.01f || playerMovement.horizontalInput < -0.01f));
+        legsAnim.SetBool("moving", (playerMovement.horizontalInput > 0.01f || playerMovement.horizontalInput < -0.01f));
 
         if (PlayerData.swordUnlocked || PlayerMeleeAttack.instance.attackDebugActive)
         {
-            swordAnim.SetBool("moving", (playerMovement.horizontalMovement > 0.01f || playerMovement.horizontalMovement < -0.01f) && playerMovement.IsGroundedBuffered());
+            swordAnim.SetBool("moving", (playerMovement.horizontalInput > 0.01f || playerMovement.horizontalInput < -0.01f) && playerMovement.IsGroundedBuffered());
         }
 
         if (PlayerData.shieldUnlocked)
         {
-            shieldAnim.SetBool("moving", (playerMovement.horizontalMovement > 0.01f || playerMovement.horizontalMovement < -0.01f) && playerMovement.IsGroundedBuffered());
+            shieldAnim.SetBool("moving", (playerMovement.horizontalInput > 0.01f || playerMovement.horizontalInput < -0.01f) && playerMovement.IsGroundedBuffered());
         }
 
         capeAnim.SetFloat("jumpTime", playerMovement.jumpTime);
@@ -73,7 +73,7 @@ public class PlayerAnimationManager : MonoBehaviour
         bodyAnim.SetBool("falling", playerMovement.body.linearVelocity.y < -0.1f && !playerMovement.IsGroundedBuffered() && !playerMovement.StuckToWallBuffered());
         bodyAnim.SetBool("grounded", playerMovement.IsGroundedBuffered());
 
-        if (PlayerData.sprintUnlocked || playerMovement.abilityDebug)
+        /*if (PlayerData.sprintUnlocked || playerMovement.abilityDebug)
         {
             bodyAnim.SetBool("sprint", playerMovement.dashHeld && Mathf.Abs(playerMovement.body.linearVelocity.x) > 0.01f);
             legsAnim.SetBool("sprint", playerMovement.dashHeld && Mathf.Abs(playerMovement.body.linearVelocity.x) > 0.01f);
@@ -81,10 +81,10 @@ public class PlayerAnimationManager : MonoBehaviour
             capeAnim.SetBool("sprint", playerMovement.dashHeld && Mathf.Abs(playerMovement.body.linearVelocity.x) > 0.01f);
             swordAnim.SetBool("sprint", playerMovement.dashHeld && Mathf.Abs(playerMovement.body.linearVelocity.x) > 0.01f);
             shieldAnim.SetBool("sprint", playerMovement.dashHeld && Mathf.Abs(playerMovement.body.linearVelocity.x) > 0.01f);
-        }
+        }*/
 
 
-        armsAnim.SetBool("moving", (playerMovement.horizontalMovement > 0.01f || playerMovement.horizontalMovement < -0.01f));
+        armsAnim.SetBool("moving", (playerMovement.horizontalInput > 0.01f || playerMovement.horizontalInput < -0.01f));
 
 
         //at the start of a jump, set jump animation triggers
