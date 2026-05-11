@@ -12,6 +12,13 @@ public enum HorizontalState
     Sprinting,
 }
 
+public enum CombatState
+{
+    Idle,
+    Attacking,
+    Blocking
+}
+
 public enum VerticalState
 {
     Idle,
@@ -26,6 +33,7 @@ public class PlayerMovement : MonoBehaviour
     public static PlayerMovement instance { get; private set; }
     public HorizontalState currentHorizontalState;
     public VerticalState currentVerticalState;
+    public CombatState currentCombatState;
     public Rigidbody2D body;
     private LayerMask groundLayer;
     private BoxCollider2D boxCollider;
@@ -126,6 +134,8 @@ public class PlayerMovement : MonoBehaviour
         controls.Player.Dash.started += OnSprintHeld;
         controls.Player.Dash.canceled += OnSprintCanceled;
 
+        controls.Player.Block.performed += OnBlockPressed;
+
         #if !UNITY_EDITOR
             gameObject.transform.position = new Vector2(PlayerData.posX, PlayerData.posY);
         #endif
@@ -133,8 +143,26 @@ public class PlayerMovement : MonoBehaviour
 
         currentHorizontalState = HorizontalState.Idle;
         currentVerticalState = VerticalState.Idle;
+        currentCombatState = CombatState.Idle;
         sprintParticles.Stop();
 
+    }
+
+    private void OnBlockPressed(InputAction.CallbackContext context)
+    {
+        if (PlayerData.shieldUnlocked || abilityDebug)
+        {
+            currentHorizontalState = HorizontalState.Idle;
+            currentCombatState = CombatState.Blocking;
+            PlayerAnimationManager.instance.Block();
+            StartCoroutine(BlockCoroutine());
+        }
+    }
+
+    private IEnumerator BlockCoroutine()
+    {
+        yield return new WaitForSeconds(2f);
+        currentCombatState = CombatState.Idle;
     }
 
     private void OnSprintCanceled(InputAction.CallbackContext context)
@@ -320,13 +348,16 @@ public class PlayerMovement : MonoBehaviour
 
     private void ApplyHorizontalMovement()
     {
-        if (currentHorizontalState == HorizontalState.Idle)
+        if (Mathf.Abs(horizontalInput) > 0.01f)
+            TurnSprite();
+
+        if (currentHorizontalState == HorizontalState.Idle || currentCombatState == CombatState.Blocking)
         {
+            StopMoving();
             return;
         }
 
-        if (Mathf.Abs(horizontalInput) > 0.01f)
-            TurnSprite();
+        
 
         if (currentHorizontalState == HorizontalState.Walking)
         {
@@ -344,6 +375,15 @@ public class PlayerMovement : MonoBehaviour
     {
         float xVel = getFacingDirection() ? 10 : -10;
         body.linearVelocity = new Vector2(xVel, 0);
+    }
+
+    private void StopMoving()
+    {
+        float accel = IsMidairState() ? accelInAir : accelGrounded;
+
+        float newVelX = Mathf.MoveTowards(body.linearVelocity.x, 0, accel * Time.fixedDeltaTime * 2);
+
+        body.linearVelocity = new Vector2(newVelX, body.linearVelocity.y);
     }
 
     private void ApplyNormalHorizontalMovement(float bonusSpeed)

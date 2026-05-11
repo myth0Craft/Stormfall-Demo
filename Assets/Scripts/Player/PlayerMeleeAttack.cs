@@ -72,7 +72,7 @@ public class PlayerMeleeAttack : MonoBehaviour
 
     private void OnAttackPressed(InputAction.CallbackContext context)
     {
-        if ((PlayerData.swordUnlocked || attackDebugActive) && !PlayerData.gamePaused)
+        if ((PlayerData.swordUnlocked || attackDebugActive) && !PlayerData.gamePaused && PlayerMovement.instance.currentCombatState != CombatState.Blocking)
         {
             //cancel attack if player is dashing
             /*if (playerMovement.getDashFrames() <= 0)
@@ -113,7 +113,7 @@ public class PlayerMeleeAttack : MonoBehaviour
         attackIsOnCooldown = false;
     }
 
-    private void CancelAttack()
+    public void CancelAttack()
     {
         PlayerAnimationManager.instance.SetAttackQueued(false);
         StopAllCoroutines();
