@@ -160,4 +160,14 @@ public class PlayerAnimationManager : MonoBehaviour
     {
         armsAnim.SetTrigger("Block");
     }
+
+    public void SetShieldSlide(bool isShieldSliding)
+    {
+        bodyAnim.SetBool("ShieldSliding", isShieldSliding);
+        armsAnim.SetBool("ShieldSliding", isShieldSliding);
+        capeAnim.SetBool("ShieldSliding", isShieldSliding);
+        swordAnim.SetBool("ShieldSliding", isShieldSliding);
+        shieldAnim.SetBool("ShieldSliding", isShieldSliding);
+        legsAnim.SetBool("ShieldSliding", isShieldSliding);
+    }
 }

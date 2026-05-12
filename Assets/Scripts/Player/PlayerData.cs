@@ -27,6 +27,7 @@ public static class PlayerData
     public static bool doubleJumpUnlocked = false;
     public static bool wallJumpUnlocked = false;
     public static bool shieldUnlocked = false;
+    public static bool shieldBounceUnlocked = false;
 
 
 
@@ -100,6 +101,7 @@ public static class PlayerData
         data.doubleJumpUnlocked = doubleJumpUnlocked;
         data.wallJumpUnlocked = wallJumpUnlocked;
         data.shieldUnlocked = shieldUnlocked;
+        data.shieldBounceUnlocked = shieldBounceUnlocked;
 
         //NPC DATA
         data.talkedToNPCs = new List<string>(talkedToNPCs);
@@ -123,6 +125,7 @@ public static class PlayerData
         doubleJumpUnlocked = data.doubleJumpUnlocked;
         wallJumpUnlocked = data.wallJumpUnlocked;
         shieldUnlocked = data.shieldUnlocked;
+        shieldBounceUnlocked = data.shieldBounceUnlocked;
 
 
 
@@ -149,6 +152,7 @@ public static class PlayerData
         doubleJumpUnlocked = false;
         wallJumpUnlocked = false;
         shieldUnlocked = false;
+        shieldBounceUnlocked = false;
 
         //NPC DATA
         talkedToNPCs = new HashSet<string>();
@@ -189,6 +193,7 @@ public struct PlayerSaveData
     public bool doubleJumpUnlocked;
     public bool wallJumpUnlocked;
     public bool shieldUnlocked;
+    public bool shieldBounceUnlocked;
 
     //NPC DATA
     public List<string> talkedToNPCs;

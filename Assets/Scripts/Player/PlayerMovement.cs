@@ -47,6 +47,9 @@ public class PlayerMovement : MonoBehaviour
     private bool groundedThisFrame;
 
     public float horizontalInput { get ; private set; }
+
+    public float verticalInput { get; private set; }
+
     private Coroutine jumpHoldRoutine;
     private Vector2 SlopeNormalPerp;
 
@@ -103,6 +106,8 @@ public class PlayerMovement : MonoBehaviour
 
     private ParticleSystem sprintParticles;
 
+    private Coroutine shieldSlideCoroutine;
+
 
     void Awake()
     {
@@ -123,9 +128,11 @@ public class PlayerMovement : MonoBehaviour
 
 
 
-        controls.Player.Move.performed += OnHorizontalInput;
+        controls.Player.Move.started += OnDirectionInput;
         controls.Player.Move.performed += ctx => horizontalInput = ctx.ReadValue<Vector2>().x;
-        controls.Player.Move.canceled += ctx => horizontalInput = 0f;
+        controls.Player.Move.canceled += OnDirectionInputCancel;
+
+        controls.Player.Move.performed += ctx => verticalInput = ctx.ReadValue<Vector2>().y;
 
         controls.Player.Jump.performed += OnJumpPressed;
         controls.Player.Jump.started += OnJumpHeld;
@@ -148,15 +155,36 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
+    private void OnDirectionInputCancel(InputAction.CallbackContext context)
+    {
+        horizontalInput = 0;
+        verticalInput = 0;
+    }
+
     private void OnBlockPressed(InputAction.CallbackContext context)
     {
         if (PlayerData.shieldUnlocked || abilityDebug)
         {
-            currentHorizontalState = HorizontalState.Idle;
-            currentCombatState = CombatState.Blocking;
+            if (verticalInput < -0.1f)
+            {
+                ExecuteShieldBounce();
+            } else if (verticalInput > 0.1f)
+            {
+                StartShieldSlide();
+            } else
+            {
+                currentHorizontalState = HorizontalState.Idle;
+                currentCombatState = CombatState.Blocking;
+                StartCoroutine(BlockCoroutine());
+            }
             PlayerAnimationManager.instance.Block();
-            StartCoroutine(BlockCoroutine());
         }
+    }
+
+    private void StartShieldSlide()
+    {
+        PlayerAnimationManager.instance.SetShieldSlide(true);
+
     }
 
     private IEnumerator BlockCoroutine()
@@ -239,9 +267,12 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void OnHorizontalInput(InputAction.CallbackContext context)
+    private void OnDirectionInput(InputAction.CallbackContext context)
     {
-        currentHorizontalState = HorizontalState.Walking;
+        if (Mathf.Abs(horizontalInput) > 0.1f)
+        {
+            currentHorizontalState = HorizontalState.Walking;
+        }
     }
 
     private float NewGetGravity()
@@ -632,7 +663,17 @@ public class PlayerMovement : MonoBehaviour
         if (PlayerData.wallJumpUnlocked || abilityDebug)
         {
 
-            float wallJumpHorizontalForce = facingRight ? -5.5f : 5.5f;
+            float wallJumpHorizontalForce = facingRight ? -10f : 10f;
+            body.linearVelocity = new Vector2(wallJumpHorizontalForce, jumpStrength * 1f);
+        }
+    }
+
+    private void ExecuteShieldBounce()
+    {
+        if (PlayerData.shieldBounceUnlocked || abilityDebug)
+        {
+
+            float wallJumpHorizontalForce = Mathf.Abs(horizontalInput) < 0.1f ? 0 : facingRight ? 15f : -15f;
             body.linearVelocity = new Vector2(wallJumpHorizontalForce, jumpStrength * 1.3f);
         }
     }
