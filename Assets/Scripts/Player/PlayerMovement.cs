@@ -10,6 +10,7 @@ public enum HorizontalState
     Walking,
     Dashing,
     Sprinting,
+    ShieldSliding
 }
 
 public enum CombatState
