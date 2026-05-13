@@ -139,7 +139,7 @@ public class PlayerMovement : MonoBehaviour
         controls.Player.Jump.started += OnJumpHeld;
         controls.Player.Jump.canceled += NewOnJumpReleased;
 
-        controls.Player.Dash.started += OnSprintHeld;
+        controls.Player.Dash.performed += OnDashPressed;
         controls.Player.Dash.canceled += OnSprintCanceled;
 
         controls.Player.Block.performed += OnBlockPressed;
@@ -154,6 +154,13 @@ public class PlayerMovement : MonoBehaviour
         currentCombatState = CombatState.Idle;
         sprintParticles.Stop();
 
+    }
+
+    private void OnDashPressed(InputAction.CallbackContext context)
+    {
+        currentHorizontalState = HorizontalState.Dashing;
+        dashFrames = maxDashFrames;
+        PlayerAnimationManager.instance.Dash();
     }
 
     private void OnDirectionInputCancel(InputAction.CallbackContext context)
@@ -204,14 +211,12 @@ public class PlayerMovement : MonoBehaviour
         
     }
 
-    private void OnSprintHeld(InputAction.CallbackContext context)
+    private void OnSprintStarted()
     {
         if ( PlayerData.sprintUnlocked || abilityDebug)
         {
             sprintParticles.Play();
-            currentHorizontalState = HorizontalState.Sprinting;
         }
-        
     }
 
     private void NewOnJumpReleased(InputAction.CallbackContext context)
@@ -380,6 +385,24 @@ public class PlayerMovement : MonoBehaviour
 
     private void ApplyHorizontalMovement()
     {
+        if (currentHorizontalState == HorizontalState.Dashing)
+        {
+
+            if (dashFrames > 0)
+            {
+                ApplyDashMovement();
+                dashFrames--;
+
+            } else
+            {
+                currentHorizontalState = HorizontalState.Sprinting;
+                OnSprintStarted();
+            }
+
+            
+        }
+
+
         if (Mathf.Abs(horizontalInput) > 0.01f)
             TurnSprite();
 
@@ -397,9 +420,6 @@ public class PlayerMovement : MonoBehaviour
         } else if (currentHorizontalState == HorizontalState.Sprinting)
         {
             ApplyNormalHorizontalMovement(1.70f);
-        } else if (currentHorizontalState == HorizontalState.Dashing)
-        {
-            ApplyDashMovement();
         }
     }
 

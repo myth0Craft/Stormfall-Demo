@@ -81,6 +81,14 @@ public class PlayerMeleeAttack : MonoBehaviour
                 return;
             }*/
 
+            if (playerMovement.currentHorizontalState == HorizontalState.Dashing
+                //|| playerMovement.currentHorizontalState == HorizontalState.Sprinting
+                )
+            {
+                PerformDashAttack();
+                return;
+            }
+
 
             if (!attackHitboxActive && !attackIsOnCooldown)
             {
@@ -99,6 +107,13 @@ public class PlayerMeleeAttack : MonoBehaviour
         }
 
 
+    }
+
+    private void PerformDashAttack()
+    {
+        PlayerAnimationManager.instance.LungeAttack();
+        PlayerAnimationManager.instance.disableSword();
+        PlayerMovement.instance.currentHorizontalState = HorizontalState.Idle;
     }
 
     private IEnumerator AttackCooldownCoroutine()

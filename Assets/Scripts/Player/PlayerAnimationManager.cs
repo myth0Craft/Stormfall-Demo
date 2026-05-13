@@ -73,15 +73,15 @@ public class PlayerAnimationManager : MonoBehaviour
         bodyAnim.SetBool("falling", playerMovement.body.linearVelocity.y < -0.1f && !playerMovement.IsGroundedBuffered() && !playerMovement.StuckToWallBuffered());
         bodyAnim.SetBool("grounded", playerMovement.IsGroundedBuffered());
 
-        /*if (PlayerData.sprintUnlocked || playerMovement.abilityDebug)
+        if (PlayerData.sprintUnlocked || playerMovement.abilityDebug)
         {
-            bodyAnim.SetBool("sprint", playerMovement.dashHeld && Mathf.Abs(playerMovement.body.linearVelocity.x) > 0.01f);
-            legsAnim.SetBool("sprint", playerMovement.dashHeld && Mathf.Abs(playerMovement.body.linearVelocity.x) > 0.01f);
-            armsAnim.SetBool("sprint", playerMovement.dashHeld && Mathf.Abs(playerMovement.body.linearVelocity.x) > 0.01f);
-            capeAnim.SetBool("sprint", playerMovement.dashHeld && Mathf.Abs(playerMovement.body.linearVelocity.x) > 0.01f);
-            swordAnim.SetBool("sprint", playerMovement.dashHeld && Mathf.Abs(playerMovement.body.linearVelocity.x) > 0.01f);
-            shieldAnim.SetBool("sprint", playerMovement.dashHeld && Mathf.Abs(playerMovement.body.linearVelocity.x) > 0.01f);
-        }*/
+            bodyAnim.SetBool("sprint", playerMovement.currentHorizontalState == HorizontalState.Sprinting && Mathf.Abs(playerMovement.body.linearVelocity.x) > 0.01f);
+            legsAnim.SetBool("sprint", playerMovement.currentHorizontalState == HorizontalState.Sprinting && Mathf.Abs(playerMovement.body.linearVelocity.x) > 0.01f);
+            armsAnim.SetBool("sprint", playerMovement.currentHorizontalState == HorizontalState.Sprinting && Mathf.Abs(playerMovement.body.linearVelocity.x) > 0.01f);
+            capeAnim.SetBool("sprint", playerMovement.currentHorizontalState == HorizontalState.Sprinting && Mathf.Abs(playerMovement.body.linearVelocity.x) > 0.01f);
+            swordAnim.SetBool("sprint", playerMovement.currentHorizontalState == HorizontalState.Sprinting && Mathf.Abs(playerMovement.body.linearVelocity.x) > 0.01f);
+            shieldAnim.SetBool("sprint", playerMovement.currentHorizontalState == HorizontalState.Sprinting && Mathf.Abs(playerMovement.body.linearVelocity.x) > 0.01f);
+        }
 
 
         armsAnim.SetBool("moving", (playerMovement.horizontalInput > 0.01f || playerMovement.horizontalInput < -0.01f));
@@ -95,6 +95,14 @@ public class PlayerAnimationManager : MonoBehaviour
             bodyAnim.SetTrigger("jump");
         }
     }
+
+    public void LungeAttack()
+    {
+        armsAnim.SetTrigger("LungeAttack");
+        bodyAnim.SetTrigger("LungeAttack");
+        legsAnim.SetTrigger("LungeAttack");
+    }
+
 
     public void enableSword()
     {
