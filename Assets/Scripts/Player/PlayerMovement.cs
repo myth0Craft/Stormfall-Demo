@@ -65,7 +65,6 @@ public class PlayerMovement : MonoBehaviour
     //ability usage/cooldown trackers
     private bool facingRight = true;
     private bool doubleJumpUsed = false;
-    private bool dashUsed = false;
 
 
     //movement fine-tuning values
@@ -88,6 +87,8 @@ public class PlayerMovement : MonoBehaviour
     private float dashFrames = 0f;
     private float maxDashFrames = 15f;
 
+    private bool dashUsed = false;
+
     private float dashCooldown = 0;
 
     private float fallTime = 0;
@@ -108,6 +109,8 @@ public class PlayerMovement : MonoBehaviour
     private ParticleSystem sprintParticles;
 
     private Coroutine shieldSlideCoroutine;
+
+    private bool sprintPressed = false;
 
 
     void Awake()
@@ -156,11 +159,48 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
+    private void OnDestroy()
+    {
+        controls.Player.Move.started -= OnDirectionInput;
+        controls.Player.Move.canceled -= OnDirectionInputCancel;
+
+
+        controls.Player.Jump.performed -= OnJumpPressed;
+        controls.Player.Jump.started -= OnJumpHeld;
+        controls.Player.Jump.canceled -= NewOnJumpReleased;
+
+        controls.Player.Dash.performed -= OnDashPressed;
+        controls.Player.Dash.canceled -= OnSprintCanceled;
+
+        controls.Player.Block.performed -= OnBlockPressed;
+    }
+
+
+    void OnEnable()
+    {
+        controls.Player.Enable();
+    }
+
+    void OnDisable()
+    {
+        controls.Player.Disable();
+    }
+
     private void OnDashPressed(InputAction.CallbackContext context)
     {
-        currentHorizontalState = HorizontalState.Dashing;
-        dashFrames = maxDashFrames;
-        PlayerAnimationManager.instance.Dash();
+        if (!dashUsed)
+        {
+            currentHorizontalState = HorizontalState.Dashing;
+            dashFrames = maxDashFrames;
+            dashUsed = true;
+            PlayerAnimationManager.instance.Dash();
+            sprintPressed = true;
+        }
+    }
+
+    public void OnDashAttack()
+    {
+        dashFrames += 30;
     }
 
     private void OnDirectionInputCancel(InputAction.CallbackContext context)
@@ -207,8 +247,20 @@ public class PlayerMovement : MonoBehaviour
         {
             sprintParticles.Stop();
             currentHorizontalState = HorizontalState.Walking;
+            sprintPressed = false;
         }
         
+    }
+
+    public void OnSprintCanceled()
+    {
+        if (PlayerData.sprintUnlocked || abilityDebug)
+        {
+            sprintParticles.Stop();
+            currentHorizontalState = HorizontalState.Idle;
+            sprintPressed = false;
+        }
+
     }
 
     private void OnSprintStarted()
@@ -383,8 +435,33 @@ public class PlayerMovement : MonoBehaviour
         return currentVerticalState == VerticalState.Falling || currentVerticalState == VerticalState.Jumping;
     }
 
+    private void UpdateHorizontalState()
+    {
+        if (currentHorizontalState == HorizontalState.Dashing)
+        {
+            return;
+        }
+
+        if (Mathf.Abs(horizontalInput) > 0.1f)
+        {
+            if (sprintPressed)
+            {
+                currentHorizontalState = HorizontalState.Sprinting;
+            } else
+            {
+                currentHorizontalState = HorizontalState.Walking;
+            }
+        } else
+        {
+            currentHorizontalState = HorizontalState.Idle;
+        }
+    }
+
     private void ApplyHorizontalMovement()
     {
+        UpdateHorizontalState();
+
+
         if (currentHorizontalState == HorizontalState.Dashing)
         {
 
@@ -398,8 +475,6 @@ public class PlayerMovement : MonoBehaviour
                 currentHorizontalState = HorizontalState.Sprinting;
                 OnSprintStarted();
             }
-
-            
         }
 
 
@@ -493,28 +568,13 @@ public class PlayerMovement : MonoBehaviour
 
 
 
-    private void OnDestroy()
-    {
-        controls.Player.Jump.started -= OnJumpPressed;
-        controls.Player.Jump.canceled -= NewOnJumpReleased;
-    }
-
-
-    void OnEnable()
-    {
-        controls.Player.Enable();
-    }
-
-    void OnDisable()
-    {
-        controls.Player.Disable();
-    }
+    
 
 
 
     private void FixedUpdate()
     {
-
+        Debug.Log(currentHorizontalState);
         groundedThisFrame = IsGrounded();
 
         UpdateTimers();
@@ -702,7 +762,10 @@ public class PlayerMovement : MonoBehaviour
     private void UpdateTimers()
     {
         if (groundedThisFrame)
+        {
             groundedRememberTimer = groundedRememberTime;
+            dashUsed = false;
+        }
         else
             groundedRememberTimer -= Time.fixedDeltaTime;
 

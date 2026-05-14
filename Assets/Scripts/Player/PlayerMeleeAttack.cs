@@ -81,7 +81,7 @@ public class PlayerMeleeAttack : MonoBehaviour
                 return;
             }*/
 
-            if (playerMovement.currentHorizontalState == HorizontalState.Dashing
+            if (playerMovement.currentHorizontalState == HorizontalState.Dashing && playerMovement.IsGroundedBuffered()
                 //|| playerMovement.currentHorizontalState == HorizontalState.Sprinting
                 )
             {
@@ -113,7 +113,9 @@ public class PlayerMeleeAttack : MonoBehaviour
     {
         PlayerAnimationManager.instance.LungeAttack();
         PlayerAnimationManager.instance.disableSword();
-        PlayerMovement.instance.currentHorizontalState = HorizontalState.Idle;
+        PlayerMovement.instance.currentHorizontalState = HorizontalState.Dashing;
+        //PlayerMovement.instance.OnSprintCanceled();
+        PlayerMovement.instance.OnDashAttack();
     }
 
     private IEnumerator AttackCooldownCoroutine()
@@ -194,5 +196,22 @@ public class PlayerMeleeAttack : MonoBehaviour
         //{
         //    comboNum = 0;
         //}
+    }
+
+    public void ApplyDashAttackDamage()
+    {
+        UpdateFacingDirection();
+        attackHitbox.SetActive(true);
+        isMidAttack = false;
+        PlayerHealthManager.instance.ShouldApplyDamage(false);
+        
+    }
+
+    public void ExitDashAttack()
+    {
+        attackHitbox.SetActive(false);
+        attackHitboxActive = false;
+        attackIsOnCooldown = false;
+        PlayerHealthManager.instance.ShouldApplyDamage(true);
     }
 }

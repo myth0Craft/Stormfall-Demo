@@ -30,6 +30,12 @@ public class PlayerAnimationEvent : MonoBehaviour
         }
     }
 
+    public void ExitDashAttack()
+    {
+        PlayerMovement.instance.OnSprintCanceled();
+        PlayerMeleeAttack.instance.ExitDashAttack();
+    }
+
     public void PlayFootstepSound()
     {
         if (PlayerMovement.instance.IsGroundedBuffered() && PlayerData.inWater == false)
@@ -37,8 +43,6 @@ public class PlayerAnimationEvent : MonoBehaviour
             audioSource.pitch = Random.Range(0.5f, 1.0f);
             audioSource.PlayOneShot(footstep, 0.1f);
         }
-
-        
     }
 
     public void EnableSword()
@@ -82,6 +86,17 @@ public class PlayerAnimationEvent : MonoBehaviour
         impulseSource.GenerateImpulse(force);
 
         playerAttack.ApplyDamage();
+    }
+
+    public void triggerDashAttackScreenShake()
+    {
+        float xForce = PlayerMovement.instance.getFacingDirection() ? -0.1f : 0.1f;
+        Vector3 force = new Vector3(xForce, 0.02f, 0);
+
+
+        impulseSource.GenerateImpulse(force);
+        
+        playerAttack.ApplyDashAttackDamage();
     }
 
 }

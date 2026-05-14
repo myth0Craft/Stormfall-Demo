@@ -14,11 +14,23 @@ public class PlayerHealthManager : HealthManager
 
     private bool isDead = false;
 
+    private bool shouldApplyDamage = true;
+
+    public static PlayerHealthManager instance;
+
     private void Awake()
     {
         this.iFrameDuration = 1.0f;
 
-        isDead = false;
+        if (instance == null)
+        {
+            instance = this;
+        } else
+        {
+            Destroy(gameObject);
+        }
+
+            isDead = false;
         hitParticle.enableEmission = false;
         this.maxHealth = PlayerData.maxHealth;
         this.currentHealth = PlayerData.currentHealth;
@@ -26,10 +38,19 @@ public class PlayerHealthManager : HealthManager
         camShakeSource = GameObject.FindGameObjectWithTag("CinemachineImpulseSource").GetComponent<CamShakeSource>();
     }
 
+    public void ShouldApplyDamage(bool shouldApplyDamage)
+    {
+        this.shouldApplyDamage = shouldApplyDamage;
+    }
+
     public override void ApplyDamageIgnoreIFrames(int amount)
     {
-        base.ApplyDamageIgnoreIFrames(amount);
-        print(maxHealth + "/" + currentHealth);
+        if (shouldApplyDamage)
+        {
+            base.ApplyDamageIgnoreIFrames(amount);
+            print(maxHealth + "/" + currentHealth);
+        }
+        
     }
 
     public override void Die()
