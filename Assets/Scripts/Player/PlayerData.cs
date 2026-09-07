@@ -40,6 +40,9 @@ public static class PlayerData
     public static bool fullScreenEnabled = true;
 
 
+    //COMPLETED TUTORIALS
+    public static HashSet<string> completedTutorials  = new HashSet<string>();
+
     //NPC DATA
     public static HashSet<string> talkedToNPCs = new HashSet<string>();
 
@@ -53,6 +56,20 @@ public static class PlayerData
         if (!talkedToNPCs.Contains(npcId))
         {
             talkedToNPCs.Add(npcId);
+        }
+
+    }
+
+    public static bool HasCompletedTutorial(string tutorialId)
+    {
+        return completedTutorials.Contains(tutorialId);
+    }
+
+    public static void MarkCompletedTutorial(string tutorialId)
+    {
+        if (!completedTutorials.Contains(tutorialId))
+        {
+            completedTutorials.Add(tutorialId);
         }
 
     }
@@ -108,6 +125,9 @@ public static class PlayerData
         data.shieldUnlocked = shieldUnlocked;
         data.shieldBounceUnlocked = shieldBounceUnlocked;
 
+        //COMPLETED TUTORIALS
+        data.completedTutorials = new List<string>(completedTutorials);
+
         //NPC DATA
         data.talkedToNPCs = new List<string>(talkedToNPCs);
     }
@@ -132,7 +152,8 @@ public static class PlayerData
         shieldBounceUnlocked = data.shieldBounceUnlocked;
 
 
-
+        //COMPLETED TUTORIALS
+        completedTutorials = new HashSet<string>(data.completedTutorials ?? new List<string>());
 
 
 
@@ -149,6 +170,9 @@ public static class PlayerData
         currentHealth = 5;
 
         colorScheme = PlayerColorScheme.Default;
+
+        //COMPLETED TUTORIALS
+        completedTutorials = new HashSet<string>();
 
         //ABILITIES
 
@@ -193,6 +217,10 @@ public struct PlayerSaveData
     public string currentScene;
 
     public PlayerColorScheme colorScheme;
+
+    //COMPLETED TUTORIALS
+    public List<string> completedTutorials;
+
 
     //ABILITIES
     public bool dashUnlocked;

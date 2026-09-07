@@ -1,26 +1,32 @@
+using NUnit.Framework.Internal;
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
 public class TutorialUIController : MonoBehaviour
 {
-    [SerializeField] private CanvasGroup moveTutorial;
-    [SerializeField] private CanvasGroup jumpTutorial;
-    [SerializeField] private CanvasGroup swordTutorial;
-    [SerializeField] private CanvasGroup upAttackTutorial;
-    [SerializeField] private CanvasGroup downAttackTutorial;
-    [SerializeField] private CanvasGroup staminaTutorial;
-    [SerializeField] private CanvasGroup parryTutorial;
-
     private CanvasGroupFader fader;
 
     public float duration = 0.5f;
 
+    [SerializeField] private Vector2 vignetteCenteredOnStaminaCoordinates;
+
     [SerializeField] private Volume volumeOverlay;
     private Vignette vignette;
+    [SerializeField] private float startVignetteIntensity;
+
+    [SerializeField] private CanvasGroup staminaFocusedCanvasGroup;
+    [SerializeField] private TextMeshProUGUI staminaText;
+
+    [SerializeField] private CanvasGroup centeredCanvasGroup;
+    [SerializeField] private TextMeshProUGUI centeredText;
+    
 
     public static TutorialUIController instance;
+
+    private Coroutine currentTutorial;
 
     private void Awake()
     {
@@ -36,8 +42,7 @@ public class TutorialUIController : MonoBehaviour
 
     private IEnumerator FadeInVolumeOverlay(Vector2 vignetteCenter)
     {
-        //player screen space pos
-        Vector3 screenPos = Camera.main.WorldToScreenPoint(PlayerMovement.instance.gameObject.transform.position);
+        
 
         volumeOverlay.gameObject.SetActive(true);
 
@@ -47,17 +52,17 @@ public class TutorialUIController : MonoBehaviour
             vignette.center.value = vignetteCenter;
 
             vignette.intensity.overrideState = true;
-            vignette.intensity.value = 0f;
+            vignette.intensity.value = startVignetteIntensity;
 
             float elapsedTime = 0;
 
             while (elapsedTime < duration)
             {
-                vignette.intensity.value = (float)((elapsedTime * 0.4) / duration);
+                vignette.intensity.value = Mathf.Min((float)((elapsedTime * 0.4) / duration) + startVignetteIntensity, 0.4f);
 
 
 
-                elapsedTime += Time.deltaTime;
+                elapsedTime += Time.unscaledDeltaTime;
                 yield return null;
             }
 
@@ -71,19 +76,19 @@ public class TutorialUIController : MonoBehaviour
         {
 
             vignette.intensity.overrideState = true;
-            vignette.intensity.value = 4f;
+            vignette.intensity.value = 0.4f;
 
             float elapsedTime = duration;
 
             while (elapsedTime > 0)
             {
-                vignette.intensity.value = (float)((elapsedTime * 0.4) / duration);
+                vignette.intensity.value = Mathf.Max((float)((elapsedTime * 0.4) / duration), startVignetteIntensity);
 
-                elapsedTime -= Time.deltaTime;
+                elapsedTime -= Time.unscaledDeltaTime;
                 yield return null;
             }
 
-            vignette.intensity.value = 0.0f;
+            vignette.intensity.value = startVignetteIntensity;
         }
 
         volumeOverlay.gameObject.SetActive(false);
@@ -104,45 +109,79 @@ public class TutorialUIController : MonoBehaviour
         fader.FadeOut();
     }
 
-    public void PlayWalkTutorial()
+    public void PlayTutorial(Tutorial tutorial)
     {
-        FadeInTutorial(moveTutorial);
-        StartCoroutine(FadeInVolumeOverlay(Camera.main.WorldToScreenPoint(PlayerMovement.instance.gameObject.transform.position)));
+
+        if (currentTutorial != null)
+        {
+            StopCoroutine(currentTutorial);
+        }
+
+        currentTutorial = StartCoroutine(PlayTutorialCoroutine(tutorial));
     }
 
-    public void PlayJumpTutorial()
+    private IEnumerator PlayTutorialCoroutine(Tutorial tutorial)
     {
-        FadeInTutorial(jumpTutorial);
-        StartCoroutine(FadeInVolumeOverlay(Camera.main.WorldToScreenPoint(PlayerMovement.instance.gameObject.transform.position)));
-    }
 
-    public void PlaySwordTutorial()
-    {
-        FadeInTutorial(swordTutorial);
-        StartCoroutine(FadeInVolumeOverlay(Camera.main.WorldToScreenPoint(PlayerMovement.instance.gameObject.transform.position)));
-    }
+        PlayerData.AllowGameInput(false);
 
-    public void PlayUpAttackTutorial()
-    {
-        FadeInTutorial(upAttackTutorial);
-        StartCoroutine(FadeInVolumeOverlay(Camera.main.WorldToScreenPoint(PlayerMovement.instance.gameObject.transform.position)));
-    }
+        Vector2 vignetteCenter;
 
-    public void PlayDownAttackTutorial()
-    {
-        FadeInTutorial(downAttackTutorial);
-        StartCoroutine(FadeInVolumeOverlay(Camera.main.WorldToScreenPoint(PlayerMovement.instance.gameObject.transform.position)));
-    }
+        float previousTimeScale = Time.timeScale;
 
-    public void PlayStaminaTutorial()
-    {
-        FadeInTutorial(staminaTutorial);
-        StartCoroutine(FadeInVolumeOverlay(new Vector2(0.85f, 0.8f)));
-    }
+        if (tutorial.pauseGame)
+        {
+            Time.timeScale = 0f;
+        }
 
-    public void PlayParryTutorial()
-    {
-        FadeInTutorial(parryTutorial);
-        StartCoroutine(FadeInVolumeOverlay(new Vector2(0.85f, 0.8f)));
+        if (tutorial.focusedOnStamina)
+        {
+            vignetteCenter = vignetteCenteredOnStaminaCoordinates;
+        } else
+        {
+            //player screen space pos
+            vignetteCenter = Camera.main.WorldToScreenPoint(PlayerMovement.instance.gameObject.transform.position);
+            vignetteCenter.x = vignetteCenter.x / Screen.width;
+            vignetteCenter.y = vignetteCenter.y / Screen.height;
+        }
+
+        TextMeshProUGUI text;
+
+        CanvasGroup groupToFadeIn;
+
+        if (tutorial.focusedOnStamina)
+        {
+            text = staminaText;
+            groupToFadeIn = staminaFocusedCanvasGroup;
+        } else
+        {
+            text = centeredText;
+            groupToFadeIn = centeredCanvasGroup;
+        }
+
+        text.text = tutorial.text;
+
+        FadeInTutorial(groupToFadeIn);
+
+        yield return FadeInVolumeOverlay(vignetteCenter);
+
+        tutorial.condition.StartListening();
+        while(!tutorial.condition.IsComplete())
+        {
+            yield return null;
+        }
+        tutorial.condition.StopListening();
+
+        PlayerData.AllowGameInput(true);
+
+        Time.timeScale = previousTimeScale;
+
+        FadeOutTutorial(groupToFadeIn);
+
+        yield return FadeOutVolumeOverlay();
+
+        PlayerData.MarkCompletedTutorial(tutorial.tutorialID);
+        SaveSystem.Save(PlayerData.saveIndex);
+        DisplaySaveIcon.Instance.DisplaySaveIconCoroutine();
     }
 }
