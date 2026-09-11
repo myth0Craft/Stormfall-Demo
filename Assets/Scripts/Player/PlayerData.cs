@@ -5,6 +5,9 @@ public static class PlayerData
 
 
     public static int saveIndex = 0;
+
+    public static bool firstLoad = true;
+
     private static PlayerControls globalControls = new PlayerControls();
 
     public static bool betaFeaturesEnabled = false;
@@ -109,6 +112,8 @@ public static class PlayerData
 
     public static void Save(ref PlayerSaveData data)
     {
+        data.firstLoad = firstLoad;
+
         data.posX = posX;
         data.posY = posY;
         data.maxHealth = maxHealth;
@@ -134,6 +139,8 @@ public static class PlayerData
 
     public static void Load(PlayerSaveData data)
     {
+        firstLoad = data.firstLoad;
+
         posX = data.posX;
         posY = data.posY;
         maxHealth = data.maxHealth;
@@ -163,6 +170,9 @@ public static class PlayerData
 
     public static void SetDefaults()
     {
+
+        firstLoad = true;
+
         posX = -5.0f;
         posY = -1.7f;
         currentScene = "1_Ancient_Springs";
@@ -211,6 +221,8 @@ public static class PlayerData
 [System.Serializable]
 public struct PlayerSaveData
 {
+    public bool firstLoad;
+
     public float posX;
     public float posY;
     public int maxHealth;

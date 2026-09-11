@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae4ce6e0954909147ab3c2dbfee869a6, type: 3}
+  m_Name: Prologue
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueScriptableObj
+  entries:
+  - text:
+    - A shattered whole.
+    - A fallen king.
+    - A rift of darkness.
+    - The Lights must be sought out once again.
+    - Who now will reunite them as this kingdom draws its dying breath?
+    - 'Has our last hope failed?
+
+
+      - Quote from Prophecies of the Shadow, author
+      unknown, Year 875 of the Third Age.'
+    condition: {fileID: 0}
+    priority: 0

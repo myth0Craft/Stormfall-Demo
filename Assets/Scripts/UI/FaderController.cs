@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class FaderController : MonoBehaviour
 {
 
@@ -73,7 +74,27 @@ public class FaderController : MonoBehaviour
         //fadeImage.color = new Color(fadeImage.color.r, fadeImage.color.g, fadeImage.color.b, endAlpha);
     }
 
+    private IEnumerator CrossFadeColorCoroutine(Color startColor, Color endColor)
+    {
+        fadeImage.color = startColor;
+        float elapsedPercentage = 0f;
+        float elapsedTime = 0f;
+        while (elapsedPercentage < 1)
+        {
+            elapsedPercentage = elapsedTime / fadeDuration;
+            fadeImage.color = Color.Lerp(startColor, endColor, elapsedPercentage);
+            yield return null;
+            elapsedTime += Time.unscaledDeltaTime;
+        }
+    }
 
+    public IEnumerator FadeFromBlackToWhite()
+    {
+        instance.StopAllCoroutines();
+
+        yield return CrossFadeColorCoroutine(Color.black, Color.white);
+
+    }
 
     public void setOpaque()
     {

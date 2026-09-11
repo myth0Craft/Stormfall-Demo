@@ -12,6 +12,9 @@ public class DialogueUI : MonoBehaviour
 {
     public static DialogueUI instance {get; private set;}
 
+    [SerializeField] private float defaultTextYPos;
+    [SerializeField] private float centeredTextYPos;
+
     private TextMeshProUGUI text;
 
     private Image background;
@@ -48,9 +51,6 @@ public class DialogueUI : MonoBehaviour
         }
         text.enabled = false;
         background.enabled = false;
-
-        //DisplayDialogue("skdjflkj jslkdflksdj word word word word word word word word word");
-        //StartCoroutine(DisplayDialogueChain(new string[] {"word, word, word", "ajkldsfjlksjdflksajldkfjskfad", "word hi hi hi hi hi hi"}));
     }
 
 
@@ -59,17 +59,64 @@ public class DialogueUI : MonoBehaviour
         controls.Player.Disable();
     }
 
-
     public IEnumerator DisplayDialogueChain(List<string> dialogue)
     {
-        
+        yield return DisplayDialogueChain(dialogue, Color.white, true, false);
+    }
+
+    public void DisplayDialogue(string dialogue)
+    {
+        DisplayDialogue(dialogue, Color.white, false);
+    }
+
+    public void DisplayDialogue(string dialogue, Color textColor, bool centered)
+    {
+        if (centered)
+        {
+            SetTextCentered();
+        } else
+        {
+            SetTextToDefaultYPos();
+        }
+
+        text.color = textColor;
         text.enabled = true;
         background.enabled = true;
-        background.color = new Color(background.color.r, background.color.g, background.color.b, 1f);
+        background.color = new Color(background.color.r, background.color.g, background.color.b, 0f);
+        text.text = "";
+        stringBuilder.Remove(0, stringBuilder.Length);
+        Debug.Log("displaying dialogue");
+        StartCoroutine(DisplayDialogueCoroutine(dialogue));
+    }
+
+    public IEnumerator DisplayDialogueChain(List<string> dialogue, Color textColor, bool displayDialogueBackground, bool centered)
+    {
+        text.color = textColor;
+        text.enabled = true;
+
+        if (centered)
+        {
+            SetTextCentered();
+        }
+        else
+        {
+            SetTextToDefaultYPos();
+        }
+
+        if (displayDialogueBackground)
+        {
+            background.enabled = true;
+            background.color = new Color(background.color.r, background.color.g, background.color.b, 1f);
+        }
         text.text = "";
         stringBuilder.Remove(0, stringBuilder.Length);
 
-        yield return FadeInDialogueBackgroundCoroutine(0.1f, 0f, 1f);
+
+        if (displayDialogueBackground)
+        {
+            yield return FadeInDialogueBackgroundCoroutine(0.1f, 0f, 1f);
+        }
+        
         disableControls();
         controls.Player.Interact.Enable();
         for (int i = 0; i < dialogue.Count; i++)
@@ -87,19 +134,12 @@ public class DialogueUI : MonoBehaviour
             stringBuilder.Remove(0, stringBuilder.Length);
         }
         controls.Player.Enable();
-        yield return FadeInDialogueBackgroundCoroutine(0.1f, 1f, 0f);
-        
-    }
 
-    public void DisplayDialogue(string dialogue)
-    {
-        text.enabled = true;
-        background.enabled = true;
-        background.color = new Color (background.color.r, background.color.g, background.color.b, 0f);
-        text.text = "";
-        stringBuilder.Remove(0, stringBuilder.Length);
-        Debug.Log("displaying dialogue");
-        StartCoroutine(DisplayDialogueCoroutine(dialogue));
+        if (displayDialogueBackground)
+        {
+            yield return FadeInDialogueBackgroundCoroutine(0.1f, 1f, 0f);
+        }
+        
     }
 
     public IEnumerator FadeInDialogueBackgroundCoroutine(float fadeInDuration, float startAlpha, float endAlpha)
@@ -147,5 +187,43 @@ public class DialogueUI : MonoBehaviour
         }
 
 
+    }
+
+
+
+    public IEnumerator DisplayFullscreenDialogueCoroutine(List<string> dialogue)
+    {
+        PlayerData.AllowGameInput(false);
+
+        if (FaderController.instance != null) {
+
+            FaderController.instance.fadeDuration = 2.0f;
+
+            yield return FaderController.instance.FadeFromBlackToWhite();
+        }
+
+        yield return DisplayDialogueChain(dialogue, Color.black, false, true);
+
+        if (FaderController.instance != null) {
+
+            yield return FaderController.instance.FadeFromWhite();
+        }
+
+        PlayerData.AllowGameInput(true);
+    }
+
+    private void ChangeTextPosition(float textYPos)
+    {
+        text.gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, textYPos);
+    }
+
+    public void SetTextCentered()
+    {
+        ChangeTextPosition(centeredTextYPos);
+    }
+
+    public void SetTextToDefaultYPos()
+    {
+        ChangeTextPosition(defaultTextYPos);
     }
 }

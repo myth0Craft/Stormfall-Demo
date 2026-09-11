@@ -1,12 +1,14 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
 public class SceneLoader : MonoBehaviour
 {
     private string startScene = "1_Ancient_Springs";
     private string persistentGame = "PersistentData";
+
+    [SerializeField] private DialogueScriptableObj prologueDialogue;
+    [SerializeField] private Tutorial moveTutorial;
     //private FaderController fader;
     public static SceneLoader instance { get; private set; }
 
@@ -127,10 +129,26 @@ public class SceneLoader : MonoBehaviour
         
         //PlayerData.AllowGameInput(false);
         Time.timeScale = 1;
-        yield return FaderController.instance.FadeIn();
-        PlayerData.AllowGameInput(true);
-        MusicManager.instance.SetMusic(false);
+
+        if (PlayerData.firstLoad)
+        {
+            yield return DialogueUI.instance.DisplayFullscreenDialogueCoroutine(prologueDialogue.entries[0].text);
+            PlayerData.AllowGameInput(false);
+
+            yield return new WaitForSecondsRealtime(2.0f);
+
+            TutorialUIController.instance.PlayTutorial(moveTutorial);
+            
+        } else
+        {
+            yield return FaderController.instance.FadeIn();
+            PlayerData.AllowGameInput(true);
+            
+        }
+
         PlayerData.AllowWindowInput(true);
+        MusicManager.instance.SetMusic(false);
+        
         //Destroy(this.gameObject);
     }
 

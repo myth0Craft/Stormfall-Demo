@@ -161,6 +161,9 @@ public class TutorialUIController : MonoBehaviour
 
         text.text = tutorial.text;
 
+        PlayerData.MarkCompletedTutorial(tutorial.tutorialID);
+        SaveSystem.Save(PlayerData.saveIndex);
+
         FadeInTutorial(groupToFadeIn);
 
         yield return FadeInVolumeOverlay(vignetteCenter);
@@ -180,8 +183,7 @@ public class TutorialUIController : MonoBehaviour
 
         yield return FadeOutVolumeOverlay();
 
-        PlayerData.MarkCompletedTutorial(tutorial.tutorialID);
-        SaveSystem.Save(PlayerData.saveIndex);
+        
         DisplaySaveIcon.Instance.DisplaySaveIconCoroutine();
     }
 }

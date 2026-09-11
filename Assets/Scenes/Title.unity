@@ -865,6 +865,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aca00fb90e00e6144951b28412db85e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  prologueDialogue: {fileID: 11400000, guid: 60b59a5b6e3df6c4e96ced0cb5383a63, type: 2}
+  moveTutorial: {fileID: 11400000, guid: 900a82745190a4b439506d248b2e0be5, type: 2}
 --- !u!4 &188447333
 Transform:
   m_ObjectHideFlags: 0
