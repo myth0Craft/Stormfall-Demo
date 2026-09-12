@@ -107,6 +107,8 @@ public class ShieldCollectEvent : QuicktimeEvent
 
         arenaBattle.StartArenaBattle();
 
+        PlayerHealthManager.instance.PlayBlockTutorial();
+
         Destroy(gameObject.transform.parent.gameObject);
     }
 

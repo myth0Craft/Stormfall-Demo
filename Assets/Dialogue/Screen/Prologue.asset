@@ -17,12 +17,10 @@ MonoBehaviour:
     - A shattered whole.
     - A fallen king.
     - A rift of darkness.
-    - The Lights must be sought out once again.
-    - Who now will reunite them as this kingdom draws its dying breath?
     - 'Has our last hope failed?
 
 
-      - Quote from Prophecies of the Shadow, author
-      unknown, Year 875 of the Third Age.'
+      - Prophecies of the Shadow, author unknown,
+      Year 875 of the Third Age.'
     condition: {fileID: 0}
     priority: 0

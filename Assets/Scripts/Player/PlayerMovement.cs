@@ -303,6 +303,11 @@ public class PlayerMovement : MonoBehaviour
         jumpBufferTimer = jumpBufferTime;
     }
 
+    public void SimulateJump()
+    {
+        jumpBufferTimer = jumpBufferTime;
+    }
+
     private void BeginJump()
     {
         

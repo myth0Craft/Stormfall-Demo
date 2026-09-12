@@ -19,7 +19,11 @@ public class PlayerHealthManager : HealthManager
 
     public static PlayerHealthManager instance;
 
-    
+    private bool awaitingBlockTutorialInput = false;
+    private bool awaitingBlockStaminaTutorialInput = false;
+
+    [SerializeField] private Tutorial blockTutorial;
+    [SerializeField] private Tutorial blockStaminaTutorial;
 
     private void Awake()
     {
@@ -47,6 +51,23 @@ public class PlayerHealthManager : HealthManager
 
     public override void ApplyDamageIgnoreIFrames(int amount)
     {
+
+        if (awaitingBlockTutorialInput)
+        {
+            TutorialUIController.instance.PlayTutorial(blockTutorial);
+            awaitingBlockTutorialInput = false;
+            awaitingBlockStaminaTutorialInput = true;
+            return;
+        }
+
+        if (awaitingBlockStaminaTutorialInput)
+        {
+            TutorialUIController.instance.PlayTutorial(blockStaminaTutorial);
+            awaitingBlockStaminaTutorialInput = false;
+            return;
+        }
+
+
         if (PlayerMeleeAttack.instance.currentCombatState == CombatState.Blocking)
         {
             PlayerMeleeAttack.instance.AddBlockEffects();
@@ -60,6 +81,11 @@ public class PlayerHealthManager : HealthManager
             print(maxHealth + "/" + currentHealth);
         }
         
+    }
+
+    public void PlayBlockTutorial()
+    {
+        awaitingBlockTutorialInput = true;
     }
 
     public void StopDamageForDuration(float durationSeconds)

@@ -218,6 +218,17 @@ public static class PlayerData
 
 }
 
+public enum PlayerAbilities
+{
+    Dash,
+    Sprint,
+    Sword,
+    DoubleJump,
+    WallJump,
+    Shield,
+    ShieldBounce
+}
+
 [System.Serializable]
 public struct PlayerSaveData
 {

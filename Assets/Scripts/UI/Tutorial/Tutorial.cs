@@ -1,5 +1,13 @@
 using UnityEngine;
 
+public enum TutorialCompletionAction
+{
+    None,
+    Jump,
+    Attack,
+    AddBlockEffects
+}
+
 [CreateAssetMenu(fileName = "Tutorial", menuName = "Scriptable Objects/Tutorial")]
 public class Tutorial : ScriptableObject
 {
@@ -8,6 +16,7 @@ public class Tutorial : ScriptableObject
 
     [Header("Completion")]
     public TutorialCondition condition;
+    public TutorialCompletionAction completionAction;
 
     [Header("UI")]
 

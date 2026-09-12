@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Tutorial
   tutorialID: sword
   condition: {fileID: 11400000, guid: f1d032cd4a6cb69458b70830c5500cbd, type: 2}
+  completionAction: 2
   text: 'LEFT-CLICK to use the sword '
   pauseGame: 1
   focusedOnStamina: 0

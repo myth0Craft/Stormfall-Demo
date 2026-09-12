@@ -10,10 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3f084df844b031941b25bdd8f749e91a, type: 3}
-  m_Name: ParryTutorial
+  m_Name: ParryTutorial2
   m_EditorClassIdentifier: Assembly-CSharp::Tutorial
-  tutorialID: parry
+  tutorialID: parry2
   condition: {fileID: 11400000, guid: 03193331106c7a443a34dffe927af393, type: 2}
+  completionAction: 3
   text: Successfully parrying will restore stamina, but mistiming a parry will drain
     stamina!
   pauseGame: 1

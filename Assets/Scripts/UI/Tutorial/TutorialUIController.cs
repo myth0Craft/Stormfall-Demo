@@ -111,13 +111,48 @@ public class TutorialUIController : MonoBehaviour
 
     public void PlayTutorial(Tutorial tutorial)
     {
+        if (tutorial == null)
+        {
+            Debug.Log("Tutorial missing!");
+            return;
+        }
 
         if (currentTutorial != null)
         {
+            CanvasGroupFaderController.instance.StopAllCoroutines();
+
             StopCoroutine(currentTutorial);
+            currentTutorial = null;
+
+            ResetTutorialCanvasGroups();
         }
 
         currentTutorial = StartCoroutine(PlayTutorialCoroutine(tutorial));
+    }
+
+    /*public IEnumerator TriggerTutorialCoroutine(Tutorial tutorial)
+    {
+
+        PlayTutorial(tutorial);
+        yield return currentTutorial;
+    }*/
+
+    private void ResetTutorialCanvasGroups()
+    {
+        if (volumeOverlay.profile.TryGet(out vignette))
+        {
+
+            vignette.intensity.overrideState = true;
+            vignette.intensity.value = startVignetteIntensity;
+        }
+
+        staminaText.text = "";
+        centeredText.text = "";
+
+        staminaFocusedCanvasGroup.alpha = 0f;
+        centeredCanvasGroup.alpha = 0f;
+        staminaFocusedCanvasGroup.gameObject.SetActive(false);
+        centeredCanvasGroup.gameObject.SetActive(false);
     }
 
     private IEnumerator PlayTutorialCoroutine(Tutorial tutorial)
@@ -179,11 +214,35 @@ public class TutorialUIController : MonoBehaviour
 
         Time.timeScale = previousTimeScale;
 
+        ExecuteTutorialCompletionAction(tutorial.completionAction);
+
         FadeOutTutorial(groupToFadeIn);
 
         yield return FadeOutVolumeOverlay();
 
         
         DisplaySaveIcon.Instance.DisplaySaveIconCoroutine();
+    }
+
+    private void ExecuteTutorialCompletionAction(TutorialCompletionAction action)
+    {
+        switch(action)
+        {
+            case TutorialCompletionAction.None:
+                return;
+            case TutorialCompletionAction.Jump:
+                PlayerMovement.instance.SimulateJump();
+                return;
+
+            case TutorialCompletionAction.Attack:
+                PlayerMeleeAttack.instance.PerformBasicAttack();
+                return;
+
+            case TutorialCompletionAction.AddBlockEffects:
+                PlayerMeleeAttack.instance.ResetCombatState();
+                PlayerMeleeAttack.instance.AddBlockEffects();
+                PlayerAnimationManager.instance.Block();
+                return;
+        }
     }
 }

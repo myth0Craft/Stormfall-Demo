@@ -253,7 +253,7 @@ public class PlayerMeleeAttack : MonoBehaviour
         this.currentCombatState = combatState;
     }
 
-    private void PerformBasicAttack()
+    public void PerformBasicAttack()
     {
         StaminaManager.instance.DecrementStamina(combatStaminaCost);
 

@@ -4,12 +4,20 @@ public class TutorialTrigger : MonoBehaviour
 {
     [SerializeField] private Tutorial tutorial;
 
+    [SerializeField] private ConditionBase condition;
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
-
-
         if (collision.CompareTag("Player"))
         {
+            if (condition != null) { 
+                if (!condition.IsMet())
+                {
+                    return;
+                }
+                
+            }
+
             if (PlayerData.completedTutorials.Contains(tutorial.tutorialID)) return;
 
             TutorialUIController.instance.PlayTutorial(tutorial);
