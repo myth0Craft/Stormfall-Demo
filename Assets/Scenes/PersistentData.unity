@@ -12454,7 +12454,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4615566162392958578, guid: 15b0f025f66c4c54a89769fc06f5a0a3, type: 3}
       propertyPath: attackDebug
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4615566162392958578, guid: 15b0f025f66c4c54a89769fc06f5a0a3, type: 3}
       propertyPath: basicAttackHitbox
@@ -12520,9 +12520,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7244873514266216837, guid: 15b0f025f66c4c54a89769fc06f5a0a3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.031
+      objectReference: {fileID: 0}
     - target: {fileID: 7538908298182209412, guid: 15b0f025f66c4c54a89769fc06f5a0a3, type: 3}
       propertyPath: abilityDebug
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

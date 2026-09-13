@@ -231,4 +231,18 @@ public class PlayerAnimationManager : MonoBehaviour
         armsAnim.Play("BasicAttack" + (comboNum + 1));
         //armsAnim.Play("DownwardSlash");
     }
+
+    public void Jump()
+    {
+        legsAnim.Play("Jump");
+        armsAnim.Play("Jump");
+        bodyAnim.Play("Jump");
+    }
+
+    public void Land()
+    {
+        legsAnim.Play("Land");
+        armsAnim.Play("Land");
+        bodyAnim.Play("Land");
+    }
 }

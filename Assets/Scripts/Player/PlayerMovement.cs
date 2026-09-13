@@ -766,6 +766,8 @@ public class PlayerMovement : MonoBehaviour
             body.linearVelocity = new Vector2(body.linearVelocity.x, jumpStrength);
             jumpHoldCounter = maxJumpHoldFrames;
 
+            PlayerAnimationManager.instance.Jump();
+
 
             //starting from midair (double jump)
         }
@@ -818,6 +820,11 @@ public class PlayerMovement : MonoBehaviour
     {
         if (groundedThisFrame)
         {
+            if (!wasGrounded)
+            {
+                PlayerAnimationManager.instance.Land();
+            }
+
             groundedRememberTimer = groundedRememberTime;
             ResetAbilities();
         }
