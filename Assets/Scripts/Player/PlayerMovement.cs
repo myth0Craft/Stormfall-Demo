@@ -99,7 +99,8 @@ public class PlayerMovement : MonoBehaviour
     //camera
     private CameraFollowObject cameraFollowObject;
 
-    private ParticleSystem sprintParticles;
+    [SerializeField] private ParticleSystem sprintParticles;
+    [SerializeField] private ParticleSystem jumpParticles;
 
     private Coroutine shieldSlideCoroutine;
 
@@ -121,7 +122,6 @@ public class PlayerMovement : MonoBehaviour
         boxCollider = GetComponent<CompositeCollider2D>();
         controls = PlayerData.getControls();
         groundLayer = LayerMask.GetMask("Ground");
-        sprintParticles = GetComponentInChildren<ParticleSystem>();
         playerMeleeAttack = GetComponent<PlayerMeleeAttack>();
 
 
@@ -151,6 +151,7 @@ public class PlayerMovement : MonoBehaviour
         currentVerticalState = VerticalState.Idle;
         //currentCombatState = CombatState.Idle;
         sprintParticles.Stop();
+        jumpParticles.Stop();
 
         OnBetaFeaturesToggled();
     }
@@ -310,7 +311,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void BeginJump()
     {
-        
+        //jumpParticles.Play();
 
         if (StuckToWallBuffered() && !IsGroundedBuffered() && (PlayerData.wallJumpUnlocked || abilityDebug))
         {
@@ -400,9 +401,11 @@ public class PlayerMovement : MonoBehaviour
 
         body.gravityScale = NewGetGravity() * gravityMultiplier;
 
+        
+
         if (currentVerticalState == VerticalState.Jumping)
         {
-
+            
         } else if (currentVerticalState == VerticalState.Falling)
         {
 
@@ -585,8 +588,6 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-
-
     private void FixedUpdate()
     {
 
@@ -598,8 +599,6 @@ public class PlayerMovement : MonoBehaviour
         ApplyHorizontalMovement();
 
         ApplyVerticalMovement();
-
-
 
         wasGrounded = groundedThisFrame;
     }

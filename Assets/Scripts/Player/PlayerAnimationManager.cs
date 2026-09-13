@@ -235,14 +235,22 @@ public class PlayerAnimationManager : MonoBehaviour
     public void Jump()
     {
         legsAnim.Play("Jump");
-        armsAnim.Play("Jump");
+        if (PlayerMeleeAttack.instance.currentCombatState == CombatState.Idle)
+        {
+            armsAnim.Play("Jump");
+        }
+        
         bodyAnim.Play("Jump");
     }
 
     public void Land()
     {
         legsAnim.Play("Land");
-        armsAnim.Play("Land");
+
+        if (PlayerMeleeAttack.instance.currentCombatState == CombatState.Idle)
+        {
+            armsAnim.Play("Land");
+        }
         bodyAnim.Play("Land");
     }
 }
