@@ -100,7 +100,7 @@ public class PlayerMovement : MonoBehaviour
     private CameraFollowObject cameraFollowObject;
 
     [SerializeField] private ParticleSystem sprintParticles;
-    [SerializeField] private ParticleSystem jumpParticles;
+    [SerializeField] private ParticleSystem dustParticles;
 
     private Coroutine shieldSlideCoroutine;
 
@@ -151,7 +151,7 @@ public class PlayerMovement : MonoBehaviour
         currentVerticalState = VerticalState.Idle;
         //currentCombatState = CombatState.Idle;
         sprintParticles.Stop();
-        jumpParticles.Stop();
+        dustParticles.Stop();
 
         OnBetaFeaturesToggled();
     }
@@ -216,11 +216,27 @@ public class PlayerMovement : MonoBehaviour
         dashFrames += 30;
     }
 
+    private void OnDirectionInput(InputAction.CallbackContext context)
+    {
+        Vector2 move = context.ReadValue<Vector2>();
+
+        horizontalInput = move.x;
+        verticalInput = move.y;
+    }
+
     private void OnDirectionInputCancel(InputAction.CallbackContext context)
+    {
+        Vector2 move = context.ReadValue<Vector2>();
+
+        horizontalInput = move.x;
+        verticalInput = move.y;
+    }
+
+/*    private void OnDirectionInputCancel(InputAction.CallbackContext context)
     {
         horizontalInput = 0;
         verticalInput = 0;
-    }
+    }*/
 
     private void OnBlockPressed(InputAction.CallbackContext context)
     {
@@ -328,7 +344,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void OnDirectionInput(InputAction.CallbackContext context)
+    /*private void OnDirectionInput(InputAction.CallbackContext context)
     {
         Vector2 move = context.ReadValue<Vector2>();
 
@@ -339,7 +355,7 @@ public class PlayerMovement : MonoBehaviour
         {
             currentHorizontalState = HorizontalState.Walking;
         }
-    }
+    }*/
 
     private float NewGetGravity()
     {
@@ -600,6 +616,8 @@ public class PlayerMovement : MonoBehaviour
 
         ApplyVerticalMovement();
 
+        HandleDustParticles();
+
         wasGrounded = groundedThisFrame;
     }
 
@@ -664,34 +682,46 @@ public class PlayerMovement : MonoBehaviour
 
     public bool IsGrounded()
     {
+        Bounds bounds = boxCollider.bounds;
+
         Vector2 origin = new Vector2(
-            boxCollider.bounds.center.x,
-            boxCollider.bounds.min.y + 0.02f);
+            bounds.center.x,
+            bounds.min.y
+        );
 
         Vector2 size = new Vector2(
-            boxCollider.bounds.size.x - 0.1f,
-            0.05f);
-
-        RaycastHit2D hit = Physics2D.BoxCast(origin, size, 0, Vector2.down, 0.05f, groundLayer);
-
-        /*RaycastHit2D hit = Physics2D.BoxCast(
-        boxCollider.bounds.center,
-        boxCollider.bounds.size,
-        0f,
-        Vector2.down,
-        0.1f,
-        groundLayer
+            bounds.size.x,
+            0.1f
         );
-        if (hit.collider != null)
-        {
-            Debug.DrawRay(hit.point, hit.normal, Color.green);
-        }*/
 
+        RaycastHit2D hit = Physics2D.BoxCast(
+            origin,
+            size,
+            0f,
+            Vector2.down,
+            0.05f,
+            groundLayer
+        );
 
         return hit.collider != null;
     }
 
-    
+    //ground check gizmo
+    /*private void OnDrawGizmosSelected()
+    {
+        if (boxCollider == null)
+            return;
+
+        Bounds b = boxCollider.bounds;
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(
+            new Vector3(b.center.x, b.min.y - 0.025f, 0),
+            new Vector3(b.size.x, 0.05f, 0)
+        );
+    }*/
+
+
     public bool IsOnSlope()
     {
         RaycastHit2D hit = Physics2D.BoxCast(
@@ -813,6 +843,25 @@ public class PlayerMovement : MonoBehaviour
     {
         doubleJumpUsed = false;
         dashUsed = false;
+    }
+
+    private void HandleDustParticles()
+    {
+        bool shouldPlay =
+        groundedThisFrame &&
+        currentHorizontalState == HorizontalState.Walking &&
+        currentVerticalState != VerticalState.StuckToWall;
+
+        if (shouldPlay)
+        {
+            if (!dustParticles.isPlaying)
+                dustParticles.Play();
+        }
+        else
+        {
+            if (dustParticles.isPlaying)
+                dustParticles.Stop();
+        }
     }
 
     private void UpdateTimers()
