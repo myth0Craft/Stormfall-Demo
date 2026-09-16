@@ -45057,7 +45057,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BreakableObject
   maxHealth: 3
-  iFrameDuration: 0.5
+  iFrameDuration: 0.2
   breakParticlesPrefab: {fileID: 3680454763949365995, guid: 4a6125f9cf121b6438795dd2399b5649, type: 3}
   hitParticlesPrefab: {fileID: 1877443918924586591, guid: c2618f7234673d040996216d48f30f19, type: 3}
   hitSound: {fileID: 8300000, guid: 0e2841f09a4100b4f95021db8fc23fb0, type: 3}
@@ -54900,7 +54900,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BreakableObject
   maxHealth: 3
-  iFrameDuration: 0.5
+  iFrameDuration: 0.2
   breakParticlesPrefab: {fileID: 3680454763949365995, guid: 4a6125f9cf121b6438795dd2399b5649, type: 3}
   hitParticlesPrefab: {fileID: 1877443918924586591, guid: c2618f7234673d040996216d48f30f19, type: 3}
   hitSound: {fileID: 8300000, guid: 0e2841f09a4100b4f95021db8fc23fb0, type: 3}
@@ -59704,7 +59704,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BreakableObject
   maxHealth: 3
-  iFrameDuration: 0.5
+  iFrameDuration: 0.2
   breakParticlesPrefab: {fileID: 3680454763949365995, guid: 4a6125f9cf121b6438795dd2399b5649, type: 3}
   hitParticlesPrefab: {fileID: 1877443918924586591, guid: c2618f7234673d040996216d48f30f19, type: 3}
   hitSound: {fileID: 8300000, guid: 0e2841f09a4100b4f95021db8fc23fb0, type: 3}

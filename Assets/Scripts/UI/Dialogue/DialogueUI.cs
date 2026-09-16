@@ -56,7 +56,7 @@ public class DialogueUI : MonoBehaviour
 
     private void disableControls()
     {
-        controls.Player.Disable();
+        PlayerData.AllowGameInput(false);
     }
 
     public IEnumerator DisplayDialogueChain(List<string> dialogue)
@@ -116,8 +116,8 @@ public class DialogueUI : MonoBehaviour
         {
             yield return FadeInDialogueBackgroundCoroutine(0.1f, 0f, 1f);
         }
-        
-        disableControls();
+
+        PlayerData.AllowGameInput(false);
         controls.Player.Interact.Enable();
         for (int i = 0; i < dialogue.Count; i++)
         {
@@ -133,13 +133,12 @@ public class DialogueUI : MonoBehaviour
             text.text = "";
             stringBuilder.Remove(0, stringBuilder.Length);
         }
-        controls.Player.Enable();
+        PlayerData.AllowGameInput(true);
 
         if (displayDialogueBackground)
         {
             yield return FadeInDialogueBackgroundCoroutine(0.1f, 1f, 0f);
         }
-        
     }
 
     public IEnumerator FadeInDialogueBackgroundCoroutine(float fadeInDuration, float startAlpha, float endAlpha)
@@ -191,7 +190,7 @@ public class DialogueUI : MonoBehaviour
 
 
 
-    public IEnumerator DisplayFullscreenDialogueCoroutine(List<string> dialogue)
+    public IEnumerator DisplayFullscreenDialogueCoroutine(List<string> dialogue, bool reenableInputWhenFinished)
     {
         PlayerData.AllowGameInput(false);
 
@@ -204,12 +203,22 @@ public class DialogueUI : MonoBehaviour
 
         yield return DisplayDialogueChain(dialogue, Color.black, false, true);
 
+        if (!reenableInputWhenFinished)
+        {
+            PlayerData.AllowGameInput(false);
+            PlayerMovement.instance.ResetHorizontalMovement();
+        }
+
         if (FaderController.instance != null) {
 
             yield return FaderController.instance.FadeFromWhite();
         }
 
-        PlayerData.AllowGameInput(true);
+        if (reenableInputWhenFinished)
+        {
+            PlayerData.AllowGameInput(true);
+        }
+        
     }
 
     private void ChangeTextPosition(float textYPos)

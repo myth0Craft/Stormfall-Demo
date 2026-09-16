@@ -172,6 +172,12 @@ public class PlayerMovement : MonoBehaviour
         controls.Player.Block.performed -= OnBlockPressed;
     }
 
+    public void ResetHorizontalMovement()
+    {
+        horizontalInput = 0;
+        verticalInput = 0;
+    }
+
     
 
     void OnEnable()
@@ -232,11 +238,11 @@ public class PlayerMovement : MonoBehaviour
         verticalInput = move.y;
     }
 
-/*    private void OnDirectionInputCancel(InputAction.CallbackContext context)
-    {
-        horizontalInput = 0;
-        verticalInput = 0;
-    }*/
+    /*    private void OnDirectionInputCancel(InputAction.CallbackContext context)
+        {
+            horizontalInput = 0;
+            verticalInput = 0;
+        }*/
 
     private void OnBlockPressed(InputAction.CallbackContext context)
     {

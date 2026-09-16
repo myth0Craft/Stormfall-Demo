@@ -127,18 +127,17 @@ public class SceneLoader : MonoBehaviour
         
         
         
-        //PlayerData.AllowGameInput(false);
+        PlayerData.AllowGameInput(false);
         Time.timeScale = 1;
 
         if (PlayerData.firstLoad)
         {
-            yield return DialogueUI.instance.DisplayFullscreenDialogueCoroutine(prologueDialogue.entries[0].text);
-            PlayerData.AllowGameInput(false);
+            yield return DialogueUI.instance.DisplayFullscreenDialogueCoroutine(prologueDialogue.entries[0].text, false);
 
             yield return new WaitForSecondsRealtime(2.0f);
 
             TutorialUIController.instance.PlayTutorial(moveTutorial);
-            
+
         } else
         {
             yield return FaderController.instance.FadeIn();
