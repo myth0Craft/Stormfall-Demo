@@ -3,11 +3,10 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
-public class ShieldCollectEvent : QuicktimeEvent
+public class ShieldCollectEvent : QuicktimeEvent, IInteractable
 {
 
     private InteractHintTrigger interactHintTrigger;
-    private bool interactPressed;
     private bool used = false;
     private ArenaBattleTrigger arenaBattle;
 
@@ -29,7 +28,6 @@ public class ShieldCollectEvent : QuicktimeEvent
         
         controls = PlayerData.getControls();
         interactHintTrigger = GetComponent<InteractHintTrigger>();
-        controls.Player.Interact.performed += ctx => interactPressed = true;
         saveIconConrtoller = GameObject.FindGameObjectWithTag("SaveIconController").GetComponent<DisplaySaveIcon>();
         arenaBattle = FindFirstObjectByType<ArenaBattleTrigger>();
 
@@ -54,7 +52,6 @@ public class ShieldCollectEvent : QuicktimeEvent
 
     protected override IEnumerator QuicktimeEventCoroutine()
     {
-        interactPressed = false;
 
         interactHintTrigger.SetInteractPopupActive(true);
         interactHintTrigger.interactText = "";
@@ -118,32 +115,28 @@ public class ShieldCollectEvent : QuicktimeEvent
     {
         if (collision.CompareTag("Player") && !shieldCollected)
         {
-            interactPressed = false;
-        }
-    }
-
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Player") && !shieldCollected)
-        {
             if (!used)
             {
                 interactHintTrigger.SetInteractPopupActive(true);
-                if (interactPressed)
-                {
-                    interactHintTrigger.SetInteractPopupActive(false);
-                    interactPressed = false;
-                    StartQuicktimeEvent();
-                    
-                    used = true;
-                }
+                PlayerContextActionInputManager.instance.SetInteractable(this);
             }
-            
         }
     }
 
-    protected override void EnableSpecificInput()
+    private void OnTriggerExit2D(Collider2D collision)
     {
-        this.controls.Player.Interact.Enable();
+        if (collision.CompareTag("Player"))
+        {
+            interactHintTrigger.SetInteractPopupActive(false);
+            PlayerContextActionInputManager.instance.ClearInteractable(this);
+        }
+    }
+
+    public void Interact()
+    {
+        interactHintTrigger.SetInteractPopupActive(false);
+        StartQuicktimeEvent();
+
+        used = true;
     }
 }

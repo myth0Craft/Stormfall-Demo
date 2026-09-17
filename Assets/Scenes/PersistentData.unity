@@ -12547,7 +12547,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7538908298182209412, guid: 15b0f025f66c4c54a89769fc06f5a0a3, type: 3}
       propertyPath: abilityDebug
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7538908298182209412, guid: 15b0f025f66c4c54a89769fc06f5a0a3, type: 3}
       propertyPath: dustParticles
@@ -12567,6 +12567,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6270736036406362160, guid: 15b0f025f66c4c54a89769fc06f5a0a3, type: 3}
       insertIndex: 7
       addedObject: {fileID: 1050548349}
+    - targetCorrespondingSourceObject: {fileID: 6270736036406362160, guid: 15b0f025f66c4c54a89769fc06f5a0a3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1454341074}
     - targetCorrespondingSourceObject: {fileID: 174377304284192161, guid: 15b0f025f66c4c54a89769fc06f5a0a3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 226245730}
@@ -19686,6 +19689,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1445073787}
   m_CullTransparentMesh: 1
+--- !u!1 &1454341073
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1454341074}
+  - component: {fileID: 1454341075}
+  m_Layer: 7
+  m_Name: ContextInputManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1454341074
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1454341073}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1872893315}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1454341075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1454341073}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cf3cf8a14b64a24899284e78b3a5444, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerContextActionInputManager
 --- !u!1 &1467351295
 GameObject:
   m_ObjectHideFlags: 0

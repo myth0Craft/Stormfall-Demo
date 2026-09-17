@@ -38,7 +38,7 @@ public class AbilityObtainedUI : MonoBehaviour
             Destroy(this);
         }
         PlayerControls controls = PlayerData.getControls();
-        controls.Player.Interact.performed += ctx => anyButtonPressed = true;
+        controls.Player.ContextAction.performed += ctx => anyButtonPressed = true;
         controls.Player.Jump.performed += ctx => anyButtonPressed = true;
         controls.Player.Dash.performed += ctx => anyButtonPressed = true;
 
@@ -105,6 +105,9 @@ public class AbilityObtainedUI : MonoBehaviour
     {
         FaderController.instance.fadeDuration = fadeDuration;
         yield return FaderController.instance.FadeFromWhite();
+
+        PlayerContextActionInputManager.instance.SetUIContext();
+
         anyButtonPressed = false;
         yield return new WaitForSecondsRealtime(2.5f);
 
@@ -114,7 +117,7 @@ public class AbilityObtainedUI : MonoBehaviour
             yield return null;
         }
 
-
+        PlayerContextActionInputManager.instance.RestoreContext();
 
         foreach (Transform child in transform)
         {

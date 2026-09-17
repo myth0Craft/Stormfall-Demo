@@ -3,11 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NPC : MonoBehaviour
+public class NPC : MonoBehaviour, IInteractable
 {
     private InteractHintTrigger interactHintTrigger;
-    private bool interactPressed = false;
-    private PlayerControls controls;
 
     public bool shouldMovePlayerToPosition = false;
     public Vector2 playerPositionOffset = Vector2.zero;
@@ -18,40 +16,29 @@ public class NPC : MonoBehaviour
 
     public string npcId;
 
+    public void Interact()
+    {
+        if (currentlySpeaking)
+            return;
 
+        interactHintTrigger.SetInteractPopupActive(false);
+        interactHintTrigger.shouldCheckForCollision = false;
+        currentlySpeaking = true;
+
+        DisplayDialogue();
+    }
 
     private void Awake()
     {
-        controls = PlayerData.getControls();
         interactHintTrigger = GetComponent<InteractHintTrigger>();
-        controls.Player.Interact.performed += ctx => interactPressed = true;
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Player"))
-        {
-            if (!currentlySpeaking)
-            {
-                interactHintTrigger.SetInteractPopupActive(true);
-
-                if (interactPressed)
-                {
-                    interactHintTrigger.SetInteractPopupActive(false);
-                    interactHintTrigger.shouldCheckForCollision = false;
-                    currentlySpeaking = true;
-                    interactPressed = false;
-                    DisplayDialogue();
-                }
-            }
-        }
-    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
-            interactPressed = false;
+            PlayerContextActionInputManager.instance.SetInteractable(this);
         }
     }
 
@@ -59,6 +46,7 @@ public class NPC : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
+            PlayerContextActionInputManager.instance.ClearInteractable(this);
             interactHintTrigger.SetInteractPopupActive(false);
         }
     }
@@ -85,8 +73,8 @@ public class NPC : MonoBehaviour
         //interactHintTrigger.SetInteractPopupActive(true);
         currentlySpeaking = false;
         interactHintTrigger.shouldCheckForCollision = true;
-        interactPressed = false;
         PlayerData.MarkTalkedTo(npcId);
+        PlayerContextActionInputManager.instance.SetInteractable(this);
     }
 
     

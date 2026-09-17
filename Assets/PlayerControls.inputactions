@@ -52,18 +52,9 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Interact",
+                    "name": "ContextAction",
                     "type": "Button",
-                    "id": "aa6b142c-ffed-4a15-bac2-33ad8ce9354c",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Block",
-                    "type": "Button",
-                    "id": "c380c888-7183-4897-b51e-f5fefd77347b",
+                    "id": "e48c09e2-386c-4080-8088-46ce3aba146d",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -227,23 +218,12 @@
                 },
                 {
                     "name": "",
-                    "id": "5a207538-7bca-4d8f-907a-69391ca3148c",
-                    "path": "<Keyboard>/t",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Interact",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "dcbf5ea8-6946-4b29-be31-9f1637b23181",
+                    "id": "702511a3-a1d4-40b3-9fc9-29f142864c4e",
                     "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Block",
+                    "action": "ContextAction",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

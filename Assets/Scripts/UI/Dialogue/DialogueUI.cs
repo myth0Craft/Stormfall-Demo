@@ -42,7 +42,7 @@ public class DialogueUI : MonoBehaviour
 
 
         controls = PlayerData.getControls();
-        controls.Player.Interact.performed += ctx => interactPressed = true;
+        controls.Player.ContextAction.performed += ctx => interactPressed = true;
         text = GetComponentInChildren<TextMeshProUGUI>();
         background = GetComponentInChildren<Image>();
         if (text == null || background == null)
@@ -118,7 +118,8 @@ public class DialogueUI : MonoBehaviour
         }
 
         PlayerData.AllowGameInput(false);
-        controls.Player.Interact.Enable();
+        controls.Player.ContextAction.Enable();
+        PlayerContextActionInputManager.instance.SetUIContext();
         for (int i = 0; i < dialogue.Count; i++)
         {
             yield return DisplayDialogueCoroutine(dialogue[i]);
@@ -133,6 +134,8 @@ public class DialogueUI : MonoBehaviour
             text.text = "";
             stringBuilder.Remove(0, stringBuilder.Length);
         }
+
+        PlayerContextActionInputManager.instance.RestoreContext();
         PlayerData.AllowGameInput(true);
 
         if (displayDialogueBackground)
@@ -165,7 +168,7 @@ public class DialogueUI : MonoBehaviour
 
     private IEnumerator DisplayDialogueCoroutine(string dialogue)
     {
-
+        PlayerContextActionInputManager.instance.SetUIContext();
         interactPressed = false;
         foreach (char c in dialogue)
         {
@@ -184,6 +187,8 @@ public class DialogueUI : MonoBehaviour
             text.text = stringBuilder.ToString();
             yield return new WaitForSecondsRealtime(1f / textSpeed);
         }
+
+        PlayerContextActionInputManager.instance.RestoreContext();
 
 
     }

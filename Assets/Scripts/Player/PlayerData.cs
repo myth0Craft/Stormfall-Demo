@@ -215,7 +215,6 @@ public static class PlayerData
         VsyncEnabled = true;
         fullScreenEnabled = true;
     }
-
 }
 
 public enum PlayerAbilities

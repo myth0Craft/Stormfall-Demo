@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95beee2fc3a502149a6ed39555936d2f, type: 3}
   m_Name: RightClickTutorialCondition
   m_EditorClassIdentifier: Assembly-CSharp::SingleInputTutorialCondition
-  input: {fileID: -2210064867713492986, guid: 0a106f580fbcadf48a22a65c6dcf692e, type: 3}
+  input: {fileID: 6574347605470002802, guid: 0a106f580fbcadf48a22a65c6dcf692e, type: 3}

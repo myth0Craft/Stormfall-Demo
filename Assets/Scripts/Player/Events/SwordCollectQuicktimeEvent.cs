@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
-public class SwordCollectEvent : QuicktimeEvent
+public class SwordCollectEvent : QuicktimeEvent, IInteractable
 {
 
     private InteractHintTrigger interactHintTrigger;
@@ -41,7 +41,7 @@ public class SwordCollectEvent : QuicktimeEvent
         
         controls = PlayerData.getControls();
         interactHintTrigger = GetComponent<InteractHintTrigger>();
-        controls.Player.Interact.performed += ctx => interactPressed = true;
+        controls.Player.ContextAction.performed += ctx => interactPressed = true;
         camShakeSource = GameObject.FindGameObjectWithTag("CinemachineImpulseSource").GetComponent<CamShakeSource>();
         saveIconConrtoller = GameObject.FindGameObjectWithTag("SaveIconController").GetComponent<DisplaySaveIcon>();
         //swirlParticles = GetComponentInChildren<ParticleSystem>();
@@ -149,7 +149,7 @@ public class SwordCollectEvent : QuicktimeEvent
         AudioSource.PlayClipAtPoint(UIClip, transform.position, 5.0f);
         StartCoroutine(saveIconConrtoller.DisplaySaveIconCoroutine());
 
-        
+        PlayerContextActionInputManager.instance.RestoreContext();
 
         if (id == null)
         {
@@ -176,35 +176,35 @@ public class SwordCollectEvent : QuicktimeEvent
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player") && !swordCollected)
+        if (collision.CompareTag("Player") && !used)
         {
-            interactPressed = false;
+            interactHintTrigger.SetInteractPopupActive(true);
+            PlayerContextActionInputManager.instance.SetInteractable(this);
         }
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
+    private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player") && !swordCollected)
+        if (collision.CompareTag("Player"))
         {
-            if (!used)
-            {
-                interactHintTrigger.SetInteractPopupActive(true);
-                if (interactPressed)
-                {
-                    interactHintTrigger.SetInteractPopupActive(false);
-                    ContinuousCameraShakeSource.instance.AddScreenShakeOverTime(0.3f, 200000f, 0.1f);
-                    interactPressed = false;
-                    StartQuicktimeEvent();
-                    
-                    used = true;
-                }
-            }
-            
+            interactHintTrigger.SetInteractPopupActive(false);
+            PlayerContextActionInputManager.instance.ClearInteractable(this);
         }
+    }
+
+    public void Interact()
+    {
+        interactHintTrigger.SetInteractPopupActive(false);
+        ContinuousCameraShakeSource.instance.AddScreenShakeOverTime(0.3f, 200000f, 0.1f);
+        interactPressed = false;
+        StartQuicktimeEvent();
+
+        used = true;
     }
 
     protected override void EnableSpecificInput()
     {
-        this.controls.Player.Interact.Enable();
+        this.controls.Player.ContextAction.Enable();
+        PlayerContextActionInputManager.instance.SetUIContext();
     }
 }

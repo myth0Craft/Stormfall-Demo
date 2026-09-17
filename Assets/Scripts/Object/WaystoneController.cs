@@ -2,7 +2,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 
-public class WaystoneController : MonoBehaviour
+public class WaystoneController : MonoBehaviour, IInteractable
 {
     [SerializeField] private GameObject inactive;
     [SerializeField] private GameObject active;
@@ -12,8 +12,6 @@ public class WaystoneController : MonoBehaviour
 
     private InteractHintTrigger interactHintTrigger;
 
-    private bool interactPressed;
-    private PlayerControls controls;
 
     private TextMeshProUGUI text;
 
@@ -22,10 +20,7 @@ public class WaystoneController : MonoBehaviour
 
         text = GetComponentInChildren<TextMeshProUGUI>();
         text.gameObject.SetActive(false);
-
-        controls = PlayerData.getControls();
         interactHintTrigger = GetComponent<InteractHintTrigger>();
-        controls.Player.Interact.performed += ctx => interactPressed = true;
 
         inactive.SetActive(false);
         active.SetActive(true);
@@ -65,33 +60,36 @@ public class WaystoneController : MonoBehaviour
         //interactHintTrigger.SetInteractPopupActive(false);
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
+    public void Interact()
     {
-        if (collision.CompareTag("Player") && waystoneActive)
-        {
-            if (interactPressed)
-            {
-                interactPressed = false;
-                Deactivate();
-            }
+        Deactivate();
 
-            if (id == null)
-            {
-                Debug.Log("Id of Waystone is null!");
-            }
-            else
-            {
-                var room = SaveSystem.getRoom(gameObject.scene.name);
-                room.pickups[id] = true;
-            }
+        if (id == null)
+        {
+            Debug.Log("Id of Waystone is null!");
+        }
+        else
+        {
+            var room = SaveSystem.getRoom(gameObject.scene.name);
+            room.pickups[id] = true;
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (collision.CompareTag("Player") && waystoneActive)
+        {
+            interactHintTrigger.SetInteractPopupActive(true);
+            PlayerContextActionInputManager.instance.SetInteractable(this);
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
         if (collision.CompareTag("Player"))
         {
-            interactPressed = false;
+            interactHintTrigger.SetInteractPopupActive(false);
+            PlayerContextActionInputManager.instance.ClearInteractable(this);
         }
     }
 

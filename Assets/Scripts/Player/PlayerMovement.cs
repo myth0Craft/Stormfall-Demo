@@ -139,7 +139,7 @@ public class PlayerMovement : MonoBehaviour
         controls.Player.Dash.performed += OnDashPressed;
         controls.Player.Dash.canceled += OnSprintCanceled;
 
-        controls.Player.Block.performed += OnBlockPressed;
+        //controls.Player.Block.performed += OnBlockPressed;
         
 
         #if !UNITY_EDITOR
@@ -169,7 +169,7 @@ public class PlayerMovement : MonoBehaviour
         controls.Player.Dash.performed -= OnDashPressed;
         controls.Player.Dash.canceled -= OnSprintCanceled;
 
-        controls.Player.Block.performed -= OnBlockPressed;
+        //controls.Player.Block.performed -= OnBlockPressed;
     }
 
     public void ResetHorizontalMovement()
@@ -244,7 +244,7 @@ public class PlayerMovement : MonoBehaviour
             verticalInput = 0;
         }*/
 
-    private void OnBlockPressed(InputAction.CallbackContext context)
+    public void OnBlockPressed()
     {
         if (PlayerData.shieldUnlocked || abilityDebug)
         {
