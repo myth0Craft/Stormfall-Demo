@@ -46,7 +46,11 @@ public class SceneLoader : MonoBehaviour
         
         FaderController.instance.setOpaque();
         PlayerData.gamePaused = false;
-        SceneManager.LoadScene("Title");
+        //SceneManager.LoadScene("Title");
+        yield return SceneManager.LoadSceneAsync("Title", LoadSceneMode.Single);
+        //prevent autosave notice from playing on subsequent title screen loads
+        Object.FindFirstObjectByType<AutosaveNoticeController>().gameObject.SetActive(false);
+
         Time.timeScale = 1;
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
@@ -132,7 +136,12 @@ public class SceneLoader : MonoBehaviour
 
         if (PlayerData.firstLoad)
         {
+            
             yield return DialogueUI.instance.DisplayFullscreenDialogueCoroutine(prologueDialogue.entries[0].text, false);
+
+            PlayerData.firstLoad = false;
+            SaveSystem.Save(PlayerData.saveIndex);
+            StartCoroutine(DisplaySaveIcon.Instance.DisplaySaveIconCoroutine());
 
             yield return new WaitForSecondsRealtime(2.0f);
 

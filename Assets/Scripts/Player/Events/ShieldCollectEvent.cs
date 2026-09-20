@@ -52,6 +52,7 @@ public class ShieldCollectEvent : QuicktimeEvent, IInteractable
 
     protected override IEnumerator QuicktimeEventCoroutine()
     {
+        PlayerContextActionInputManager.instance.RestoreContext();
 
         interactHintTrigger.SetInteractPopupActive(true);
         interactHintTrigger.interactText = "";
@@ -79,7 +80,7 @@ public class ShieldCollectEvent : QuicktimeEvent, IInteractable
         AudioSource.PlayClipAtPoint(UIClip, transform.position, 5.0f);
         StartCoroutine(saveIconConrtoller.DisplaySaveIconCoroutine());
 
-        
+        PlayerContextActionInputManager.instance.RestoreContext();
 
         if (id == null)
         {
@@ -138,5 +139,11 @@ public class ShieldCollectEvent : QuicktimeEvent, IInteractable
         StartQuicktimeEvent();
 
         used = true;
+    }
+
+    protected override void EnableSpecificInput()
+    {
+        this.controls.Player.ContextAction.Enable();
+        PlayerContextActionInputManager.instance.SetUIContext();
     }
 }

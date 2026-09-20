@@ -17,7 +17,8 @@ public class DialogueUI : MonoBehaviour
 
     private TextMeshProUGUI text;
 
-    private Image background;
+    [SerializeField] private Image background;
+    [SerializeField] private Image continueIcon;
 
     private StringBuilder stringBuilder = new StringBuilder();
 
@@ -44,13 +45,13 @@ public class DialogueUI : MonoBehaviour
         controls = PlayerData.getControls();
         controls.Player.ContextAction.performed += ctx => interactPressed = true;
         text = GetComponentInChildren<TextMeshProUGUI>();
-        background = GetComponentInChildren<Image>();
         if (text == null || background == null)
         {
             Debug.Log("Dialogue UI is missing text or background image!");
         }
         text.enabled = false;
         background.enabled = false;
+        continueIcon.gameObject.SetActive(false);
     }
 
 
@@ -91,6 +92,7 @@ public class DialogueUI : MonoBehaviour
 
     public IEnumerator DisplayDialogueChain(List<string> dialogue, Color textColor, bool displayDialogueBackground, bool centered)
     {
+        continueIcon.gameObject.SetActive(false);
         text.color = textColor;
         text.enabled = true;
 
@@ -135,6 +137,8 @@ public class DialogueUI : MonoBehaviour
             stringBuilder.Remove(0, stringBuilder.Length);
         }
 
+        continueIcon.gameObject.SetActive(false);
+
         PlayerContextActionInputManager.instance.RestoreContext();
         PlayerData.AllowGameInput(true);
 
@@ -168,6 +172,7 @@ public class DialogueUI : MonoBehaviour
 
     private IEnumerator DisplayDialogueCoroutine(string dialogue)
     {
+        continueIcon.gameObject.SetActive(false);
         PlayerContextActionInputManager.instance.SetUIContext();
         interactPressed = false;
         foreach (char c in dialogue)
@@ -187,6 +192,7 @@ public class DialogueUI : MonoBehaviour
             text.text = stringBuilder.ToString();
             yield return new WaitForSecondsRealtime(1f / textSpeed);
         }
+        continueIcon.gameObject.SetActive(true);
 
         PlayerContextActionInputManager.instance.RestoreContext();
 

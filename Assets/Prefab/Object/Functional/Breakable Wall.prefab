@@ -145,7 +145,7 @@ TilemapRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -135360115
-  m_SortingLayer: 5
+  m_SortingLayer: 6
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
@@ -280,7 +280,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BreakableObject
   maxHealth: 4
-  iFrameDuration: 0.5
+  iFrameDuration: 0.2
   breakParticlesPrefab: {fileID: 0}
+  hitParticlesPrefab: {fileID: 0}
+  hitSound: {fileID: 0}
   saveState: 1
+  drops: []
   id: R1BW1
