@@ -17,10 +17,6 @@ MonoBehaviour:
     - A shattered whole.
     - A fallen king.
     - A rift of darkness.
-    - 'Has our last hope failed?
-
-
-      - Prophecies of the Shadow, author unknown,
-      Year 875 of the Third Age.'
+    - Has our last hope failed?
     condition: {fileID: 0}
     priority: 0

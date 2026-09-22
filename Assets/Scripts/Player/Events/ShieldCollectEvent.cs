@@ -135,10 +135,13 @@ public class ShieldCollectEvent : QuicktimeEvent, IInteractable
 
     public void Interact()
     {
-        interactHintTrigger.SetInteractPopupActive(false);
-        StartQuicktimeEvent();
+        if (!used)
+        {
+            interactHintTrigger.SetInteractPopupActive(false);
+            StartQuicktimeEvent();
 
-        used = true;
+            used = true;
+        }
     }
 
     protected override void EnableSpecificInput()

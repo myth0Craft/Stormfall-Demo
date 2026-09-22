@@ -428,7 +428,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealthManager
   maxHealth: 5
-  iFrameDuration: 0.25
+  iFrameDuration: 0.2
   defaultMaterial: {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
   hurtMaterial: {fileID: 2100000, guid: 8db201e4374e16c41ae2755123078c03, type: 2}
   deathParticlesPrefab: {fileID: 2156910468579775480, guid: 3851f0ff5d2172e44a3934dc057d649a, type: 3}

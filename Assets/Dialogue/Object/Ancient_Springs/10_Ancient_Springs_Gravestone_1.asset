@@ -17,6 +17,5 @@ MonoBehaviour:
     - Here of old the Shadow was defeated.
     - Those who fought will be honored.
     - It will not breach the Wall again.
-    - (Year 1294 of the Fourth Age)
     condition: {fileID: 0}
     priority: 0

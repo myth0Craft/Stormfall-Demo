@@ -194,12 +194,16 @@ public class SwordCollectEvent : QuicktimeEvent, IInteractable
 
     public void Interact()
     {
-        interactHintTrigger.SetInteractPopupActive(false);
-        ContinuousCameraShakeSource.instance.AddScreenShakeOverTime(0.3f, 200000f, 0.1f);
-        interactPressed = false;
-        StartQuicktimeEvent();
+        if (!used)
+        {
+            interactHintTrigger.SetInteractPopupActive(false);
+            ContinuousCameraShakeSource.instance.AddScreenShakeOverTime(0.3f, 200000f, 0.1f);
+            interactPressed = false;
+            StartQuicktimeEvent();
 
-        used = true;
+            used = true;
+        }
+        
     }
 
     protected override void EnableSpecificInput()

@@ -62,16 +62,19 @@ public class WaystoneController : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        Deactivate();
+        var room = SaveSystem.getRoom(gameObject.scene.name);
+        if (room.pickups[id] == false)
+        {
+            Deactivate();
 
-        if (id == null)
-        {
-            Debug.Log("Id of Waystone is null!");
-        }
-        else
-        {
-            var room = SaveSystem.getRoom(gameObject.scene.name);
-            room.pickups[id] = true;
+            if (id == null)
+            {
+                Debug.Log("Id of Waystone is null!");
+            }
+            else
+            {
+                room.pickups[id] = true;
+            }
         }
     }
 

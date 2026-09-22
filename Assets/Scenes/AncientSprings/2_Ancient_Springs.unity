@@ -349,7 +349,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealthManager
   maxHealth: 2
-  iFrameDuration: 0.3
+  iFrameDuration: 0.2
   defaultMaterial: {fileID: 2100000, guid: 8b0f470afcdbdec4e8b744f2ab81c4d8, type: 2}
   hurtMaterial: {fileID: 2100000, guid: 8db201e4374e16c41ae2755123078c03, type: 2}
   deathParticlesPrefab: {fileID: 3680454763949365995, guid: 4a6125f9cf121b6438795dd2399b5649, type: 3}
@@ -9009,7 +9009,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealthManager
   maxHealth: 2
-  iFrameDuration: 0.3
+  iFrameDuration: 0.2
   defaultMaterial: {fileID: 2100000, guid: 8b0f470afcdbdec4e8b744f2ab81c4d8, type: 2}
   hurtMaterial: {fileID: 2100000, guid: 8db201e4374e16c41ae2755123078c03, type: 2}
   deathParticlesPrefab: {fileID: 3680454763949365995, guid: 4a6125f9cf121b6438795dd2399b5649, type: 3}
@@ -30987,6 +30987,7 @@ MonoBehaviour:
   hitParticlesPrefab: {fileID: 0}
   hitSound: {fileID: 0}
   saveState: 0
+  drops: []
   id: 
 --- !u!114 &2075675456
 MonoBehaviour:
