@@ -6,7 +6,7 @@ public class SavePoint : MonoBehaviour
     
     private DisplaySaveIcon saveIconConrtoller;
 
-    private void Awake()
+    private void Start()
     {
         saveIconConrtoller = GameObject.FindGameObjectWithTag("SaveIconController").GetComponent<DisplaySaveIcon>();
     }

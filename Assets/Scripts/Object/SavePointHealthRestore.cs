@@ -10,7 +10,7 @@ public class SavePointHealthRestore : MonoBehaviour, IInteractable
 
     public AudioClip healSound;
 
-    private void Awake()
+    private void Start()
     {
         playerHealth = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerHealthManager>();
         interactHintTrigger = GetComponent<InteractHintTrigger>();

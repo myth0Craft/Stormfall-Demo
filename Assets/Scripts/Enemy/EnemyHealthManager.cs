@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class EnemyHealthManager : HealthManager
+public class EnemyHealthManager : HealthManager, IKnockbackable
 {
     public Material defaultMaterial;
     public Material hurtMaterial;
@@ -14,6 +14,9 @@ public class EnemyHealthManager : HealthManager
     public GameObject hitParticlesPrefab;
     protected BoxCollider2D hitCollider;
     public GameObject gameObjectToDestroy;
+    public float xKnockbackForce = 0;
+    public float yKnockbackForce = 0;
+    public Rigidbody2D body;
 
 
     public override void Awake()
@@ -63,10 +66,6 @@ public class EnemyHealthManager : HealthManager
         if (gameObjectToDestroy != null)
         {
             Destroy(gameObjectToDestroy);
-        } else
-        {
-            Destroy(transform.parent.gameObject);
-            
         }
 
 
@@ -95,4 +94,16 @@ public class EnemyHealthManager : HealthManager
         }
     }
 
+    public void AddKnockback()
+    {
+        bool facingRight = PlayerMovement.instance.getFacingDirection();
+
+        float xMultiplier = facingRight ? 1 : -1;
+
+        if (body != null)
+        {
+            Debug.Log("Added force");
+            body.AddForce(new Vector2(xKnockbackForce * xMultiplier, yKnockbackForce), ForceMode2D.Impulse);
+        }
+    }
 }

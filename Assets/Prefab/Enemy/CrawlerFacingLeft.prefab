@@ -296,4 +296,7 @@ MonoBehaviour:
   id: R1E1
   hurtSound: {fileID: 8300000, guid: 0e2841f09a4100b4f95021db8fc23fb0, type: 3}
   hitParticlesPrefab: {fileID: 0}
-  gameObjectToDestroy: {fileID: 0}
+  gameObjectToDestroy: {fileID: 42473061096175327}
+  xKnockbackForce: 8
+  yKnockbackForce: 1
+  body: {fileID: 4723524065369029088}

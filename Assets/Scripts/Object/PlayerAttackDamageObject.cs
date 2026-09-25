@@ -27,6 +27,12 @@ public class PlayerAttackDamageObject : MonoBehaviour
         BreakableObject health = other.GetComponent<BreakableObject>();
         EnemyHealthManager enemyHealth = other.GetComponent <EnemyHealthManager>();
         OneWayBreakableObj oneWayHealth = other.GetComponent<OneWayBreakableObj>();
+        if (other.TryGetComponent<IKnockbackable>(out IKnockbackable knockbackable))
+        {
+            knockbackable.AddKnockback();
+        }
+
+
         if (health != null)
         {
             health.ApplyDamage();

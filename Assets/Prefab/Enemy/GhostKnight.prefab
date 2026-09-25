@@ -437,6 +437,9 @@ MonoBehaviour:
   hurtSound: {fileID: 8300000, guid: 0e2841f09a4100b4f95021db8fc23fb0, type: 3}
   hitParticlesPrefab: {fileID: 2156910468579775480, guid: 3851f0ff5d2172e44a3934dc057d649a, type: 3}
   gameObjectToDestroy: {fileID: 8090077880223917925}
+  xKnockbackForce: 1.5
+  yKnockbackForce: 0
+  body: {fileID: 1743245145909697431}
 --- !u!95 &4857937428857645863
 Animator:
   serializedVersion: 7

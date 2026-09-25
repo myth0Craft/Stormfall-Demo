@@ -72511,6 +72511,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7299679405136171734, guid: 4efb68bfd0fb96e49a143fcc78554726, type: 3}
+      propertyPath: closed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7299679405136171734, guid: 4efb68bfd0fb96e49a143fcc78554726, type: 3}
       propertyPath: openPosition.y
       value: -4.56
       objectReference: {fileID: 0}
