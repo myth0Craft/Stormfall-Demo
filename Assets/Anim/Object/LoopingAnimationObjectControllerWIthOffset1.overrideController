@@ -1,0 +1,13 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: LoopingAnimationObjectControllerWIthOffset1
+  m_Controller: {fileID: 9100000, guid: cae20229a1ba73b4a81fe4cf604af278, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: fc0b1ab37c325e448818e0a85aeff7bb, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 651dc82746698154f983bfa4918b411b, type: 2}
