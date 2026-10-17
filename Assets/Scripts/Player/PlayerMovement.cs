@@ -542,7 +542,7 @@ public class PlayerMovement : MonoBehaviour
     {
         float accel = IsMidairState() ? accelInAir : accelGrounded;
 
-        float newVelX = Mathf.MoveTowards(body.linearVelocity.x, 0, accel * Time.fixedDeltaTime * 2);
+        float newVelX = Mathf.MoveTowards(body.linearVelocity.x, 0 + velocityModifier.x, accel * Time.fixedDeltaTime * 2);
 
         body.linearVelocity = new Vector2(newVelX, body.linearVelocity.y);
     }
@@ -557,7 +557,7 @@ public class PlayerMovement : MonoBehaviour
 
         float accel = IsMidairState() ? accelInAir : accelGrounded;
 
-        float newVelX = Mathf.MoveTowards(body.linearVelocity.x, horizontalInput * speed * bonusSpeed, accel * Time.fixedDeltaTime * 2);
+        float newVelX = Mathf.MoveTowards(body.linearVelocity.x, horizontalInput * speed * bonusSpeed + velocityModifier.x, accel * Time.fixedDeltaTime * 2);
 
         body.linearVelocity = new Vector2(newVelX, body.linearVelocity.y);
     }
@@ -624,7 +624,10 @@ public class PlayerMovement : MonoBehaviour
 
         ApplyVerticalMovement();
 
-        body.linearVelocity += velocityModifier;
+        //Vector2 finalVelocityModifier = velocityModifier *= new Vector2(groundedThisFrame ? 1 : 0.5f, 1f);
+
+        //additional y velocity (from wind or jump pads, etc) is added here. X velocity is handled in the horizontal movement methods.
+        body.linearVelocity += new Vector2(0, velocityModifier.y);
 
         HandleDustParticles();
 

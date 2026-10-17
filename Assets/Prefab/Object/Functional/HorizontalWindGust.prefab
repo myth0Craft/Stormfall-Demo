@@ -105,7 +105,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 599ae6bc58ddb6346a9055bd918b51f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WindGust
-  playerVelocityModifier: {x: 0.75, y: 0}
+  playerVelocityModifier: {x: 1.5, y: 0}
 --- !u!61 &4231241445131943704
 BoxCollider2D:
   m_ObjectHideFlags: 0
