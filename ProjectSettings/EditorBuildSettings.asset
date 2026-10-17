@@ -59,6 +59,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/FracturedPass/1_Fractured_Pass.unity
     guid: cecad96a0e4b5d84a91b4124e5e744e1
+  - enabled: 1
+    path: Assets/Scenes/FracturedPass/2_Fractured_Pass.unity
+    guid: 5b1a9d3823cbd034eb0d688ec9d8bfc1
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: IntenseWindGust
+  m_Name: HorizontalWindGustToRight
   m_Shader: {fileID: -6465566751694194690, guid: edfc58a4d6ff0eb43ad89e4c2925dd7f, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -37,13 +37,16 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Brightness: 1
-    - _Uniformity: 0.15
-    - _WindIntensity: 0.2
+    - _Brightness: 12
+    - _Falloff: 0.5
+    - _Uniformity: 0.089
+    - _WindIntensity: 0.085
     - _WindSpeed: 1
     m_Colors:
     - White: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.5886274, g: 0.5241189, b: 0.735849, a: 1}
+    - _Tiling: {r: 0.9, g: 0, b: 0, a: 0}
+    - _WindDir: {r: -1, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &8948958126114963197

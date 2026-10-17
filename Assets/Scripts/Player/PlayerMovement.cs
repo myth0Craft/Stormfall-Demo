@@ -88,6 +88,8 @@ public class PlayerMovement : MonoBehaviour
 
     public float jumpTime { get; private set; } = 0f;
 
+    private Vector2 velocityModifier = new Vector2(0, 0);
+
 
     //TODO: FIX TIME
     private float dashCooldownTime = 30f;
@@ -622,6 +624,8 @@ public class PlayerMovement : MonoBehaviour
 
         ApplyVerticalMovement();
 
+        body.linearVelocity += velocityModifier;
+
         HandleDustParticles();
 
         wasGrounded = groundedThisFrame;
@@ -868,6 +872,21 @@ public class PlayerMovement : MonoBehaviour
             if (dustParticles.isPlaying)
                 dustParticles.Stop();
         }
+    }
+
+    public void AddVelocityModifier(Vector2 VelocityToAdd)
+    {
+        velocityModifier += VelocityToAdd;
+    }
+
+    public void ResetVelocityModifier()
+    {
+        velocityModifier = new Vector2 (0, 0);
+    }
+
+    public void RemoveVelocityModifier(Vector2 VelocityToSubtract)
+    {
+        velocityModifier -= VelocityToSubtract;
     }
 
     private void UpdateTimers()
