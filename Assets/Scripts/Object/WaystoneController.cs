@@ -57,23 +57,25 @@ public class WaystoneController : MonoBehaviour, IInteractable
 
     private void OnDestroy()
     {
-        //interactHintTrigger.SetInteractPopupActive(false);
+        interactHintTrigger.SetInteractPopupActive(false);
     }
 
     public void Interact()
     {
-        var room = SaveSystem.getRoom(gameObject.scene.name);
-        if (room.pickups[id] == false)
-        {
-            Deactivate();
 
-            if (id == null)
+        if (id == null)
+        {
+            Debug.Log("Id of Breakable Object is null!");
+        }
+        else
+        {
+            var room = SaveSystem.getRoom(gameObject.scene.name);
+
+            if (!(room.breakables.TryGetValue(id, out bool collected) && collected))
             {
-                Debug.Log("Id of Waystone is null!");
-            }
-            else
-            {
+                Deactivate();
                 room.pickups[id] = true;
+                waystoneActive = false;
             }
         }
     }

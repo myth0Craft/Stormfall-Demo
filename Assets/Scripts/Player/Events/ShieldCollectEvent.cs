@@ -77,7 +77,7 @@ public class ShieldCollectEvent : QuicktimeEvent, IInteractable
 
         yield return new WaitForSecondsRealtime(0.7f);
 
-        AudioSource.PlayClipAtPoint(UIClip, transform.position, 5.0f);
+        //AudioSource.PlayClipAtPoint(UIClip, transform.position, 5.0f);
         StartCoroutine(saveIconConrtoller.DisplaySaveIconCoroutine());
 
         PlayerContextActionInputManager.instance.RestoreContext();
